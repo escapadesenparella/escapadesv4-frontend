@@ -13,6 +13,7 @@ import BreadcrumbRichSnippet from "../../components/richsnippets/BreadcrumbRichS
 import ArticleRichSnippet from "../../components/richsnippets/ArticleRichSnippet";
 import Image from "next/image";
 import ShareBarModal from "../../components/social/ShareBarModal";
+import AdBanner from "../../components/ads/AdBanner";
 
 const StoryListing = ({ storyDetails }) => {
 	const { user } = useContext(UserContext);
@@ -35,7 +36,7 @@ const StoryListing = ({ storyDetails }) => {
 	let slicedDescription = [];
 
 	const welcomeText = (
-		<div className="mb-8">
+		<div className="mb-5">
 			<h2>
 				{storyDetails.title}: Benvinguts a l'escapada de la setmana, ens
 				hi acompanyeu?
@@ -63,7 +64,7 @@ const StoryListing = ({ storyDetails }) => {
 							>
 								<picture
 									key={idx}
-									className="block rounded-md overflow-hidden aspect-1 relative"
+									className="block rounded-2xl overflow-hidden aspect-1 relative"
 								>
 									<Image src={image}
 										alt={`${storyDetails.title} - ${idx + 1
@@ -74,15 +75,6 @@ const StoryListing = ({ storyDetails }) => {
 										blurDataURL={image}
 										loading="lazy"
 									/>
-									{/* <img
-										src={image}
-										alt={`${storyDetails.title} - ${idx + 1
-											}`}
-										width={400}
-										height={300}
-										className="w-full h-full object-cover object-center"
-										loading="lazy"
-									/> */}
 								</picture>
 							</div>
 						);
@@ -120,7 +112,7 @@ const StoryListing = ({ storyDetails }) => {
 
 	const coverPath = storyDetails.cover.substring(0, 51);
 	const imageId = storyDetails.cover.substring(63);
-	const coverImg = `${coverPath}w_812,h_457,c_fill/${imageId}`;
+	const coverImg = `${coverPath}w_1392,h_783,c_fill/${imageId}`;
 
 	const coverAuthorPath = storyDetails.owner.avatar.substring(0, 51);
 	const imageAuthorId = storyDetails.owner.avatar.substring(63);
@@ -157,134 +149,146 @@ const StoryListing = ({ storyDetails }) => {
 			<div className="listing-story">
 				<NavigationBar />
 				<main>
-					<article className="py-4 lg:pt-12">
-						<div className="container">
+					<article>
+						<section className="pt-8 md:pt-10 lg:pt-12 pb-6 md:pb-8 bg-tertiary-50 ">
 							{/* Breadcrumb + article header */}
 							<div className="w-full">
-								<div className="w-full lg:max-w-3xl">
-									<div className="pb-2">
-										<div className="w-full">
-											<ul className="breadcrumb">
-												<li className="breadcrumb__item">
-													<a
-														href="/"
-														title="Inici"
-														className="breadcrumb__link"
-													>
-														Inici
-													</a>
-												</li>
-												<li className="breadcrumb__item">
-													<a
-														href="/histories"
-														className="breadcrumb__link underline underline-offset-4 text-secondary-500"
-													>
-														Històries en parella
-													</a>
-												</li>
-											</ul>
-										</div>
-									</div>
-									<h1>{storyDetails.title}</h1>
+								<div className="container">
+									<ul className="breadcrumb max-w-5xl mx-auto">
+										<li className="breadcrumb__item">
+											<a
+												href="/"
+												className="breadcrumb__link"
+											>
+												Inici
+											</a>
+										</li>
+										<li className="breadcrumb__item">
+											<a
+												href="/histories"
+												className="breadcrumb__link"
+											>
+												Històries en parella
+											</a>
+										</li>
+									</ul>
 								</div>
 							</div>
 
-							{/* Article cover + subtitle + meta info */}
-							<div className="w-full mt-10">
-								<div className="flex flex-wrap items-stretch -mx-2.5">
-									<div className="w-full lg:w-7/12 px-2.5">
-										<picture className="block aspect-w-16 aspect-h-9 h-full rounded-lg overflow-hidden">
-											<Image src={coverImg}
-												alt={storyDetails.title}
-												layout="fill"
-												priority={true}
-												loading="eager"
-												placeholder="blur"
-												blurDataURL={coverImg}
-											/>
-										</picture>
-									</div>
-									<div className="w-full lg:w-5/12 px-2.5">
-										<div className="flex flex-col h-full bg-[#f5f5f5] rounded-lg p-5 lg:p-10">
-											<div className="flex-1">
-												<p className="text-xl lg:text-2xl font-light mb-4">
-													{storyDetails.subtitle}
-												</p>
-												{/* Informació de l'autor */}
-												<div className="lg:mt-3 flex flex-wrap items-center">
-													<div className="flex flex-wrap items-center">
-														<div className="rounded-full overflow-hidden w-8 h-8 mr-2.5">
-															<picture>
-																<Image src={coverAuthorImg}
-																	alt={storyDetails.owner.fullName}
-																	width={32}
-																	height={32}
-																	priority={true}
-																	loading="eager"
-																/>
-															</picture>
-														</div>
-														<span className="text-sm">
-															{
-																storyDetails
-																	.owner
-																	.fullName
-															}
-														</span>
-														<span className="mx-2 text-sm ">
-															·
-														</span>
-														<span className="text-sm ">
-															Publicat el{" "}
-															<time
-																dateTime={formatDateTimeToISODate(
-																	storyDetails.createdAt
-																)}
-															>
-																<u>
-																	{formatDateTimeToISODate(
-																		storyDetails.createdAt
-																	)}
-																</u>
-															</time>
-														</span>
-													</div>
+							{/* Article heading + subtitle + meta info */}
+							<div className="relative mt-4 md:mt-7">
+								<div className="container">
+									<div className="md:max-w-xl lg:max-w-5xl lg:mx-auto">
+										<h1 className="font-display max-w-2xl my-0">{storyDetails.title}</h1>
+										<p className="lg:text-xl font-light mt-2.5 mb-3 md:mt-3 md:mb-4 max-w-2xl">
+											{storyDetails.subtitle}
+										</p>
+										{/* Informació de l'autor */}
+										<div className="flex flex-wrap items-center gap-4">
+											<div className="flex flex-wrap items-center">
+												<div className="rounded-full overflow-hidden w-8 h-8 mr-2.5">
+													<picture>
+														<Image src={coverAuthorImg}
+															alt={storyDetails.owner.fullName}
+															width={32}
+															height={32}
+															priority={true}
+															loading="eager"
+														/>
+													</picture>
 												</div>
-											</div>
-											<div className="mt-5 lg:mt-7">
-												<ShareBarModal picture={coverImg} title={storyDetails.title} rating={null} slug={`https://escapadesenparella.cat/histories/${storyDetails.slug}`} locality={null} colorClass={'text-primary-500'} />
-												<span className="block text-xs mt-1.5">
-													Darrera actualització:{" "}
+												<span className="text-sm">
+													{
+														storyDetails
+															.owner
+															.fullName
+													}
+												</span>
+												<span className="mx-2 text-sm ">
+													–
+												</span>
+												<span className="text-sm ">
 													<time
 														dateTime={formatDateTimeToISODate(
-															storyDetails.updatedAt
+															storyDetails.createdAt
 														)}
 													>
 														<u>
 															{formatDateTimeToISODate(
-																storyDetails.updatedAt
+																storyDetails.createdAt
 															)}
 														</u>
 													</time>
 												</span>
-												<figcaption className="text-xs text-grey-400 block mt-1.5">
-													Foto d' <u>Andrea Prat</u> i{" "}
-													<u>Juli Ramon</u> per
-													Escapadesenparella.cat
-												</figcaption>
 											</div>
+											<ShareBarModal picture={coverImg} title={storyDetails.title} rating={null} slug={`https://escapadesenparella.cat/histories/${storyDetails.slug}`} locality={null} colorClass={'text-primary-500 text-sm'} />
 										</div>
 									</div>
 								</div>
 							</div>
+						</section>
 
-							{/* Article description */}
-							<div className="w-full max-w-full lg:max-w-5xl mx-auto mt-10">
-								<div className="listing-description w-full max-w-[55ch] first-letter:text-2xl lg:first-letter:text-4xl first-letter:text-secondary-500">
-									{slicedDescription}
-								</div>
+						{/* Article cover */}
+						<div className="relative after:absolute after:top-0 after:inset-x-0 after:bg-tertiary-50 after:h-20">
+							<div className="container relative z-10">
+								<picture className="block aspect-w-16 aspect-h-9 h-full rounded-2xl overflow-hidden">
+									<Image src={coverImg}
+										alt={storyDetails.title}
+										layout="fill"
+										priority={true}
+										loading="eager"
+										placeholder="blur"
+										blurDataURL={coverImg}
+									/>
+								</picture>
 							</div>
 						</div>
+
+						{/* Article description */}
+						<section className="pt-6">
+							<div className="container">
+								<div className="max-w-5xl mx-auto">
+									<div className="grid grid-cols-1 md:grid-cols-12 gap-y-8 gap-x-12">
+										<div className="md:col-span-8">
+											<div className="w-full border-b border-primary-50 pb-8">
+												<div className="flex flex-col h-full">
+													<span className="block text-sm">
+														Darrera actualització:{" "}
+														<time
+															dateTime={formatDateTimeToISODate(
+																storyDetails.updatedAt
+															)}
+														>
+															<u>
+																{formatDateTimeToISODate(
+																	storyDetails.updatedAt
+																)}
+															</u>
+														</time>
+													</span>
+													<figcaption className="text-sm font-light block">
+														Foto d' <u>Andrea Prat</u> i{" "}
+														<u>Juli Ramon</u> per
+														Escapadesenparella.cat
+													</figcaption>
+												</div>
+											</div>
+											<div className="listing-description w-full mt-6 md:mt-8">
+												{slicedDescription}
+											</div>
+										</div>
+
+										{/* Aside */}
+										<aside className="md:col-span-4">
+											<span className="inline-block text-xs">Anunci</span>
+											<AdBanner data-ad-slot="1462489200"
+												data-ad-format="auto"
+												data-full-width-responsive="true" />
+										</aside>
+									</div>
+								</div>
+							</div>
+						</section>
 					</article>
 				</main>
 				<section>
@@ -292,7 +296,7 @@ const StoryListing = ({ storyDetails }) => {
 						<FooterHistoria />
 					</div>
 				</section>
-			</div>
+			</div >
 			<Footer
 				logo_url={
 					"https://res.cloudinary.com/juligoodie/image/upload/v1619634337/getaways-guru/static-files/logo-escapadesenparella-v4_hf0pr0.svg"

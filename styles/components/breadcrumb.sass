@@ -2,10 +2,9 @@
     .breadcrumb
         @apply text-xs flex items-center overflow-x-auto m-0 p-0
         &__item
-            @apply flex items-center whitespace-nowrap
-        &__item:not(:last-child)::after
-            content: "/"
-            @apply mx-2 block
+            @apply flex items-center whitespace-nowrap border border-primary-700 rounded-full px-3 py-1.5 mr-1.5
+        &__link
+            @apply inline-block no-underline
         &__link:hover
             @apply underline
         &__link.active

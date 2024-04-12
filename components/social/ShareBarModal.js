@@ -58,11 +58,10 @@ const ShareBarModal = ({ picture, title, rating, slug, locality, colorClass }) =
     ]
     return (
         <>
-            <button className={`${colorClass ? colorClass : 'text-white'} underline inline-flex items-center text-sm`} onClick={handleShareModalVisibility}>
-                <span>Compartir</span>
+            <button className={`${colorClass ? colorClass : 'text-grey-700'} text-sm font-normal inline-flex items-center underline underline-offset-2`} onClick={handleShareModalVisibility}>
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="ml-1.5 relative -top-px"
+                    className="mr-1.5 text-gray-700"
                     width={18}
                     height={18}
                     viewBox="0 0 24 24"
@@ -83,6 +82,7 @@ const ShareBarModal = ({ picture, title, rating, slug, locality, colorClass }) =
                     <path d="M8.7 10.7l6.6 -3.4"></path>
                     <path d="M8.7 13.3l6.6 3.4"></path>
                 </svg>
+                <span>Compartir</span>
             </button>
 
             <div className={`modal ${modalOpen ? 'active' : ''}`}>

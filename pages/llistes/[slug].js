@@ -10,6 +10,11 @@ import FooterHistoria from "../../components/global/FooterHistoria";
 import GlobalMetas from "../../components/head/GlobalMetas";
 import ArticleRichSnippet from "../../components/richsnippets/ArticleRichSnippet";
 import BreadcrumbRichSnippet from "../../components/richsnippets/BreadcrumbRichSnippet";
+import { formatDateTimeToISODate } from "../../utils/helpers";
+import ShareBarModal from "../../components/social/ShareBarModal";
+import Image from "next/image";
+import AdBanner from "../../components/ads/AdBanner";
+
 
 const ListView = ({ listDetails }) => {
 	const { user } = useContext(UserContext);
@@ -46,32 +51,13 @@ const ListView = ({ listDetails }) => {
 	const handleShareModalVisibility = () => setShareModalVisibility(true);
 	const hideShareModalVisibility = () => setShareModalVisibility(false);
 
-	let publicationDate = new Date(listDetails.createdAt).toLocaleDateString(
-		"ca-es",
-		{
-			year: "numeric",
-			month: "short",
-			day: "numeric",
-		}
-	);
-	let updatedDate = new Date(listDetails.updatedAt).toLocaleDateString(
-		"ca-es",
-		{
-			year: "numeric",
-			month: "short",
-			day: "numeric",
-		}
-	);
-
 	const coverPath = listDetails.cover.substring(0, 51);
 	const imageId = listDetails.cover.substring(63);
-	const coverImg = `${coverPath}w_400,h_300,c_fill/${imageId}`;
-	const coverImgDesktop = `${coverPath}w_1200,h_900,c_fill/${imageId}`;
+	const coverImg = `${coverPath}w_1392,h_783,c_fill/${imageId}`;
 
 	const coverAuthorPath = listDetails.owner.avatar.substring(0, 51);
 	const imageAuthorId = listDetails.owner.avatar.substring(63);
 	const coverAuthorImg = `${coverAuthorPath}w_32,h_32,c_fill/${imageAuthorId}`;
-
 	return (
 		<>
 			{/* Browser metas  */}
@@ -100,144 +86,147 @@ const ListView = ({ listDetails }) => {
 				modificationDate={listDetails.updatedAt}
 			/>
 			<div className="listing-list">
-				<NavigationBar
-					logo_url={
-						"https://res.cloudinary.com/juligoodie/image/upload/v1619634337/getaways-guru/static-files/logo-escapadesenparella-v4_hf0pr0.svg"
-					}
-					user={user}
-				/>
+				<NavigationBar />
 				<main>
-					<article className="pt-8 pb-4 md:pt-12">
-						<div className="container">
-							<div className="flex flex-wrap">
-								<div className="w-full lg:w-7/12 mx-auto">
-									<div className="w-full pb-6 lg:pl-12 lg:pr-20 lg:border-l border-primary-100">
-										<ul className="breadcrumb">
-											<li className="breadcrumb__item">
-												<a
-													href="/"
-													title="Inici"
-													className="breadcrumb__link"
-												>
-													Inici
-												</a>
-											</li>
-											<li className="breadcrumb__item">
-												<a
-													href="/llistes"
-													className="breadcrumb__link"
-												>
-													Llistes
-												</a>
-											</li>
-											<li className="breadcrumb__item">
-												<span className="breadcrumb__link active">
-													{listDetails.title}
-												</span>
-											</li>
-										</ul>
-										<h1 className=" max-w-2xl mt-3">
-											{listDetails.title}
-										</h1>
-										<div className="mt-3 flex flex-wrap items-center">
+					<article>
+						<section className="pt-8 md:pt-10 lg:pt-12 pb-6 md:pb-8 bg-tertiary-50 ">
+							{/* Breadcrumb + article header */}
+							<div className="w-full">
+								<div className="container">
+									<ul className="breadcrumb max-w-5xl mx-auto">
+										<li className="breadcrumb__item">
+											<a
+												href="/"
+												className="breadcrumb__link"
+											>
+												Inici
+											</a>
+										</li>
+										<li className="breadcrumb__item">
+											<a
+												href="/llistes"
+												className="breadcrumb__link"
+											>
+												Llistes
+											</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+
+							{/* Article heading + subtitle + meta info */}
+							<div className="relative mt-4 md:mt-7">
+								<div className="container">
+									<div className="md:max-w-xl lg:max-w-5xl lg:mx-auto">
+										<h1 className="font-display max-w-2xl my-0">{listDetails.title}</h1>
+										<p className="lg:text-xl font-light mt-2.5 mb-3 md:mt-3 md:mb-4 max-w-2xl">
+											{listDetails.subtitle}
+										</p>
+										{/* Informació de l'autor */}
+										<div className="flex flex-wrap items-center gap-4">
 											<div className="flex flex-wrap items-center">
-												<div className="flex flex-wrap items-center">
-													<div className="rounded-full overflow-hidden w-8 h-8 mr-2.5">
-														<picture>
-															<img
-																src={
-																	coverAuthorImg
-																}
-																alt={
-																	listDetails
-																		.owner
-																		.fullName
-																}
-																width={32}
-																height={32}
-																className="w-full h-full object-cover"
-																fetchpriority="high"
-																loadgin="eager"
-															/>
-														</picture>
-													</div>
-													<span className="text-sm text-primary-400 text-opacity-80">
-														{
-															listDetails.owner
-																.fullName
-														}
-													</span>
-													<span className="mx-2 text-sm text-primary-400 text-opacity-80">
-														·
-													</span>
-													<span className="text-sm text-primary-400 text-opacity-80">
-														Publicat el{" "}
-														<time
-															dateTime={
-																publicationDate
-															}
-														>
-															<u>
-																{
-																	publicationDate
-																}
-															</u>
-														</time>
-													</span>
+												<div className="rounded-full overflow-hidden w-8 h-8 mr-2.5">
+													<picture>
+														<Image src={coverAuthorImg}
+															alt={listDetails.owner.fullName}
+															width={32}
+															height={32}
+															priority={true}
+															loading="eager"
+														/>
+													</picture>
 												</div>
+												<span className="text-sm">
+													{
+														listDetails
+															.owner
+															.fullName
+													}
+												</span>
+												<span className="mx-2 text-sm ">
+													–
+												</span>
+												<span className="text-sm ">
+													<time
+														dateTime={formatDateTimeToISODate(
+															listDetails.createdAt
+														)}
+													>
+														<u>
+															{formatDateTimeToISODate(
+																listDetails.createdAt
+															)}
+														</u>
+													</time>
+												</span>
 											</div>
+											<ShareBarModal picture={coverImg} title={listDetails.title} rating={null} slug={`https://escapadesenparella.cat/llistes/${listDetails.slug}`} locality={null} colorClass={'text-primary-500 text-sm'} />
 										</div>
 									</div>
 								</div>
-								<div className="w-full lg:w-8/12 mx-auto">
-									<div className="aspect-w-16 aspect-h-9 rounded-md overflow-hidden">
-										<picture>
-											<source
-												srcSet={coverImg}
-												media="(max-width: 768px)"
-											/>
-											<source
-												srcSet={coverImgDesktop}
-												media="(min-width: 768px)"
-											/>
-											<img
-												src={coverImg}
-												alt={listDetails.title}
-												width={400}
-												height={300}
-												className="w-full h-full object-cover"
-												fetchpriority="high"
-												loading="eager"
-											/>
-										</picture>
-									</div>
-									<figcaption className="text-xs mt-2 text-primary-400 text-opacity-80 md:text-right">
-										{listDetails.title}
-									</figcaption>
-								</div>
 							</div>
-							<div className="flex flex-wrap items-stretch w-full lg:w-7/12 mx-auto">
-								<div className="w-full lg:w-9/12 lg:pl-12 lg:pr-20 -mt-6 pt-10 pb-8 lg:border-l md:border-primary-100">
-									<div className="text-center text-tertiary-500 text-opacity-80 text-sm py-4 mb-5 md:mb-6 bg-tertiary-100 bg-opacity-50 flex items-center justify-center rounded-md">
-										<span className="inline-block">
-											Actualitzat el{" "}
-											<time dateTime={updatedDate}>
-												<u>{updatedDate}</u>
-											</time>
-										</span>
-									</div>
-									<p className="md:text-lg max-w-prose mb-6 md:mb-8">
-										{listDetails.subtitle}
-									</p>
-									<div
-										className="list__description max-w-prose"
-										dangerouslySetInnerHTML={{
-											__html: listDetails.description,
-										}}
-									></div>
-								</div>
+						</section>
+
+						{/* Article cover */}
+						<div className="relative after:absolute after:top-0 after:inset-x-0 after:bg-tertiary-50 after:h-20">
+							<div className="container relative z-10">
+								<picture className="block aspect-w-16 aspect-h-9 h-full rounded-2xl overflow-hidden">
+									<Image src={coverImg}
+										alt={listDetails.title}
+										layout="fill"
+										priority={true}
+										loading="eager"
+										placeholder="blur"
+										blurDataURL={coverImg}
+									/>
+								</picture>
 							</div>
 						</div>
+
+						{/* Article description */}
+						<section className="pt-6">
+							<div className="container">
+								<div className="max-w-5xl mx-auto">
+									<div className="grid grid-cols-1 md:grid-cols-12 gap-y-8 gap-x-12">
+										<div className="md:col-span-8">
+											<div className="w-full border-b border-primary-50 pb-8">
+												<div className="flex flex-col h-full">
+													<span className="block text-sm">
+														Darrera actualització:{" "}
+														<time
+															dateTime={formatDateTimeToISODate(
+																listDetails.updatedAt
+															)}
+														>
+															<u>
+																{formatDateTimeToISODate(
+																	listDetails.updatedAt
+																)}
+															</u>
+														</time>
+													</span>
+													<figcaption className="text-sm font-light block">
+														Foto d' <u>Andrea Prat</u> i{" "}
+														<u>Juli Ramon</u> per
+														Escapadesenparella.cat
+													</figcaption>
+												</div>
+											</div>
+											<div className="list__description w-full mt-6 md:mt-8" dangerouslySetInnerHTML={{ __html: listDetails.description }}>
+											</div>
+										</div>
+
+										{/* Aside */}
+										<aside className="md:col-span-4">
+											<span className="inline-block text-xs">Anunci</span>
+											<AdBanner data-ad-slot="1462489200"
+												data-ad-format="auto"
+												data-full-width-responsive="true" />
+										</aside>
+									</div>
+								</div>
+							</div>
+						</section>
 					</article>
 				</main>
 				<section>

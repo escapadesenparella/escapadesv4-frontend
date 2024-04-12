@@ -1,7 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 
 const RegularListBox = ({
+	index,
 	slug,
 	cover,
 	title,
@@ -23,56 +24,51 @@ const RegularListBox = ({
 	const avatarId = avatar.substring(63);
 	const avatarImg = `${avatarPath}w_32,h_32,c_fill/${avatarId}`;
 	return (
-		<article className="lists__item">
+		<article className="w-full group">
 			<Link href={`/llistes/${slug}`}>
 				<a
 					title={title}
-					className="flex flex-wrap md:flex-nowrap items-stretch"
+					className="relative"
 				>
-					<div className="w-full md:w-2/3 p-6 md:py-6 md:px-8">
-						<div className="mb-4">
-							<h3 className="text-xl">{title}</h3>
-							<div className="mt-2 text-primary-400 font-light line-clamp-2">
-								{subtitle}
-							</div>
-						</div>
-						<div className="flex items-center border-t border-primary-200 pt-4">
-							<div className="w-8 h-8 mr-2 rounded-full overflow-hidden">
+					<picture className="block aspect-w-4 aspect-h-3 relative after:block after:w-full after:h-full after:z-20 after:content after:absolute after:inset-0 after:bg-primary-500 after:bg-opacity-0 rounded-2xl overflow-hidden">
+						<Image src={coverImg}
+							alt={title}
+							layout="fill"
+							priority={index === 0 || index === 1 || index === 2 ? true : false}
+							loading={index === 0 || index === 1 || index === 2 ? 'eager' : 'lazy'}
+							placeholder="blur"
+							blurDataURL={coverImg}
+						/>
+					</picture>
+
+					<div className="w-full pt-3 pb-4">
+						<h3 className="text-block font-normal my-0 pr-10">
+							{title}
+						</h3>
+						<div className="flex items-center mt-2 md:mt-3">
+							<div className="w-6 h-6 mr-2 rounded-full overflow-hidden">
 								<picture>
-									<img
-										src={avatarImg}
+									<Image src={avatarImg}
 										alt={owner}
-										width="32"
-										height="32"
-										className="w-full h-full object-cover"
+										width={32}
+										height={32}
+										priority={false}
 										loading="lazy"
 									/>
 								</picture>
 							</div>
-							<div className="flex items-center">
-								<span className="text-sm inline-block">
+							<div className="flex items-center justify-center">
+								<span className="text-15 font-light inline-block text-grey-700">
 									{owner}
 								</span>
-								<span className="mx-2 opacity-40 inline-block">
+								<span className="mx-1.5 text-15 font-light inline-block text-grey-700">
 									–
 								</span>
-								<span className="text-sm inline-block opacity-40">
+								<span className="text-15 font-light inline-block text-grey-700">
 									{publicationDate}
 								</span>
 							</div>
 						</div>
-					</div>
-					<div className="w-full md:w-1/3 overflow-hidden order-first md:order-none md:mb-0 rounded-md">
-						<picture>
-							<img
-								src={coverImg}
-								alt={title}
-								width="240"
-								height="240"
-								className="w-full h-full object-cover"
-								loading="lazy"
-							/>
-						</picture>
 					</div>
 				</a>
 			</Link>

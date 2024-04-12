@@ -1,7 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState, useEffect, useContext } from "react";
-import { Container, Row, Col, Form, Button, Spinner } from "react-bootstrap";
 import NavigationBar from "../../../components/global/NavigationBar";
 import UserContext from "../../../contexts/UserContext";
 import ContentService from "../../../services/contentService";
@@ -296,9 +295,12 @@ const StoryEditionForm = () => {
 		e.preventDefault();
 
 		if (state.formData.updatedImages || state.formData.updatedCover) {
+			const cover = state.formData.updatedCover ? state.formData.cover : false;
+			const bodyImages = state.formData.updatedImages ? state.formData.images : false;
+
 			const { uploadedCover, uploadedImages } = await handleFilesUpload(
-				state.formData.cover,
-				state.formData.images
+				cover,
+				bodyImages
 			);
 
 			if (uploadedCover && uploadedImages) {
@@ -346,21 +348,19 @@ const StoryEditionForm = () => {
 						</div>
 						<div className="flex flex-wrap items-center justify-center flex-1 px-12 py-2.5">
 							<button
-								className={`rounded-full px-6 py-2.5 border border-primary-500 text-xs mr-2 ${
-									activeTab === "main"
-										? "bg-primary-500 text-white"
-										: ""
-								}`}
+								className={`rounded-full px-6 py-2.5 border border-primary-500 text-xs mr-2 ${activeTab === "main"
+									? "bg-primary-500 text-white"
+									: ""
+									}`}
 								onClick={() => setActiveTab("main")}
 							>
 								Contingut principal
 							</button>
 							<button
-								className={`rounded-full px-6 py-2.5 border border-primary-500 text-xs ${
-									activeTab === "imatges"
-										? "bg-primary-500 text-white"
-										: ""
-								}`}
+								className={`rounded-full px-6 py-2.5 border border-primary-500 text-xs ${activeTab === "imatges"
+									? "bg-primary-500 text-white"
+									: ""
+									}`}
 								onClick={() => setActiveTab("imatges")}
 							>
 								Imatges

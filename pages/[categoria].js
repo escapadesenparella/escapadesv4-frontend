@@ -238,10 +238,8 @@ const CategoryPage = ({
 			<div id="contentList" className="category relative">
 				<NavigationBar />
 				<main>
-					<div className="container">
-						<div className="flex flex-wrap pt-6">
-							{/* Left column - Filters */}
-							<aside
+					{/* Top row - Filters 
+						<div
 								className={`fixed lg:static w-full lg:w-1/5 2xl:w-1/6 lg:pb-20 p-5 lg:p-0 z-50 lg:z-0 inset-0 h-screen lg:h-auto overflow-y-auto lg:overflow-visible bg-white lg:bg-transparent transition-all duration-300 ease-in-out ${state.isMobileFilterPanelDisplated
 									? "translate-x-0"
 									: "-translate-x-full lg:translate-x-0"
@@ -497,193 +495,207 @@ const CategoryPage = ({
 										</fieldset>
 									</div>
 								</div>
-							</aside>
-							{/* Main column - Listings */}
-							<div className="w-full lg:w-4/5 2xl:w-5/6">
-								<ul className="breadcrumb">
-									<li className="breadcrumb__item">
-										<a
-											href="/"
-											title="Inici"
-											className="breadcrumb__link"
-										>
-											Inici
-										</a>
-									</li>
-									<li className="breadcrumb__item">
-										<span className="breadcrumb__link active">
-											{categoryDetails.title}
-										</span>
-									</li>
-								</ul>
-								<ListingHeader
-									title={`<span class="capitalize">${!categoryDetails.isPlace
-										? "Escapades"
+							</div>
+					*/}
+					{/* Main column - Listings */}
+					<section className="lg:mt-6">
+						<div className="px-5">
+							<ul className="breadcrumb max-w-5xl ">
+								<li className="breadcrumb__item">
+									<a
+										href="/"
+										title="Inici"
+										className="breadcrumb__link"
+									>
+										Inici
+									</a>
+								</li>
+								<li className="breadcrumb__item">
+									<span className="breadcrumb__link active">
+										{categoryDetails.title}
+									</span>
+								</li>
+							</ul>
+							<ListingHeader
+								title={`<span class="capitalize">${!categoryDetails.isPlace
+									? "Escapades"
+									: categoryDetails.pluralName
+									}</span> <span class="text-secondary-500 lowercase">${categoryDetails.isPlace
+										? "amb encant"
 										: categoryDetails.pluralName
-										}</span> <span class="text-secondary-500 lowercase">${categoryDetails.isPlace
-											? "amb encant"
-											: categoryDetails.pluralName
-										}</span>`}
-									subtitle={`Descobreix <span class="inline-block relative after:absolute after:inset-x-0 after:bottom-px after:w-full after:h-0.5 after:bg-secondary-500">${allResults.length
-										} ${!categoryDetails.isPlace ? "escapades" : ""
-										} ${categoryDetails.pluralName} ${categoryDetails.isPlace ? "amb encant" : ""
-										}</span> a Catalunya. ${categoryDetails.seoTextHeader
-											? categoryDetails.seoTextHeader
-											: ""
-										}`}
-									sponsorData={sponsorBlock}
-								/>
-								<section className="pb-8 md:pb-16">
-									{state.results.length > 0 ? (
-										<>
-											<div className="flex flex-wrap items-start -mx-2">
+									}</span>`}
+								subtitle={`Descobreix <strong>${allResults.length
+									} ${!categoryDetails.isPlace ? "escapades" : ""
+									} ${categoryDetails.pluralName} ${categoryDetails.isPlace ? "amb encant" : ""
+									}</strong> a Catalunya. ${categoryDetails.seoTextHeader
+										? categoryDetails.seoTextHeader
+										: ""
+									}`}
+								sponsorData={sponsorBlock}
+							/>
+						</div>
+					</section>
 
-												{state.results.map((el, idx) => (
-													<PublicSquareBox
-														key={el._id}
-														type={el.type}
-														slug={el.slug}
-														id={el._id}
-														cover={el.cover}
-														title={el.title}
-														subtitle={el.subtitle}
-														rating={
-															el.activity_rating ||
-															el.place_rating
+					{/* Section listings */}
+					<section className="pt-8 md:pt-12">
+						<div className="px-5">
+							<div className="grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 gap-5">
+								{state.results.length > 0 ? (
+									<>
+										{state.results.map((el, idx) => (
+											<PublicSquareBox
+												key={el._id}
+												type={el.type}
+												slug={el.slug}
+												id={el._id}
+												cover={el.cover}
+												title={el.title}
+												subtitle={el.subtitle}
+												rating={
+													el.activity_rating ||
+													el.place_rating
+												}
+												placeType={el.placeType}
+												categoria={el.categories}
+												duration={el.duration}
+												website={el.website}
+												phone={el.phone}
+												isVerified={el.isVerified}
+												location={
+													el.activity_locality ||
+													el.place_locality
+												}
+												index={idx}
+											/>
+										))}
+
+										{state.currentPage !== state.numPages && checkAreFiltersActive() ? (
+											<div className="col-span-1 md:col-span-3 2xl:col-span-4 w-full mt-10 flex justify-center">
+												{!state.isFetching ? (
+													<button
+														className="button button__primary button__lg"
+														onClick={() =>
+															loadMoreResults(
+																categoryDetails.name,
+																state.currentPage
+															)
 														}
-														placeType={el.placeType}
-														categoria={el.categories}
-														duration={el.duration}
-														website={el.website}
-														phone={el.phone}
-														isVerified={el.isVerified}
-														location={
-															el.activity_locality ||
-															el.place_locality
-														}
-														index={idx}
-													/>
-												))}
-											</div>
-											{state.currentPage !== state.numPages && checkAreFiltersActive() ? (
-												<div className="w-full mt-10 flex justify-center">
-													{!state.isFetching ? (
-														<button
-															className="button button__primary button__lg"
-															onClick={() =>
-																loadMoreResults(
-																	categoryDetails.name,
-																	state.currentPage
-																)
-															}
+													>
+														<svg
+															xmlns="http://www.w3.org/2000/svg"
+															className="icon icon-tabler icon-tabler-plus mr-2"
+															width={20}
+															height={20}
+															viewBox="0 0 24 24"
+															strokeWidth="2"
+															stroke="currentColor"
+															fill="none"
+															strokeLinecap="round"
+															strokeLinejoin="round"
 														>
-															<svg
-																xmlns="http://www.w3.org/2000/svg"
-																className="icon icon-tabler icon-tabler-plus mr-2"
-																width={20}
-																height={20}
-																viewBox="0 0 24 24"
-																strokeWidth="2"
-																stroke="currentColor"
+															<path
+																stroke="none"
+																d="M0 0h24v24H0z"
 																fill="none"
-																strokeLinecap="round"
-																strokeLinejoin="round"
-															>
-																<path
-																	stroke="none"
-																	d="M0 0h24v24H0z"
-																	fill="none"
-																></path>
-																<line
-																	x1={12}
-																	y1={5}
-																	x2={12}
-																	y2={19}
-																></line>
-																<line
-																	x1={5}
-																	y1={12}
-																	x2={19}
-																	y2={12}
-																></line>
-															</svg>
-															Veure'n més
-														</button>
-													) : (
-														<button className="button button__primary button__lg">
-															<svg
-																role="status"
-																className="w-5 h-5 mr-2.5 text-primary-400 animate-spin dark:text-gray-600 fill-white"
-																viewBox="0 0 100 101"
-																fill="none"
-																xmlns="http://www.w3.org/2000/svg"
-															>
-																<path
-																	d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-																	fill="currentColor"
-																/>
-																<path
-																	d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-																	fill="currentFill"
-																/>
-															</svg>
-															Carregant
-														</button>
-													)}
-												</div>
-											) : (
-												""
-											)}
-											<div className="border-t border-primary-100 pt-10 mt-10">
-												<div
-													className="w-full max-w-prose mx-auto text-block text-primary-400"
-													dangerouslySetInnerHTML={{
-														__html: categoryDetails.seoText,
-													}}
-												></div>
+															></path>
+															<line
+																x1={12}
+																y1={5}
+																x2={12}
+																y2={19}
+															></line>
+															<line
+																x1={5}
+																y1={12}
+																x2={19}
+																y2={12}
+															></line>
+														</svg>
+														Veure'n més
+													</button>
+												) : (
+													<button className="button button__primary button__lg">
+														<svg
+															role="status"
+															className="w-5 h-5 mr-2.5 text-primary-400 animate-spin dark:text-gray-600 fill-white"
+															viewBox="0 0 100 101"
+															fill="none"
+															xmlns="http://www.w3.org/2000/svg"
+														>
+															<path
+																d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+																fill="currentColor"
+															/>
+															<path
+																d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+																fill="currentFill"
+															/>
+														</svg>
+														Carregant
+													</button>
+												)}
 											</div>
-										</>
-									) : (
+										) : (
+											""
+										)}
+									</>
+								) : (
+									<div className="col-span-1 md:col-span-3 2xl:col-span-4">
 										<p className="text-center mx-auto text-lg">
 											No s'han trobat escapades per aquesta
 											categoria.
 											<br /> Torna-ho a provar més endavant.
 										</p>
-									)}
-								</section>
-								<div className="fixed bottom-5 left-1/2 -translate-x-1/2">
-									<button
-										className="text-sm inline-flex flex-nowrap items-center bg-white shadow-xl px-4 py-3 !rounded-full z-10"
-										onClick={() => setStateModalMap(!stateModalMap)}
-									>
-										<svg
-											xmlns="http://www.w3.org/2000/svg"
-											className="icon icon-tabler icon-tabler-map-2 mr-2"
-											width="18"
-											height="18"
-											viewBox="0 0 24 24"
-											strokeWidth="1.5"
-											stroke="currentColor"
-											fill="none"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-										>
-											<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-											<line x1="18" y1="6" x2="18" y2="6.01" />
-											<path d="M18 13l-3.5 -5a4 4 0 1 1 7 0l-3.5 5" />
-											<polyline points="10.5 4.75 9 4 3 7 3 20 9 17 15 20 21 17 21 15" />
-											<line x1="9" y1="4" x2="9" y2="17" />
-											<line x1="15" y1="15" x2="15" y2="20" />
-										</svg>
-										Veure-les al mapa
-									</button>
-								</div>
+									</div>
+								)}
 							</div>
 						</div>
-					</div>
+					</section>
+
+					{/* Section text footer */}
+					<section>
+						<div className="px-5">
+							<div className="border-t border-primary-100 py-8 mt-8 md:py-12 md:mt-12 lg:py-20 lg:mt-20">
+								<div
+									className="w-full max-w-prose mx-auto text-block"
+									dangerouslySetInnerHTML={{
+										__html: categoryDetails.seoText,
+									}}
+								></div>
+							</div>
+						</div>
+					</section>
+
+					{/* <div className="fixed bottom-5 left-1/2 -translate-x-1/2">
+							<button
+								className="text-sm inline-flex flex-nowrap items-center bg-white shadow-xl px-4 py-3 !rounded-full z-10"
+								onClick={() => setStateModalMap(!stateModalMap)}
+							>
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									className="icon icon-tabler icon-tabler-map-2 mr-2"
+									width="18"
+									height="18"
+									viewBox="0 0 24 24"
+									strokeWidth="1.5"
+									stroke="currentColor"
+									fill="none"
+									strokeLinecap="round"
+									strokeLinejoin="round"
+								>
+									<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+									<line x1="18" y1="6" x2="18" y2="6.01" />
+									<path d="M18 13l-3.5 -5a4 4 0 1 1 7 0l-3.5 5" />
+									<polyline points="10.5 4.75 9 4 3 7 3 20 9 17 15 20 21 17 21 15" />
+									<line x1="9" y1="4" x2="9" y2="17" />
+									<line x1="15" y1="15" x2="15" y2="20" />
+								</svg>
+								Veure-les al mapa
+							</button>
+						</div> */}
+
 				</main>
 			</div>
-
 
 			<Footer />
 			{stateModalMap == true ? (
@@ -711,14 +723,15 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
 	const service = new ContentService();
 	const categoryDetails = await service.getCategoryDetails(params.categoria);
-	let { allResults, paginatedResults, totalItems, numPages } =
-		await service.getCategoryResults(categoryDetails.name);
 
 	if (!categoryDetails) {
 		return {
 			notFound: true,
 		};
 	}
+
+	let { allResults, paginatedResults, totalItems, numPages } =
+		await service.getCategoryResults(categoryDetails.name);
 
 	return {
 		props: {

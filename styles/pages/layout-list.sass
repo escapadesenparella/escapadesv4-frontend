@@ -6,23 +6,12 @@
             @apply text-xl relative flex items-center mt-4
             @screen md
                 @apply text-2xl
-        
+
         h2::before
             counter-increment: h2
             content: counter(h2)
-            position: relative
-            top: 0
-            left: 0
-            width: 30px
-            height: 30px
-            border: 1px solid
-            @apply mr-3 rounded-full flex items-center justify-center bg-white
-
-            @screen lg
-                position: absolute
-                left: -70px
-                width: 40px
-                height: 40px
+            font-size: 150px
+            @apply text-secondary-500 italic -top-24 -left-8 absolute
 
         img
             @apply rounded-md

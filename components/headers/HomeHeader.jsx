@@ -3,12 +3,15 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { getPicturesBySeason } from "../../utils/helpers";
 import Image from "next/image";
-import AdBanner from "../ads/AdBanner";
-import Script from "next/script";
 
 const Hero = () => {
 	const firstSlidePictures = {
-		spring: {},
+		spring: {
+			picture_webp: "/home-cover-primavera.webp",
+			picture_raw: "/home-cover-primavera.jpg",
+			picture_webp_mob: "/home-cover-primavera-m.webp",
+			picture_raw_mob: "/home-cover-primavera-m.jpg",
+		},
 		summer: {
 			picture_webp: "/home-cover-estiu.webp",
 			picture_raw: "/home-cover-estiu.jpg",
@@ -39,12 +42,8 @@ const Hero = () => {
 			picture_webp_mob: slideImage.picture_webp_mob,
 			picture_raw_mob: slideImage.picture_raw_mob,
 			picture_alt: "La vostra propera escapada en parella a Catalunya comença aquí",
-			tagline: "Escapadesenparella.cat",
-			title: `La vostra propera escapada
-			en parella a Catalunya
-			<span class="underlined-element">
-				comença aquí
-			</span>`,
+			title: `Experiències originals i allotjaments amb encant a Catalunya`,
+			description: `La vostra propera <strong>escapada en parella a Catalunya</strong> comença aquí. Et recomanem <strong>experiències originals</strong> i <strong>allotjaments amb encant</strong> per a una <strong>escapada en parella</strong> de somni. `,
 			button_link_1: "/activitats",
 			button_text_1: "Veure experiències",
 			button_title_1: "Veure experiències originals a Catalunya",
@@ -84,77 +83,87 @@ const Hero = () => {
 
 	return (
 		<>
-			<section id="hero" className="flex items-stretch">
-				<div
-					className={`glide ${slides.length > 1 ? "js-glide-homeCover" : null
-						} overflow-hidden`}
-				>
-					<div className="glide__track" data-glide-el="track">
-						<div className="glide__slides">
-							{slides.length > 0
-								? slides.map((slide) => {
-									return (
-										<div
-											key={slide.title}
-											className="glide__slide"
-										>
-											<div className="flex flex-wrap items-stretch justify-center overflow-hidden">
-												<div className="w-full md:w-1/2 bg-primary-800">
-													<picture className="block w-full h-full aspect-w-4 aspect-h-3 md:aspect-w-16 md:aspect-h-9 relative">
-														<Image src={slide.picture_raw} alt={slide.picture_alt} layout="fill" objectFit="cover" priority={true} loading="eager" />
-													</picture>
-												</div>
-												<div className="w-full md:w-1/2">
-													<div className="bg-primary-900 relative pt-8 pb-8 md:pt-24 md:pb-32 px-6 xl:px-20 h-full w-full overflow-hidden after:bg-geo after:opacity-50 after:w-full after:h-full after:absolute after:inset-0 flex items-center justify-center">
-														<div className="relative z-10 md:min-h-[150px] lg:min-h-[300px] flex items-center justify-center">
-															<div className="max-w-md ">
-																<span className="uppercase text-sm text-white tracking-wider">
-																	{
-																		slide.tagline
-																	}
-																</span>
-																<h1
-																	className="text-white mt-3 font-normal"
-																	dangerouslySetInnerHTML={{
-																		__html: slide.title,
-																	}}
-																></h1>
-																<div className="flex flex-wrap items-center md:-mx-2.5 md:-mb-2.5 mt-9 md:mt-12">
-																	<div className="w-full md:w-auto mb-2.5 md:mb-0 md:p-2.5">
-																		<Link
-																			href={
-																				slide.button_link_1
-																			}
-																		>
-																			<a
-																				title={
-																					slide.button_title_1
-																				}
-																				className="button border border-white text-white button__lg w-full md:w-auto justify-center text-sm hover:bg-white hover:text-primary-500 transition-all duration-300 ease-in-out"
-																			>
-																				{
-																					slide.button_text_1
-																				}
-																			</a>
-																		</Link>
+			<section id="hero" className="flex items-stretch lg:mt-6">
+				<div className="px-5 w-full">
+					<div
+						className={`glide ${slides.length > 1 ? "js-glide-homeCover" : null
+							} overflow-hidden rounded-2xl`}
+					>
+						<div className="glide__track" data-glide-el="track">
+							<div className="glide__slides">
+								{slides.length > 0
+									? slides.map((slide) => {
+										return (
+											<div
+												key={slide.title}
+												className="glide__slide"
+											>
+												<div className="flex flex-wrap items-stretch overflow-hidden">
+													<div className="relative h-full w-full md:w-1/2 inset-0 ">
+														<picture className="block w-full h-full aspect-[4/3] lg:aspect-[16/9] relative">
+															<Image src={slide.picture_raw} alt={slide.picture_alt} className="rounded-2xl" layout="fill" objectFit="cover" priority={true} loading="eager" />
+														</picture>
+													</div>
+													<div className="w-full lg:w-1/2 relative z-10">
+														<div className="relative h-full md:px-16 2xl:px-20 overflow-hidden flex items-center justify-center lg:justify-start">
+															<div className="relative z-10 md:min-h-[150px] lg:min-h-[300px] flex items-center justify-center rounded-2xl bg-white md:p-10 mt-6 md:mt-0">
+																<div className="max-w-[33rem]">
+																	<div className="breadcrumb">
+																		<div className="breadcrumb__item inline-flex items-center">
+																			<span className="breadcrumb__link inline-flex items-center active">
+																				<svg xmlns="http://www.w3.org/2000/svg" width={20} height={20} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" className="mr-1.5">
+																					<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+																					<path d="M16 18a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm0 -12a2 2 0 0 1 2 2a2 2 0 0 1 2 -2a2 2 0 0 1 -2 -2a2 2 0 0 1 -2 2zm-7 12a6 6 0 0 1 6 -6a6 6 0 0 1 -6 -6a6 6 0 0 1 -6 6a6 6 0 0 1 6 6z" />
+																				</svg> Escapadesenparella.cat
+																			</span>
+																		</div>
 																	</div>
-																	<div className="w-full md:w-auto md:p-2.5">
-																		<Link
-																			href={
-																				slide.button_link_2
-																			}
-																		>
-																			<a
-																				title={
-																					slide.button_title_2
+																	<h1
+																		className="mt-4 md:mt-7 mb-0 max-w-[29rem]"
+																		dangerouslySetInnerHTML={{
+																			__html: slide.title,
+																		}}
+																	></h1>
+																	<p className="mt-4 text-block font-light leading-normal" dangerouslySetInnerHTML={{
+																		__html: slide.description,
+																	}}></p>
+																	<div className="flex flex-wrap items-center gap-2.5 mt-4 md:mt-7 lg:mt-10">
+																		<div className="w-full lg:w-auto">
+																			<Link
+																				href={
+																					slide.button_link_1
 																				}
-																				className="button bg-white border border-white text-primary-500 button__lg w-full md:w-auto justify-center text-sm hover:bg-secondary-600 hover:border-secondary-600 hover:text-white transition-all duration-300 ease-in-out"
 																			>
-																				{
-																					slide.button_text_2
+																				<a
+																					title={
+																						slide.button_title_1
+																					}
+																					className="button button__primary button__lg w-full lg:w-auto text-center justify-center"
+																				>
+																					{
+																						slide.button_text_1
+																					}
+																				</a>
+																			</Link>
+																		</div>
+																		<div className="w-full lg:w-auto">
+																			<Link
+																				href={
+																					slide.button_link_2
 																				}
-																			</a>
-																		</Link>
+																			>
+																				<a
+																					title={
+																						slide.button_title_2
+																					}
+																					className="button button__ghost button__lg w-full lg:w-auto text-center justify-center"
+																				>
+																					{
+																						slide.button_text_2
+																					}
+																				</a>
+																			</Link>
+																		</div>
 																	</div>
 																</div>
 															</div>
@@ -162,30 +171,14 @@ const Hero = () => {
 													</div>
 												</div>
 											</div>
-										</div>
-									);
-								})
-								: null}
+										);
+									})
+									: null}
+							</div>
 						</div>
 					</div>
 				</div>
 			</section>
-
-			<section className="pt-12 lg:pt-16">
-				<div className="container">
-					<div className="flex justify-center w-full">
-						<AdBanner data-ad-slot="8648501664"
-							data-ad-format="auto"
-							data-full-width-responsive="true" customstyles="w-[450px] md:w-[768px] lg:w-[1024px]" />
-					</div>
-				</div>
-			</section>
-			<Script
-				async
-				src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT_ID}`}
-				strategy="lazyOnload"
-				crossOrigin="anonymous"
-			/>
 		</>
 	);
 };

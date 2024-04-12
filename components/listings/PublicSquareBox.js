@@ -136,13 +136,13 @@ const PublicSquareBox = ({
 	const coverImg = `${coverPath}w_400,h_300,c_fill/${imageId}`;
 
 	return (
-		<article className="w-full sm:w-1/2 lg:w-1/4 px-2.5 py-2 group">
+		<article className="w-full group">
 			<Link href={`/${linkPath}/${slug}`}>
 				<a
 					title={title}
-					className="flex flex-col justify-between h-full overflow-hidden relative"
+					className="flex flex-col justify-between overflow-hidden relative"
 				>
-					<div className="relative overflow-hidden rounded-md">
+					<div className="relative overflow-hidden rounded-2xl">
 
 						<picture className="block w-full h-full aspect-w-4 aspect-h-3">
 							<Image src={coverImg}
@@ -159,7 +159,7 @@ const PublicSquareBox = ({
 							/>
 						</picture>
 						{isVerified ? (
-							<span className="inline-flex items-center absolute top-2.5 right-2.5 text-primary-500 bg-white rounded py-1 px-2 shadow-md">
+							<span className="inline-flex items-center absolute top-2.5 right-2.5 text-primary-500 bg-white rounded-lg py-1 px-2 shadow-md">
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
 									className="mr-1 text-[#57A1FE]"
@@ -189,9 +189,9 @@ const PublicSquareBox = ({
 							</span>
 						) : null}
 					</div>
-					<div className="flex flex-col justify-between pt-2 pb-4 h-full">
-						<div className="">
-							<h3 className="text-16 my-0 font-medium line-clamp-1">
+					<div className="flex flex-col justify-between pt-3 pb-4 h-full">
+						<div>
+							<h3 className="text-block font-normal my-0 pr-10 line-clamp-1">
 								{title}
 							</h3>
 							<span className="mt-0.5 inline-flex flex-wrap text-15 font-light text-primary-400 line-clamp-1">

@@ -14,6 +14,9 @@ import BreadcrumbRichSnippet from "../../components/richsnippets/BreadcrumbRichS
 import { formatDateTimeToISODate } from "../../utils/helpers";
 import ListingDiscount from "../../components/listingpage/ListingDiscount";
 import ShareBarModal from "../../components/social/ShareBarModal";
+import { Splide, SplideTrack, SplideSlide } from '@splidejs/react-splide';
+import '@splidejs/react-splide/css/core';
+import Image from "next/image";
 
 const GetawayListing = ({
 	getawayDetails,
@@ -24,55 +27,56 @@ const GetawayListing = ({
 	const router = useRouter();
 
 	if (getawayDetails && categoryDetails) {
-		// ACTIVITY DETAILS
-		if (getawayDetails.type == "activity") {
-			useEffect(() => {
-				if (
-					router.pathname.includes("editar") ||
-					router.pathname.includes("nova-activitat") ||
-					router.pathname.includes("nou-allotjament") ||
-					router.pathname.includes("nova-historia")
-				) {
-					document.querySelector("body").classList.add("composer");
-				} else {
-					document.querySelector("body").classList.remove("composer");
-				}
-			}, [router]);
 
-			const urlToShare = `https://escapadesenparella.cat/${categoryDetails.slug}/${router.query.slug}`;
+		useEffect(() => {
+			if (
+				router.pathname.includes("editar") ||
+				router.pathname.includes("nova-activitat") ||
+				router.pathname.includes("nou-allotjament") ||
+				router.pathname.includes("nova-historia")
+			) {
+				document.querySelector("body").classList.add("composer");
+			} else {
+				document.querySelector("body").classList.remove("composer");
+			}
+		}, [router]);
 
-			const initialState = {
-				bookmarkDetails: {},
-				isBookmarked: false,
-				showBookmarkToast: false,
-				toastMessage: "",
-			};
-			const [state, setState] = useState(initialState);
-			const [queryId, setQueryId] = useState(null);
+		const urlToShare = `https://escapadesenparella.cat/${categoryDetails.slug}/${router.query.slug}`;
 
-			useEffect(() => {
-				if (router && router.query) {
-					setQueryId(router.query.slug);
-				}
-			}, [router]);
+		const initialState = {
+			bookmarkDetails: {},
+			isBookmarked: false,
+			showBookmarkToast: false,
+			toastMessage: "",
+		};
+		const [state, setState] = useState(initialState);
+		const [queryId, setQueryId] = useState(null);
 
-			const service = new ContentService();
+		useEffect(() => {
+			if (router && router.query) {
+				setQueryId(router.query.slug);
+			}
+		}, [router]);
 
-			const [modalVisibility, setModalVisibility] = useState(false);
-			const handleModalVisibility = () => setModalVisibility(true);
-			const hideModalVisibility = () => setModalVisibility(false);
+		const service = new ContentService();
 
-			useEffect(() => {
-				if (router.query.slug !== undefined) {
-					const fetchData = async () => {
-						let userBookmarks;
-						if (user && user !== "null") {
-							userBookmarks = await service.getUserAllBookmarks();
-						}
-						let bookmarkDetails, isBookmarked;
+		const [modalVisibility, setModalVisibility] = useState(false);
+		const handleModalVisibility = () => setModalVisibility(true);
+		const hideModalVisibility = () => setModalVisibility(false);
 
-						if (userBookmarks) {
-							userBookmarks.forEach((el) => {
+		// Fetch bookmarks
+		useEffect(() => {
+			if (router.query.slug !== undefined) {
+				const fetchData = async () => {
+					let userBookmarks;
+					if (user && user !== "null") {
+						userBookmarks = await service.getUserAllBookmarks();
+					}
+					let bookmarkDetails, isBookmarked;
+
+					if (userBookmarks) {
+						userBookmarks.forEach((el) => {
+							if (getawayDetails.type == "activity") {
 								if (
 									el.bookmarkActivityRef &&
 									el.bookmarkActivityRef._id ===
@@ -80,1208 +84,9 @@ const GetawayListing = ({
 								) {
 									return (bookmarkDetails = el);
 								}
-							});
-						}
-						if (bookmarkDetails) {
-							isBookmarked = !bookmarkDetails.isRemoved;
-						} else {
-							isBookmarked = false;
-						}
-						setState({
-							...state,
-							bookmarkDetails: bookmarkDetails,
-							isBookmarked: isBookmarked,
-						});
-					};
-					fetchData();
-				}
-				// eslint-disable-next-line react-hooks/exhaustive-deps
-			}, [queryId]);
-
-			const bookmarkListing = () => {
-				const listingId = getawayDetails._id;
-				const listingType = getawayDetails.type;
-				service.bookmark(listingId, listingType).then((res) => {
-					setState({
-						...state,
-						isBookmarked: !state.isBookmarked,
-						showBookmarkToast: true,
-						toastMessage: res.message || "Listing bookmarked!",
-					});
-				});
-			};
-
-			let bookmarkButton;
-
-			if (user && user !== "null") {
-				if (state.isBookmarked === false) {
-					bookmarkButton = (
-						<div className="px-4" onClick={() => bookmarkListing()}>
-							<button className="flex items-center">
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									className="icon icon-tabler icon-tabler-bookmark mr-1"
-									width="44"
-									height="44"
-									viewBox="0 0 24 24"
-									strokeWidth="1.5"
-									stroke="#0d1f44"
-									fill="none"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								>
-									<path stroke="none" d="M0 0h24v24H0z" />
-									<path d="M9 4h6a2 2 0 0 1 2 2v14l-5-3l-5 3v-14a2 2 0 0 1 2 -2" />
-								</svg>
-								<span>Desar</span>
-							</button>
-						</div>
-					);
-				} else {
-					bookmarkButton = (
-						<div
-							className="listing-bookmark-wrapper"
-							onClick={() => bookmarkListing()}
-						>
-							<button className="flex items-center">
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									className="icon icon-tabler icon-tabler-bookmark mr-1"
-									width="30"
-									height="30"
-									viewBox="0 0 24 24"
-									strokeWidth="1.5"
-									stroke="#0d1f44"
-									fill="none"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								>
-									<path stroke="none" d="M0 0h24v24H0z" />
-									<path
-										fill="#0d1f44"
-										d="M9 4h6a2 2 0 0 1 2 2v14l-5-3l-5 3v-14a2 2 0 0 1 2 -2"
-									/>
-								</svg>
-								<span>Esborrar</span>
-							</button>
-						</div>
-					);
-				}
-			} else {
-				bookmarkButton = (
-					<div
-						className="px-4"
-						onClick={() => handleModalVisibility()}
-					>
-						<button className="flex items-center">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								className="icon icon-tabler icon-tabler-bookmark mr-1"
-								width="30"
-								height="30"
-								viewBox="0 0 24 24"
-								strokeWidth="1.5"
-								stroke="currentColor"
-								fill="none"
-								strokeLinecap="round"
-								strokeLinejoin="round"
-							>
-								<path stroke="none" d="M0 0h24v24H0z" />
-								<path d="M9 4h6a2 2 0 0 1 2 2v14l-5-3l-5 3v-14a2 2 0 0 1 2 -2" />
-							</svg>
-							<span>Desar</span>
-						</button>
-					</div>
-				);
-			}
-
-			bookmarkButton = null; //Temporarily disable bookmark button
-
-			const toast = (
-				<Toast
-					onClose={() =>
-						setState({
-							...state,
-							showBookmarkToast: false,
-							toastMessage: "",
-						})
-					}
-					show={state.showBookmarkToast}
-					delay={5000}
-					autohide
-				>
-					<Toast.Header>
-						<img
-							src="../../logo-xs.svg"
-							className="rounded-md mr-2"
-							alt=""
-						/>
-						<strong className="mr-auto">Getaways.guru</strong>
-					</Toast.Header>
-					<Toast.Body>
-						{state.toastMessage} <br />{" "}
-						<Link href={"/bookmarks"}>See all bookmarks</Link>{" "}
-					</Toast.Body>
-				</Toast>
-			);
-
-			const center = {
-				lat: parseFloat(getawayDetails.activity_lat),
-				lng: parseFloat(getawayDetails.activity_lng),
-			};
-
-			const getMapOptions = (maps) => {
-				return {
-					disableDefaultUI: true,
-					styles: [
-						{
-							featureType: "poi",
-							elementType: "labels",
-							styles: [{ visibility: "on" }],
-						},
-					],
-				};
-			};
-
-			const renderMarker = (map, maps) => {
-				const position = {
-					lat: parseFloat(getawayDetails.activity_lat),
-					lng: parseFloat(getawayDetails.activity_lng),
-				};
-				new maps.Marker({ position: position, map, title: "Hello" });
-			};
-
-			let activityHours, hasOpeningHours;
-			if (getawayDetails.activity_opening_hours.length > 0) {
-				activityHours = getawayDetails.activity_opening_hours.map(
-					(hour, idx) => (
-						<li
-							key={idx}
-							className="capitalize text-15 text-primary-400"
-						>
-							{hour}
-						</li>
-					)
-				);
-
-				hasOpeningHours = (
-					<div className="my-5 py-5 border-t border-primary-100 border-b">
-						<ul className="list-none p-0 m-0">
-							<li className="flex flex-wrap items-center mb-3">
-								<span className="block w-full">
-									Horari d'atenció al públic{" "}
-								</span>
-								<span className="block w-full text-xs opacity-80 -mt-0.5">
-									Font: Google
-								</span>
-							</li>
-							{activityHours}
-						</ul>
-					</div>
-				);
-			}
-
-			const activityCategories = getawayDetails.categories.map(
-				(category, idx) => (
-					<li key={idx} className="activity-category">
-						Escapada {category}
-					</li>
-				)
-			);
-
-			const activitySeasons = getawayDetails.seasons.map(
-				(season, idx) => (
-					<li key={idx} className="activity-season">
-						{season}
-					</li>
-				)
-			);
-
-			const activityRegion = getawayDetails.region.map((region, idx) => (
-				<span key={idx}>{region}</span>
-			));
-
-			return (
-				<>
-					{/* Browser metas  */}
-					<GlobalMetas
-						title={getawayDetails.metaTitle}
-						description={getawayDetails.metaDescription}
-						url={`https://escapadesenparella.cat/${categoryDetails.slug}/${getawayDetails.slug}`}
-						image={getawayDetails.cover}
-						canonical={`https://escapadesenparella.cat/${categoryDetails.slug}/${getawayDetails.slug}`}
-					/>
-					{/* Rich snippets */}
-					<BreadcrumbRichSnippet
-						page1Title="Inici"
-						page1Url="https://escapadesenparella.cat"
-						page2Title={categoryDetails.title}
-						page2Url={`https://escapadesenparella.cat/${categoryDetails.slug}`}
-						page3Title={getawayDetails.metaTitle}
-						page3Url={`https://escapadesenparella.cat/${categoryDetails.slug}/${getawayDetails.slug}`}
-					/>
-					<div id="listingPage">
-						<NavigationBar
-							logo_url={
-								"https://res.cloudinary.com/juligoodie/image/upload/v1619634337/getaways-guru/static-files/logo-escapadesenparella-v4_hf0pr0.svg"
 							}
-							user={user}
-						/>
-						<main>
-							{state.showBookmarkToast ? toast : null}
-							<div className="py-5 bg-primary-500 text-white">
-								<div className="container">
-									<ul className="breadcrumb">
-										<li className="breadcrumb__item">
-											<a
-												href="/"
-												title="Inici"
-												className="breadcrumb__link"
-											>
-												Inici
-											</a>
-										</li>
-										<li className="breadcrumb__item">
-											<a
-												href={`/${categoryDetails.slug}`}
-												title={categoryDetails.title}
-												className="breadcrumb__link"
-											>
-												{categoryDetails.title}
-											</a>
-										</li>
-										<li className="breadcrumb__item">
-											<span className="breadcrumb__link active">
-												{getawayDetails.title}
-											</span>
-										</li>
-									</ul>
-								</div>
-							</div>
-							<article>
-								{/* Listing header */}
-								<section className="pt-2 md:pt-5 bg-primary-500">
-									<div className="container">
-										<div className="w-full flex flex-wrap items-center">
-											<div className="w-full md:w-1/2 text-white">
-												<div className="flex items-start">
-													<h1>
-														{getawayDetails.title}
-													</h1>
-												</div>
-												<ul className="flex flex-wrap items-center p-0 -mx-2 mt-2 mb-0 md:mb-5">
-													{getawayDetails.isVerified ? (
-														<li className="flex flex-wrap items-center px-2">
-															<svg
-																xmlns="http://www.w3.org/2000/svg"
-																className="mr-1.5 text-white"
-																width={18}
-																height={18}
-																viewBox="0 0 24 24"
-																strokeWidth={
-																	1.5
-																}
-																stroke="currentColor"
-																fill="none"
-																strokeLinecap="round"
-																strokeLinejoin="round"
-															>
-																<path
-																	stroke="none"
-																	d="M0 0h24v24H0z"
-																	fill="none"
-																></path>
-																<path
-																	d="M12.01 2.011a3.2 3.2 0 0 1 2.113 .797l.154 .145l.698 .698a1.2 1.2 0 0 0 .71 .341l.135 .008h1a3.2 3.2 0 0 1 3.195 3.018l.005 .182v1c0 .27 .092 .533 .258 .743l.09 .1l.697 .698a3.2 3.2 0 0 1 .147 4.382l-.145 .154l-.698 .698a1.2 1.2 0 0 0 -.341 .71l-.008 .135v1a3.2 3.2 0 0 1 -3.018 3.195l-.182 .005h-1a1.2 1.2 0 0 0 -.743 .258l-.1 .09l-.698 .697a3.2 3.2 0 0 1 -4.382 .147l-.154 -.145l-.698 -.698a1.2 1.2 0 0 0 -.71 -.341l-.135 -.008h-1a3.2 3.2 0 0 1 -3.195 -3.018l-.005 -.182v-1a1.2 1.2 0 0 0 -.258 -.743l-.09 -.1l-.697 -.698a3.2 3.2 0 0 1 -.147 -4.382l.145 -.154l.698 -.698a1.2 1.2 0 0 0 .341 -.71l.008 -.135v-1l.005 -.182a3.2 3.2 0 0 1 3.013 -3.013l.182 -.005h1a1.2 1.2 0 0 0 .743 -.258l.1 -.09l.698 -.697a3.2 3.2 0 0 1 2.269 -.944zm3.697 7.282a1 1 0 0 0 -1.414 0l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.32 1.497l2 2l.094 .083a1 1 0 0 0 1.32 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z"
-																	strokeWidth={
-																		0
-																	}
-																	fill="currentColor"
-																></path>
-															</svg>
-															<span className="text-white text-sm relative inline-block top-px">
-																Escapada
-																verificada
-															</span>
-														</li>
-													) : null}
-													<li className="flex flex-wrap items-center px-2">
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															className="mr-1.5 text-white"
-															width={16}
-															height={16}
-															viewBox="0 0 24 24"
-															strokeWidth={1.5}
-															stroke="currentCOlor"
-															fill="currentCOlor"
-															strokeLinecap="round"
-															strokeLinejoin="round"
-														>
-															<path
-																stroke="none"
-																d="M0 0h24v24H0z"
-																fill="none"
-															></path>
-															<path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path>
-														</svg>
-														<span className="text-white text-sm relative inline-block top-px">
-															{
-																getawayDetails.activity_rating
-															}
-														</span>
-													</li>
-													<li className="flex flex-wrap items-center px-2">
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															className="mr-1.5 text-white"
-															width={18}
-															height={18}
-															viewBox="0 0 24 24"
-															strokeWidth="2"
-															stroke="currentColor"
-															fill="none"
-															strokeLinecap="round"
-															strokeLinejoin="round"
-														>
-															<path
-																stroke="none"
-																d="M0 0h24v24H0z"
-																fill="none"
-															></path>
-															<polyline points="8 16 10 10 16 8 14 14 8 16"></polyline>
-															<circle
-																cx={12}
-																cy={12}
-																r={9}
-															></circle>
-														</svg>
-														<span className="text-white text-sm relative inline-block top-px">{`${getawayDetails.activity_locality ===
-															undefined
-															? ""
-															: getawayDetails.activity_locality
-															}${getawayDetails.activity_locality ===
-																undefined
-																? ""
-																: ","
-															} ${getawayDetails.activity_province ||
-															getawayDetails.activity_state
-															}, ${getawayDetails.activity_country
-															}`}</span>
-													</li>
-												</ul>
-											</div>
-											<div className="inline-block w-auto md:w-1/2 mt-3 md:mt-0">
-												<div className="flex flex-wrap justify-start md:justify-end items-center">
-													<ShareBarModal picture={getawayDetails.cover} title={getawayDetails.title} rating={getawayDetails.activity_rating} slug={urlToShare} locality={`${getawayDetails.activity_locality ===
-														undefined
-														? ""
-														: getawayDetails.activity_locality
-														}${getawayDetails.activity_locality ===
-															undefined
-															? ""
-															: ","
-														} ${getawayDetails.activity_province ||
-														getawayDetails.activity_state
-														}, ${getawayDetails.activity_country
-														}`} />
-												</div>
-											</div>
-											<div className="w-full mt-5 md:mt-2.5">
-												<div className="flex flex-wrap items-stretch rounded-sm overflow-hidden relative -m-0.5">
-													<button
-														data-fancybox-trigger="gallery"
-														className="inline-flex items-center absolute bottom-5 right-5 text-primary-500 bg-white rounded text-xs py-2 px-3 shadow-md"
-													>
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															className="icon icon-tabler icon-tabler-photo mr-1.5"
-															width={19}
-															height={19}
-															viewBox="0 0 24 24"
-															strokeWidth={1.5}
-															stroke="currentColor"
-															fill="none"
-															strokeLinecap="round"
-															strokeLinejoin="round"
-														>
-															<path
-																stroke="none"
-																d="M0 0h24v24H0z"
-																fill="none"
-															></path>
-															<line
-																x1={15}
-																y1={8}
-																x2="15.01"
-																y2={8}
-															></line>
-															<rect
-																x={4}
-																y={4}
-																width={16}
-																height={16}
-																rx={3}
-															></rect>
-															<path d="M4 15l4 -4a3 5 0 0 1 3 0l5 5"></path>
-															<path d="M14 14l1 -1a3 5 0 0 1 3 0l2 2"></path>
-														</svg>
-														Veure{" "}
-														{
-															getawayDetails
-																.images.length
-														}{" "}
-														imatges
-													</button>
-													<FancyboxUtil
-														options={{
-															infinite: true,
-														}}
-													>
-														<div
-															className="w-full lg:w-1/2 h-80 lg:h-50vh p-0.5"
-															data-fancybox="gallery"
-															data-src={
-																getawayDetails
-																	.images[0]
-															}
-														>
-															<picture>
-																<img
-																	src={
-																		getawayDetails
-																			.images[0]
-																	}
-																	className="w-full h-full object-cover"
-																/>
-															</picture>
-														</div>
-														<div className="w-full lg:w-1/2 flex flex-wrap h-40 lg:h-50vh">
-															{getawayDetails
-																.images[1] !==
-																undefined ? (
-																<div
-																	className="w-1/4 lg:w-1/2 flex-auto h-full lg:h-1/2 p-0.5"
-																	data-fancybox="gallery"
-																	data-src={
-																		getawayDetails
-																			.images[1]
-																	}
-																>
-																	<picture>
-																		<img
-																			src={
-																				getawayDetails
-																					.images[1]
-																			}
-																			className="w-full h-full object-cover"
-																		/>
-																	</picture>
-																</div>
-															) : null}
-															{getawayDetails
-																.images[2] !==
-																undefined ? (
-																<div
-																	className="w-1/4 lg:w-1/2 flex-auto h-full lg:h-1/2 p-0.5"
-																	data-fancybox="gallery"
-																	data-src={
-																		getawayDetails
-																			.images[2]
-																	}
-																>
-																	<picture>
-																		<img
-																			src={
-																				getawayDetails
-																					.images[2]
-																			}
-																			className="w-full h-full object-cover"
-																		/>
-																	</picture>
-																</div>
-															) : null}
-															{getawayDetails
-																.images[3] !==
-																undefined ? (
-																<div
-																	className="w-1/4 lg:w-1/2 flex-auto h-full lg:h-1/2 p-0.5"
-																	data-fancybox="gallery"
-																	data-src={
-																		getawayDetails
-																			.images[3]
-																	}
-																>
-																	<picture>
-																		<img
-																			src={
-																				getawayDetails
-																					.images[3]
-																			}
-																			className="w-full h-full object-cover"
-																		/>
-																	</picture>
-																</div>
-															) : null}
-															{getawayDetails
-																.images[4] !==
-																undefined ? (
-																<div
-																	className="w-1/4 lg:w-1/2 flex-auto h-full lg:h-1/2 p-0.5"
-																	data-fancybox="gallery"
-																	data-src={
-																		getawayDetails
-																			.images[4]
-																	}
-																>
-																	<picture>
-																		<img
-																			src={
-																				getawayDetails
-																					.images[4]
-																			}
-																			className="w-full h-full object-cover"
-																		/>
-																	</picture>
-																</div>
-															) : null}
-														</div>
-													</FancyboxUtil>
-												</div>
-											</div>
-										</div>
-									</div>
-								</section>
-								<section className="pt-5 pb-12 md:pt-10 md:pb-16">
-									<div className="container">
-										<div className="w-full lg:w-10/12 mx-auto">
-											<div className="flex flex-wrap items-start xl:-mx-6">
-												<div className="w-full xl:w-7/12 xl:px-6 mx-auto">
-													<div>
-														{getawayDetails.relatedStory ? (
-															<Link
-																href={`/histories/${getawayDetails.relatedStory.slug}`}
-															>
-																<a className="p-5 rounded-md border border-primary-50 w-full block group mb-6">
-																	<span className="inline-flex items-center">
-																		<svg
-																			xmlns="http://www.w3.org/2000/svg"
-																			className="mr-1.5 text-secondary-800"
-																			width={
-																				20
-																			}
-																			height={
-																				20
-																			}
-																			viewBox="0 0 24 24"
-																			strokeWidth={
-																				1.5
-																			}
-																			stroke="currentColor"
-																			fill="none"
-																			strokeLinecap="round"
-																			strokeLinejoin="round"
-																		>
-																			<path
-																				stroke="none"
-																				d="M0 0h24v24H0z"
-																				fill="none"
-																			></path>
-																			<path d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-11a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1m3 0v18"></path>
-																			<path d="M13 8l2 0"></path>
-																			<path d="M13 12l2 0"></path>
-																		</svg>
-																		<span className="text-sm relative top-0.5 flex-1">
-																			Llegeix
-																			la
-																			nostra
-																			escapada
-																			a{" "}
-																			<u>
-																				{
-																					getawayDetails.title
-																				}
-																			</u>
-																			:
-																		</span>
-																	</span>
-																	<span className="block text-lg group-hover:text-secondary-800 transition-all duration-300 ease-in-out">
-																		{
-																			getawayDetails
-																				.relatedStory
-																				.title
-																		}
-																	</span>
-																	<time className="text-sm text-primary-300 inline-block -mt-1.5">
-																		Publicada
-																		el{" "}
-																		{formatDateTimeToISODate(
-																			getawayDetails
-																				.relatedStory
-																				.createdAt
-																		)}
-																	</time>
-																</a>
-															</Link>
-														) : null}
-														<h2 className="w-full md:w-9/12">
-															{
-																getawayDetails.subtitle
-															}
-														</h2>
-														<div className="border-y border-primary-200 my-4 md:my-8 py-5">
-															<div className="flex flex-wrap items-start">
-																<div className="pb-6 flex items-start">
-																	<div className="w-6 h-6 flex items-center justify-center">
-																		<svg
-																			xmlns="http://www.w3.org/2000/svg"
-																			className="icon icon-tabler icon-tabler-tag mt-0.5 block"
-																			width={
-																				24
-																			}
-																			height={
-																				24
-																			}
-																			viewBox="0 0 24 24"
-																			strokeWidth={
-																				2
-																			}
-																			stroke="currentColor"
-																			fill="none"
-																			strokeLinecap="round"
-																			strokeLinejoin="round"
-																		>
-																			<path
-																				stroke="none"
-																				d="M0 0h24v24H0z"
-																				fill="none"
-																			></path>
-																			<circle
-																				cx="8.5"
-																				cy="8.5"
-																				r={
-																					1
-																				}
-																				fill="currentColor"
-																			></circle>
-																			<path d="M4 7v3.859c0 .537 .213 1.052 .593 1.432l8.116 8.116a2.025 2.025 0 0 0 2.864 0l4.834 -4.834a2.025 2.025 0 0 0 0 -2.864l-8.117 -8.116a2.025 2.025 0 0 0 -1.431 -.593h-3.859a3 3 0 0 0 -3 3z"></path>
-																		</svg>
-																	</div>
-																	<div className="pl-4">
-																		<p className="text-base text-primary-500 font-semibold mb-0.5">
-																			L'
-																			{getawayDetails.type ==
-																				"place"
-																				? "allotjament"
-																				: "activitat"}{" "}
-																			està
-																			catalogat
-																			com
-																			a{" "}
-																			{
-																				getawayDetails.placeType
-																			}
-																		</p>
-																		<p className="text-sm mb-0 opacity-70">
-																			Els
-																			allotjaments
-																			i
-																			les
-																			activitats
-																			recomanades
-																			a
-																			Escapadesenparella.cat
-																			estan
-																			pensades
-																			per
-																			a
-																			que
-																			les
-																			parelles
-																			gaudeixin
-																			al
-																			màxim
-																			de
-																			les
-																			seves
-																			escapades.
-																		</p>
-																	</div>
-																</div>
-																<div className="pb-6 flex items-start">
-																	<div className="w-6 h-6 flex items-center justify-center">
-																		<svg
-																			xmlns="http://www.w3.org/2000/svg"
-																			className="icon icon-tabler icon-tabler-map-pin mt-0.5 block"
-																			width={
-																				24
-																			}
-																			height={
-																				24
-																			}
-																			viewBox="0 0 24 24"
-																			strokeWidth={
-																				2
-																			}
-																			stroke="currentColor"
-																			fill="none"
-																			strokeLinecap="round"
-																			strokeLinejoin="round"
-																		>
-																			<path
-																				stroke="none"
-																				d="M0 0h24v24H0z"
-																				fill="none"
-																			></path>
-																			<circle
-																				cx={
-																					12
-																				}
-																				cy={
-																					11
-																				}
-																				r={
-																					3
-																				}
-																			></circle>
-																			<path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"></path>
-																		</svg>
-																	</div>
-																	<div className="pl-4">
-																		<p className="text-base text-primary-500 font-semibold mb-0.5">
-																			L'
-																			{getawayDetails.type ==
-																				"place"
-																				? "allotjament"
-																				: "activitat"}{" "}
-																			es
-																			troba
-																			a la
-																			zona
-																			de{" "}
-																			<span className="capitalize">
-																				{
-																					getawayDetails
-																						.region[0]
-																				}
-																			</span>
-																		</p>
-																		<p className="text-sm mb-0 opacity-70">
-																			L'adreça
-																			completa
-																			de
-																			l'allotjament
-																			és{" "}
-																			{
-																				getawayDetails.place_full_address
-																			}
-																			.
-																		</p>
-																	</div>
-																</div>
-																<div className="flex items-start">
-																	<div className="w-6 h-6 flex items-center justify-center">
-																		<svg
-																			xmlns="http://www.w3.org/2000/svg"
-																			className="icon icon-tabler icon-tabler-currency-euro mt-0.5"
-																			width={
-																				24
-																			}
-																			height={
-																				24
-																			}
-																			viewBox="0 0 24 24"
-																			strokeWidth={
-																				2
-																			}
-																			stroke="currentColor"
-																			fill="none"
-																			strokeLinecap="round"
-																			strokeLinejoin="round"
-																		>
-																			<path
-																				stroke="none"
-																				d="M0 0h24v24H0z"
-																				fill="none"
-																			></path>
-																			<path d="M17.2 7a6 7 0 1 0 0 10"></path>
-																			<path d="M13 10h-8m0 4h8"></path>
-																		</svg>
-																	</div>
-																	<div className="pl-4">
-																		<p className="text-base text-primary-500 font-semibold mb-0.5">
-																			L'
-																			{getawayDetails.type ==
-																				"place"
-																				? "allotjament"
-																				: "activitat"}{" "}
-																			té
-																			un
-																			preu
-																			aproximat
-																			de{" "}
-																			{
-																				getawayDetails.price
-																			}{" "}
-																			€ la
-																			nit
-																		</p>
-																		<p className="text-sm mb-0 opacity-70">
-																			Tot
-																			i
-																			que
-																			els
-																			preus
-																			poden
-																			variar
-																			i no
-																			estiguin
-																			constantment
-																			actualitzats,
-																			hem
-																			calculat
-																			que
-																			el
-																			preu
-																			mitjà
-																			per
-																			persona
-																			per
-																			aquest
-																			allotjament
-																			és
-																			de{" "}
-																			{
-																				getawayDetails.price
-																			}{" "}
-																			€ la
-																			nit.
-																		</p>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-													<div>
-														<h2 className="text-2xl font-body">
-															Sobre{" "}
-															{
-																getawayDetails.title
-															}
-														</h2>
-														<div
-															className="mt-4 listing__description"
-															dangerouslySetInnerHTML={{
-																__html: getawayDetails.description,
-															}}
-														></div>
-													</div>
-													<div className="pt-8">
-														<h2 className="text-2xl font-body mb-1">
-															Per què realitzar aquesta activitat?
-														</h2>
-														<p>Us compartim 5 raons per les quals creiem que hauríeu de fer aquesta escapada:</p>
-														<div
-															className="mt-4 listing__description"
-															dangerouslySetInnerHTML={{
-																__html: getawayDetails.reasons,
-															}}
-														></div>
-													</div>
-													<div className="pt-8">
-														<h2 className="text-2xl font-body">
-															Com arribar a{" "}
-															{
-																getawayDetails.title
-															}
-														</h2>
-														<div className="flex flex-wrap items-center mt-4">
-															<div className="w-5 h-5 mr-2">
-																<svg
-																	xmlns="http://www.w3.org/2000/svg"
-																	width="20"
-																	height="20"
-																	viewBox="0 0 24 24"
-																	strokeWidth="1.5"
-																	stroke="currentColor"
-																	fill="none"
-																	strokeLinecap="round"
-																	strokeLinejoin="round"
-																>
-																	<path
-																		stroke="none"
-																		d="M0 0h24v24H0z"
-																	/>
-																	<circle
-																		cx="12"
-																		cy="11"
-																		r="3"
-																	/>
-																	<path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 0 1 -2.827 0l-4.244-4.243a8 8 0 1 1 11.314 0z" />
-																</svg>
-															</div>
-															<span className="text-15 opacity-80">
-																{
-																	getawayDetails.activity_full_address
-																}
-															</span>
-														</div>
-														<div className="w-full mt-5 h-72 rounded-md overflow-hidden">
-															<GoogleMapReact
-																bootstrapURLKeys={{
-																	key: `${process.env.GOOGLE_API_KEY}`,
-																}}
-																defaultCenter={
-																	center
-																}
-																defaultZoom={11}
-																options={
-																	getMapOptions
-																}
-																yesIWantToUseGoogleMapApiInternals
-																onGoogleApiLoaded={({
-																	map,
-																	maps,
-																}) =>
-																	renderMarker(
-																		map,
-																		maps
-																	)
-																}
-															/>
-														</div>
-													</div>
-												</div>
-												<aside className="w-full xl:w-5/12 xl:px-6 relative xl:sticky xl:top-36">
-													<div className="p-5 rounded shadow-lg shadow-primary-50">
-														{getawayDetails.isVerified ? (
-															<div>
-																<div className="flex items-center">
-																	<svg
-																		xmlns="http://www.w3.org/2000/svg"
-																		className="mr-1 text-[#57A1FE]"
-																		width={
-																			22
-																		}
-																		height={
-																			22
-																		}
-																		viewBox="0 0 24 24"
-																		strokeWidth={
-																			1.5
-																		}
-																		stroke="currentColor"
-																		fill="none"
-																		strokeLinecap="round"
-																		strokeLinejoin="round"
-																	>
-																		<path
-																			stroke="none"
-																			d="M0 0h24v24H0z"
-																			fill="none"
-																		></path>
-																		<path
-																			d="M12.01 2.011a3.2 3.2 0 0 1 2.113 .797l.154 .145l.698 .698a1.2 1.2 0 0 0 .71 .341l.135 .008h1a3.2 3.2 0 0 1 3.195 3.018l.005 .182v1c0 .27 .092 .533 .258 .743l.09 .1l.697 .698a3.2 3.2 0 0 1 .147 4.382l-.145 .154l-.698 .698a1.2 1.2 0 0 0 -.341 .71l-.008 .135v1a3.2 3.2 0 0 1 -3.018 3.195l-.182 .005h-1a1.2 1.2 0 0 0 -.743 .258l-.1 .09l-.698 .697a3.2 3.2 0 0 1 -4.382 .147l-.154 -.145l-.698 -.698a1.2 1.2 0 0 0 -.71 -.341l-.135 -.008h-1a3.2 3.2 0 0 1 -3.195 -3.018l-.005 -.182v-1a1.2 1.2 0 0 0 -.258 -.743l-.09 -.1l-.697 -.698a3.2 3.2 0 0 1 -.147 -4.382l.145 -.154l.698 -.698a1.2 1.2 0 0 0 .341 -.71l.008 -.135v-1l.005 -.182a3.2 3.2 0 0 1 3.013 -3.013l.182 -.005h1a1.2 1.2 0 0 0 .743 -.258l.1 -.09l.698 -.697a3.2 3.2 0 0 1 2.269 -.944zm3.697 7.282a1 1 0 0 0 -1.414 0l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.32 1.497l2 2l.094 .083a1 1 0 0 0 1.32 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z"
-																			strokeWidth={
-																				0
-																			}
-																			fill="currentColor"
-																		></path>
-																	</svg>
-																	<span className="inline-block text-sm text-primary-400 font-normal">
-																		Escapada
-																		verificada
-																	</span>
-																</div>
-																{getawayDetails.review && getawayDetails.review !== 'false' ? (
-																	<div className="w-full bg-tertiary-50 rounded p-5 mt-3">
-																		<blockquote className="font-headings text-lg pr-8">
-																			{
-																				getawayDetails.review
-																			}
-																			<cite className="block mt-4 text-sm">
-																				<picture>
-																					<img
-																						src="/signatura-andrea-juli.svg"
-																						className="w-32 h-auto"
-																						alt="Andrea i Juli"
-																						loading="lazy"
-																					/>
-																				</picture>
-																			</cite>
-																		</blockquote>
-																	</div>
-																) : null}
-															</div>
-														) : null}
 
-														{hasOpeningHours}
-
-														<div className="fixed z-50 lg:z-auto bottom-0 inset-x-0 lg:bottom-auto lg:inset-x-auto lg:relative flex flex-row items-stretch bg-white py-3 px-4 lg:p-0 border-t border-primary-200 lg:border-none mt-5 -mx-1.5">
-															{getawayDetails?.phone !==
-																"-" &&
-																getawayDetails?.phone !==
-																"" ? (
-																<div className="flex-1 px-1.5">
-																	<a
-																		href={`tel:${getawayDetails.phone}`}
-																		className="button button__ghost button__med justify-center items-center w-full"
-																		title="Trucar"
-																		target="_blank"
-																		rel="nofollow noreferrer"
-																	>
-																		<svg
-																			xmlns="http://www.w3.org/2000/svg"
-																			className="mr-1.5"
-																			width={
-																				24
-																			}
-																			height={
-																				24
-																			}
-																			viewBox="0 0 24 24"
-																			strokeWidth={
-																				1.5
-																			}
-																			stroke="currentColor"
-																			fill="none"
-																			strokeLinecap="round"
-																			strokeLinejoin="round"
-																		>
-																			<path
-																				stroke="none"
-																				d="M0 0h24v24H0z"
-																				fill="none"
-																			></path>
-																			<path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2"></path>
-																		</svg>
-																		Trucar
-																	</a>
-																</div>
-															) : null}
-															{getawayDetails?.website !==
-																"-" &&
-																getawayDetails?.website !==
-																"" ? (
-																<div className="flex-1 px-1.5">
-																	<a
-																		href={`${getawayDetails.website}`}
-																		className="button button__primary button__med justify-center items-center w-full"
-																		title="Reservar"
-																		target="_blank"
-																		rel="nofollow noreferrer"
-																	>
-																		<svg
-																			xmlns="http://www.w3.org/2000/svg"
-																			className="mr-1.5"
-																			width={
-																				24
-																			}
-																			height={
-																				24
-																			}
-																			viewBox="0 0 24 24"
-																			strokeWidth={
-																				1.5
-																			}
-																			stroke="currentColor"
-																			fill="none"
-																			strokeLinecap="round"
-																			strokeLinejoin="round"
-																		>
-																			<path
-																				stroke="none"
-																				d="M0 0h24v24H0z"
-																				fill="none"
-																			></path>
-																			<path d="M19.5 7a9 9 0 0 0 -7.5 -4a8.991 8.991 0 0 0 -7.484 4"></path>
-																			<path d="M11.5 3a16.989 16.989 0 0 0 -1.826 4"></path>
-																			<path d="M12.5 3a16.989 16.989 0 0 1 1.828 4"></path>
-																			<path d="M19.5 17a9 9 0 0 1 -7.5 4a8.991 8.991 0 0 1 -7.484 -4"></path>
-																			<path d="M11.5 21a16.989 16.989 0 0 1 -1.826 -4"></path>
-																			<path d="M12.5 21a16.989 16.989 0 0 0 1.828 -4"></path>
-																			<path d="M2 10l1 4l1.5 -4l1.5 4l1 -4"></path>
-																			<path d="M17 10l1 4l1.5 -4l1.5 4l1 -4"></path>
-																			<path d="M9.5 10l1 4l1.5 -4l1.5 4l1 -4"></path>
-																		</svg>
-																		Reservar
-																	</a>
-																</div>
-															) : null}
-														</div>
-													</div>
-													{getawayDetails.discountCode ? <ListingDiscount discountCode={getawayDetails.discountCode} discountInfo={getawayDetails.discountInfo} /> : null}
-												</aside>
-											</div>
-										</div>
-									</div>
-								</section>
-							</article>
-						</main>
-						<Footer
-							logo_url={
-								"https://res.cloudinary.com/juligoodie/image/upload/v1619634337/getaways-guru/static-files/logo-escapadesenparella-v4_hf0pr0.svg"
-							}
-						/>
-						<SignUpModal
-							visibility={modalVisibility}
-							hideModal={hideModalVisibility}
-						/>
-					</div>
-				</>
-			);
-		}
-
-		// PLACE DETAILS
-		if (getawayDetails.type == "place") {
-			useEffect(() => {
-				if (
-					router.pathname.includes("editar") ||
-					router.pathname.includes("nova-activitat") ||
-					router.pathname.includes("nou-allotjament") ||
-					router.pathname.includes("nova-historia")
-				) {
-					document.querySelector("body").classList.add("composer");
-				} else {
-					document.querySelector("body").classList.remove("composer");
-				}
-			}, [router]);
-
-			const urlToShare = `https://escapadesenparella.cat/${categoryDetails.slug}/${router.query.slug}`;
-
-			const initialState = {
-				bookmarkDetails: {},
-				isBookmarked: false,
-				showBookmarkToast: false,
-				toastMessage: "",
-			};
-
-			const [state, setState] = useState(initialState);
-			const [queryId, setQueryId] = useState(null);
-
-			useEffect(() => {
-				if (router && router.query) {
-					setQueryId(router.query.slug);
-				}
-			}, [router]);
-
-			const service = new ContentService();
-
-			const [modalVisibility, setModalVisibility] = useState(false);
-			const handleModalVisibility = () => setModalVisibility(true);
-			const hideModalVisibility = () => setModalVisibility(false);
-
-			useEffect(() => {
-				if (router.query.slug !== undefined) {
-					const fetchData = async () => {
-						let userBookmarks;
-						if (user && user !== "null") {
-							userBookmarks = await service.getUserAllBookmarks();
-						}
-						let bookmarkDetails, isBookmarked;
-
-						if (userBookmarks) {
-							userBookmarks.forEach((el) => {
+							if (getawayDetails.type == "place") {
 								if (
 									el.bookmarkPlaceRef &&
 									el.bookmarkPlaceRef._id ===
@@ -1289,104 +94,53 @@ const GetawayListing = ({
 								) {
 									return (bookmarkDetails = el);
 								}
-							});
-						}
-						if (bookmarkDetails) {
-							isBookmarked = !bookmarkDetails.isRemoved;
-						} else {
-							isBookmarked = false;
-						}
-						setState({
-							bookmarkDetails: userBookmarks,
-							isBookmarked: isBookmarked,
+							}
 						});
-					};
-					fetchData();
-				}
-				// eslint-disable-next-line react-hooks/exhaustive-deps
-			}, [queryId]);
-
-			const bookmarkListing = () => {
-				const listingId = getawayDetails._id;
-				const listingType = getawayDetails.type;
-				service.bookmark(listingId, listingType).then((res) => {
+					}
+					if (bookmarkDetails) {
+						isBookmarked = !bookmarkDetails.isRemoved;
+					} else {
+						isBookmarked = false;
+					}
 					setState({
 						...state,
-						isBookmarked: !state.isBookmarked,
-						showBookmarkToast: true,
-						toastMessage: res.message || "Allotjament desat!",
+						bookmarkDetails: bookmarkDetails,
+						isBookmarked: isBookmarked,
 					});
+				};
+				fetchData();
+			}
+			// eslint-disable-next-line react-hooks/exhaustive-deps
+		}, [queryId]);
+
+		const bookmarkListing = () => {
+			const listingId = getawayDetails._id;
+			const listingType = getawayDetails.type;
+			service.bookmark(listingId, listingType).then((res) => {
+				setState({
+					...state,
+					isBookmarked: !state.isBookmarked,
+					showBookmarkToast: true,
+					toastMessage: res.message || "Listing bookmarked!",
 				});
-			};
+			});
+		};
 
-			let bookmarkButton;
+		let bookmarkButton;
 
-			if (user && user !== "null") {
-				if (state.isBookmarked === false) {
-					bookmarkButton = (
-						<div className="px-4" onClick={() => bookmarkListing()}>
-							<button className="flex items-center">
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									className="icon icon-tabler icon-tabler-bookmark mr-1"
-									width="30"
-									height="30"
-									viewBox="0 0 24 24"
-									strokeWidth="1.5"
-									stroke="#0d1f44"
-									fill="none"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								>
-									<path stroke="none" d="M0 0h24v24H0z" />
-									<path d="M9 4h6a2 2 0 0 1 2 2v14l-5-3l-5 3v-14a2 2 0 0 1 2 -2" />
-								</svg>
-								<span>Desar</span>
-							</button>
-						</div>
-					);
-				} else {
-					bookmarkButton = (
-						<div className="px-4" onClick={() => bookmarkListing()}>
-							<button className="flex items-center">
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									className="icon icon-tabler icon-tabler-bookmark mr-1"
-									width="30"
-									height="30"
-									viewBox="0 0 24 24"
-									strokeWidth="1.5"
-									stroke="#0d1f44"
-									fill="none"
-									strokeLinecap="round"
-									strokeLinejoin="round"
-								>
-									<path stroke="none" d="M0 0h24v24H0z" />
-									<path
-										fill="#0d1f44"
-										d="M9 4h6a2 2 0 0 1 2 2v14l-5-3l-5 3v-14a2 2 0 0 1 2 -2"
-									/>
-								</svg>
-								<span>Esborrar</span>
-							</button>
-						</div>
-					);
-				}
-			} else {
+		if (user && user !== "null") {
+			if (state.isBookmarked === false) {
 				bookmarkButton = (
-					<div
-						className="px-4"
-						onClick={() => handleModalVisibility()}
-					>
+					<div className="px-4" onClick={() => bookmarkListing()}>
 						<button className="flex items-center">
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								className="icon icon-tabler icon-tabler-bookmark mr-1"
-								width="30"
-								height="30"
+								width="44"
+								height="44"
 								viewBox="0 0 24 24"
 								strokeWidth="1.5"
-								stroke="currentColor"
+								stroke="#0d1f44"
 								fill="none"
 								strokeLinecap="round"
 								strokeLinejoin="round"
@@ -1398,210 +152,298 @@ const GetawayListing = ({
 						</button>
 					</div>
 				);
-			}
-
-			bookmarkButton = null; //Temporarily disable bookmark button
-
-			const toast = (
-				<Toast
-					onClose={() =>
-						setState({
-							...state,
-							showBookmarkToast: false,
-							toastMessage: "",
-						})
-					}
-					show={state.showBookmarkToast}
-					delay={5000}
-					autohide
-				>
-					<Toast.Header>
-						<img
-							src="../../logo-xs.svg"
-							className="rounded-md mr-2"
-							alt=""
-						/>
-						<strong className="mr-auto">Getaways.guru</strong>
-					</Toast.Header>
-					<Toast.Body>
-						{state.toastMessage} <br />{" "}
-						<Link href={"/bookmarks"}>See all bookmarks</Link>{" "}
-					</Toast.Body>
-				</Toast>
-			);
-
-			const center = {
-				lat: parseFloat(getawayDetails.place_lat),
-				lng: parseFloat(getawayDetails.place_lng),
-			};
-
-			const getMapOptions = (maps) => {
-				return {
-					disableDefaultUI: true,
-					styles: [
-						{
-							featureType: "poi",
-							elementType: "labels",
-							styles: [{ visibility: "on" }],
-						},
-					],
-				};
-			};
-
-			const renderMarker = (map, maps) => {
-				const position = {
-					lat: parseFloat(getawayDetails.place_lat),
-					lng: parseFloat(getawayDetails.place_lng),
-				};
-				new maps.Marker({ position: position, map, title: "Hello" });
-			};
-
-			let coversList,
-				placeHours,
-				hasOpeningHours,
-				placeCategories,
-				placeSeasons;
-
-			if (state.placeLoaded === true) {
-				coversList = getawayDetails.images.map((cover, idx) => (
-					<picture key={idx}>
-						<img
-							src={cover}
-							className="w-full h-fullobject-cover"
-						/>
-					</picture>
-				));
-
-				if (getawayDetails.place_opening_hours.length > 0) {
-					placeHours = getawayDetails.place_opening_hours.map(
-						(hour, idx) => (
-							<li
-								key={idx}
-								className="capitalize text-15 text-primary-400"
+			} else {
+				bookmarkButton = (
+					<div
+						className="listing-bookmark-wrapper"
+						onClick={() => bookmarkListing()}
+					>
+						<button className="flex items-center">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								className="icon icon-tabler icon-tabler-bookmark mr-1"
+								width="30"
+								height="30"
+								viewBox="0 0 24 24"
+								strokeWidth="1.5"
+								stroke="#0d1f44"
+								fill="none"
+								strokeLinecap="round"
+								strokeLinejoin="round"
 							>
-								{hour}
-							</li>
-						)
-					);
-					hasOpeningHours = (
-						<div className="my-5 py-5 border-t border-primary-100 border-b">
-							<ul className="list-none p-0 m-0">
-								<li className="flex flex-wrap items-center mb-3">
-									<span className="block w-full">
-										Horari d'atenció al públic{" "}
-									</span>
-									<span className="block w-full text-xs opacity-80 -mt-0.5">
-										Font: Google
-									</span>
-								</li>
-								{placeHours}
-							</ul>
-						</div>
-					);
-				}
-
-				placeCategories = getawayDetails.categories.map(
-					(category, idx) => (
-						<li
-							key={idx}
-							className="flex flex-wrap items-center px-1"
-						>
-							<span className="bg-primary-200 text-primary-400 rounded-md px-2 py-1 mr-1 capitalize text-sm">
-								Escapada {category}
-							</span>
-						</li>
-					)
+								<path stroke="none" d="M0 0h24v24H0z" />
+								<path
+									fill="#0d1f44"
+									d="M9 4h6a2 2 0 0 1 2 2v14l-5-3l-5 3v-14a2 2 0 0 1 2 -2"
+								/>
+							</svg>
+							<span>Esborrar</span>
+						</button>
+					</div>
 				);
-
-				placeSeasons = getawayDetails.seasons.map((season, idx) => (
-					<li key={idx} className="flex flex-wrap items-center px-1">
-						<span className="bg-primary-200 text-primary-400 rounded-md px-2 py-1 mr-1 capitalize text-sm">
-							{season}
-						</span>
-					</li>
-				));
 			}
+		} else {
+			bookmarkButton = (
+				<div
+					className="px-4"
+					onClick={() => handleModalVisibility()}
+				>
+					<button className="flex items-center">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							className="icon icon-tabler icon-tabler-bookmark mr-1"
+							width="30"
+							height="30"
+							viewBox="0 0 24 24"
+							strokeWidth="1.5"
+							stroke="currentColor"
+							fill="none"
+							strokeLinecap="round"
+							strokeLinejoin="round"
+						>
+							<path stroke="none" d="M0 0h24v24H0z" />
+							<path d="M9 4h6a2 2 0 0 1 2 2v14l-5-3l-5 3v-14a2 2 0 0 1 2 -2" />
+						</svg>
+						<span>Desar</span>
+					</button>
+				</div>
+			);
+		}
 
-			return (
-				<>
-					{/* Browser metas  */}
-					<GlobalMetas
-						title={getawayDetails.metaTitle}
-						description={getawayDetails.metaDescription}
-						url={`https://escapadesenparella.cat/${categoryDetails.slug}/${getawayDetails.slug}`}
-						image={getawayDetails.cover}
-						canonical={`https://escapadesenparella.cat/${categoryDetails.slug}/${getawayDetails.slug}`}
+		bookmarkButton = null; //Temporarily disable bookmark button
+
+		const toast = (
+			<Toast
+				onClose={() =>
+					setState({
+						...state,
+						showBookmarkToast: false,
+						toastMessage: "",
+					})
+				}
+				show={state.showBookmarkToast}
+				delay={5000}
+				autohide
+			>
+				<Toast.Header>
+					<img
+						src="../../logo-xs.svg"
+						className="rounded-md mr-2"
+						alt=""
 					/>
-					{/* Rich snippets */}
-					<BreadcrumbRichSnippet
-						page1Title="Inici"
-						page1Url="https://escapadesenparella.cat"
-						page2Title={categoryDetails.title}
-						page2Url={`https://escapadesenparella.cat/${categoryDetails.slug}`}
-						page3Title={getawayDetails.metaTitle}
-						page3Url={`https://escapadesenparella.cat/allotjaments/${getawayDetails.slug}`}
-					/>
-					<div id="listingPage">
-						<NavigationBar
-							logo_url={
-								"https://res.cloudinary.com/juligoodie/image/upload/v1619634337/getaways-guru/static-files/logo-escapadesenparella-v4_hf0pr0.svg"
-							}
-							user={user}
-						/>
-						<main>
-							{state.showBookmarkToast ? toast : null}
-							<div className="py-5 bg-primary-500 text-white">
-								<div className="container">
-									<ul className="breadcrumb">
-										<li className="breadcrumb__item">
-											<a
-												href="/"
-												title="Inici"
-												className="breadcrumb__link"
-											>
-												Inici
-											</a>
-										</li>
-										<li className="breadcrumb__item">
-											<a
-												href={`/${categoryDetails.slug}`}
-												title={categoryDetails.title}
-												className="breadcrumb__link"
-											>
-												{categoryDetails.title}
-											</a>
-										</li>
-										<li className="breadcrumb__item">
-											<span className="breadcrumb__link active">
-												{getawayDetails.title}
-											</span>
-										</li>
-									</ul>
-								</div>
-							</div>
-							<article>
-								{/* Listing header */}
-								<section className="pt-2 md:pt-5 bg-primary-500">
-									<div className="container">
-										<div className="w-full flex flex-wrap items-center">
-											<div className="w-full md:w-1/2 text-white">
-												<div className="flex items-start">
-													<h1>
+					<strong className="mr-auto">Getaways.guru</strong>
+				</Toast.Header>
+				<Toast.Body>
+					{state.toastMessage} <br />{" "}
+					<Link href={"/bookmarks"}>See all bookmarks</Link>{" "}
+				</Toast.Body>
+			</Toast>
+		);
+
+		const center = {
+			lat: parseFloat(getawayDetails?.activity_lat ? getawayDetails.activity_lat : getawayDetails.place_lat),
+			lng: parseFloat(getawayDetails?.activity_lng ? getawayDetails.activity_lng : getawayDetails.place_lng),
+		};
+
+		const getMapOptions = (maps) => {
+			return {
+				disableDefaultUI: true,
+				styles: [
+					{
+						featureType: "poi",
+						elementType: "labels",
+						styles: [{ visibility: "on" }],
+					},
+				],
+			};
+		};
+
+		const renderMarker = (map, maps) => {
+			const position = {
+				lat: parseFloat(getawayDetails?.activity_lat ? getawayDetails.activity_lat : getawayDetails.place_lat),
+				lng: parseFloat(getawayDetails?.activity_lng ? getawayDetails.activity_lng : getawayDetails.place_lng),
+			};
+			new maps.Marker({ position: position, map, title: "Hello" });
+		};
+
+		let workingHours = null;
+
+		if (getawayDetails.type == "activity") {
+			workingHours = getawayDetails.activity_opening_hours;
+		} else {
+			workingHours = getawayDetails.place_opening_hours;
+		};
+
+		const rating = getawayDetails.activity_rating ? getawayDetails.activity_rating : getawayDetails.place_rating;
+
+		const locality = getawayDetails?.activity_locality ? getawayDetails.activity_locality : getawayDetails?.place_locality ? getawayDetails.place_locality : null;
+		const province = getawayDetails?.activity_province ? getawayDetails.activity_province || getawayDetails?.activity_state : getawayDetails?.place_province || getawayDetails?.place_state;
+
+		let fullLocation = "";
+		if (locality) {
+			fullLocation += locality;
+		};
+		if (locality && province) {
+			fullLocation += ', ';
+		}
+		if (province) {
+			fullLocation += province;
+		};
+
+		const fullAddress = getawayDetails?.activity_full_address ? getawayDetails.activity_full_address : getawayDetails?.place_full_address ? getawayDetails.place_full_address : null;
+		const mainCategory = getawayDetails.type === 'activity' && getawayDetails?.categories ? getawayDetails.categories[0] : getawayDetails?.placeType ? getawayDetails.placeType : null;
+
+		const relatedStoryCoverPath = getawayDetails?.relatedStory?.cover.substring(0, 51);
+		const relatedStoryImageId = getawayDetails?.relatedStory?.cover?.substring(63);
+		const relatedStoryCoverImg = `${relatedStoryCoverPath}w_100,h_100,c_fill/${relatedStoryImageId}`;
+
+		const getawayCoverPath = getawayDetails?.cover.substring(0, 51);
+		const getawayCoverId = getawayDetails?.cover?.substring(63);
+		const getawayCoverImg = `${getawayCoverPath}w_805,h_605,c_fill/${getawayCoverId}`;
+
+		return (
+			<>
+				{/* Browser metas  */}
+				<GlobalMetas
+					title={getawayDetails.metaTitle}
+					description={getawayDetails.metaDescription}
+					url={`https://escapadesenparella.cat/${categoryDetails.slug}/${getawayDetails.slug}`}
+					image={getawayDetails.cover}
+					canonical={`https://escapadesenparella.cat/${categoryDetails.slug}/${getawayDetails.slug}`}
+				/>
+				{/* Rich snippets */}
+				<BreadcrumbRichSnippet
+					page1Title="Inici"
+					page1Url="https://escapadesenparella.cat"
+					page2Title={categoryDetails.title}
+					page2Url={`https://escapadesenparella.cat/${categoryDetails.slug}`}
+					page3Title={getawayDetails.metaTitle}
+					page3Url={`https://escapadesenparella.cat/${categoryDetails.slug}/${getawayDetails.slug}`}
+				/>
+				<div id="listingPage">
+					<NavigationBar user={user} />
+					<main>
+						{state.showBookmarkToast ? toast : null}
+
+						<article>
+							{/* Listing header */}
+							<section className="lg:mt-6">
+								<div className="px-5">
+									<div className="grid grid-cols-1 md:grid-cols-12">
+										<div className="col-start-1 col-span-11">
+											{/* Breadcrumbs */}
+											<ul className="breadcrumb max-w-5xl">
+												<li className="breadcrumb__item">
+													<a
+														href="/"
+														className="breadcrumb__link"
+													>
+														Inici
+													</a>
+												</li>
+												<li className="breadcrumb__item">
+													{getawayDetails.type === 'activity' ? <a
+														href={`/activitats`}
+														title={`Experiències`}
+														className="breadcrumb__link"
+													>
+														Experiències
+													</a> : <a
+														href={`/allotjaments`}
+														title={`Allotjaments`}
+														className="breadcrumb__link"
+													>
+														Allotjaments
+													</a>}
+
+												</li>
+												<li className="breadcrumb__item">
+													<a
+														href={`/${categoryDetails.slug}`}
+														title={categoryDetails.title}
+														className="breadcrumb__link"
+													>
+														{categoryDetails.title}
+													</a>
+												</li>
+											</ul>
+
+											<div className="relative pt-4 md:pt-8">
+												<div className="md:max-w-xl lg:max-w-5xl">
+													<h1 className="font-display max-w-2xl my-0">
 														{getawayDetails.title}
 													</h1>
-												</div>
-												<ul className="flex flex-wrap items-center p-0 -mx-2 mt-2 mb-0 md:mb-5">
-													{getawayDetails.isVerified ? (
+													<p className="lg:text-xl font-light mt-2.5 mb-3 md:mt-3 md:mb-4 max-w-2xl">
+														{
+															getawayDetails.subtitle
+														}
+													</p>
+													<ul className="flex flex-wrap items-center p-0 -mx-2 mb-0">
+														{getawayDetails.isVerified ? (
+															<li className="flex flex-wrap items-center px-2">
+																<svg
+																	xmlns="http://www.w3.org/2000/svg"
+																	className="mr-1.5 "
+																	width={18}
+																	height={18}
+																	viewBox="0 0 24 24"
+																	strokeWidth={
+																		1.5
+																	}
+																	stroke="currentColor"
+																	fill="none"
+																	strokeLinecap="round"
+																	strokeLinejoin="round"
+																>
+																	<path
+																		stroke="none"
+																		d="M0 0h24v24H0z"
+																		fill="none"
+																	></path>
+																	<path
+																		d="M12.01 2.011a3.2 3.2 0 0 1 2.113 .797l.154 .145l.698 .698a1.2 1.2 0 0 0 .71 .341l.135 .008h1a3.2 3.2 0 0 1 3.195 3.018l.005 .182v1c0 .27 .092 .533 .258 .743l.09 .1l.697 .698a3.2 3.2 0 0 1 .147 4.382l-.145 .154l-.698 .698a1.2 1.2 0 0 0 -.341 .71l-.008 .135v1a3.2 3.2 0 0 1 -3.018 3.195l-.182 .005h-1a1.2 1.2 0 0 0 -.743 .258l-.1 .09l-.698 .697a3.2 3.2 0 0 1 -4.382 .147l-.154 -.145l-.698 -.698a1.2 1.2 0 0 0 -.71 -.341l-.135 -.008h-1a3.2 3.2 0 0 1 -3.195 -3.018l-.005 -.182v-1a1.2 1.2 0 0 0 -.258 -.743l-.09 -.1l-.697 -.698a3.2 3.2 0 0 1 -.147 -4.382l.145 -.154l.698 -.698a1.2 1.2 0 0 0 .341 -.71l.008 -.135v-1l.005 -.182a3.2 3.2 0 0 1 3.013 -3.013l.182 -.005h1a1.2 1.2 0 0 0 .743 -.258l.1 -.09l.698 -.697a3.2 3.2 0 0 1 2.269 -.944zm3.697 7.282a1 1 0 0 0 -1.414 0l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.32 1.497l2 2l.094 .083a1 1 0 0 0 1.32 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z"
+																		strokeWidth={
+																			1.5
+																		}
+																		fill="none"
+																	></path>
+																</svg>
+																<span className="text-sm relative inline-block top-px">
+																	Escapada
+																	verificada
+																</span>
+															</li>
+														) : null}
 														<li className="flex flex-wrap items-center px-2">
 															<svg
 																xmlns="http://www.w3.org/2000/svg"
-																className="mr-1.5 text-white"
+																className="mr-1.5"
+																width={16}
+																height={16}
+																viewBox="0 0 24 24"
+																strokeWidth={1.5}
+																stroke="currentCOlor"
+																fill="none"
+																strokeLinecap="round"
+																strokeLinejoin="round"
+															>
+																<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+																<path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" />
+															</svg>
+															<span className="text-sm relative inline-block top-px">
+																{
+																	rating
+																}
+															</span>
+														</li>
+														<li className="flex flex-wrap items-center px-2">
+															<svg
+																xmlns="http://www.w3.org/2000/svg"
+																className="mr-1.5"
 																width={18}
 																height={18}
 																viewBox="0 0 24 24"
-																strokeWidth={
-																	1.5
-																}
+																strokeWidth={1.5}
 																stroke="currentColor"
 																fill="none"
 																strokeLinecap="round"
@@ -1612,726 +454,319 @@ const GetawayListing = ({
 																	d="M0 0h24v24H0z"
 																	fill="none"
 																></path>
-																<path
-																	d="M12.01 2.011a3.2 3.2 0 0 1 2.113 .797l.154 .145l.698 .698a1.2 1.2 0 0 0 .71 .341l.135 .008h1a3.2 3.2 0 0 1 3.195 3.018l.005 .182v1c0 .27 .092 .533 .258 .743l.09 .1l.697 .698a3.2 3.2 0 0 1 .147 4.382l-.145 .154l-.698 .698a1.2 1.2 0 0 0 -.341 .71l-.008 .135v1a3.2 3.2 0 0 1 -3.018 3.195l-.182 .005h-1a1.2 1.2 0 0 0 -.743 .258l-.1 .09l-.698 .697a3.2 3.2 0 0 1 -4.382 .147l-.154 -.145l-.698 -.698a1.2 1.2 0 0 0 -.71 -.341l-.135 -.008h-1a3.2 3.2 0 0 1 -3.195 -3.018l-.005 -.182v-1a1.2 1.2 0 0 0 -.258 -.743l-.09 -.1l-.697 -.698a3.2 3.2 0 0 1 -.147 -4.382l.145 -.154l.698 -.698a1.2 1.2 0 0 0 .341 -.71l.008 -.135v-1l.005 -.182a3.2 3.2 0 0 1 3.013 -3.013l.182 -.005h1a1.2 1.2 0 0 0 .743 -.258l.1 -.09l.698 -.697a3.2 3.2 0 0 1 2.269 -.944zm3.697 7.282a1 1 0 0 0 -1.414 0l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.32 1.497l2 2l.094 .083a1 1 0 0 0 1.32 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z"
-																	strokeWidth={
-																		0
-																	}
-																	fill="currentColor"
-																></path>
+																<polyline points="8 16 10 10 16 8 14 14 8 16"></polyline>
+																<circle
+																	cx={12}
+																	cy={12}
+																	r={9}
+																></circle>
 															</svg>
-															<span className="text-white text-sm relative inline-block top-px">
-																Escapada
-																verificada
-															</span>
+															<span className="text-sm relative inline-block top-px">{fullLocation}</span>
 														</li>
-													) : null}
-													<li className="flex flex-wrap items-center px-2">
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															className="mr-1.5 text-white"
-															width={16}
-															height={16}
-															viewBox="0 0 24 24"
-															strokeWidth={1.5}
-															stroke="currentCOlor"
-															fill="currentCOlor"
-															strokeLinecap="round"
-															strokeLinejoin="round"
-														>
-															<path
-																stroke="none"
-																d="M0 0h24v24H0z"
-																fill="none"
-															></path>
-															<path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path>
-														</svg>
-														<span className="text-white text-sm relative inline-block top-px">
-															{
-																getawayDetails.place_rating
-															}
-														</span>
-													</li>
-													<li className="flex flex-wrap items-center px-2">
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															className="mr-1.5 text-white"
-															width={18}
-															height={18}
-															viewBox="0 0 24 24"
-															strokeWidth="2"
-															stroke="currentColor"
-															fill="none"
-															strokeLinecap="round"
-															strokeLinejoin="round"
-														>
-															<path
-																stroke="none"
-																d="M0 0h24v24H0z"
-																fill="none"
-															></path>
-															<polyline points="8 16 10 10 16 8 14 14 8 16"></polyline>
-															<circle
-																cx={12}
-																cy={12}
-																r={9}
-															></circle>
-														</svg>
-														<span className="text-white text-sm relative inline-block top-px">{`${getawayDetails.place_locality ===
-															undefined
-															? ""
-															: getawayDetails.place_locality
-															}${getawayDetails.place_locality ===
-																undefined
-																? ""
-																: ","
-															} ${getawayDetails.place_province ||
-															getawayDetails.place_state
-															}, ${getawayDetails.place_country
-															}`}</span>
-													</li>
-												</ul>
-											</div>
-											<div className="inline-block w-auto md:w-1/2 mt-3 md:mt-0">
-												<div className="flex flex-wrap justify-start md:justify-end items-center">
-													<ShareBarModal picture={getawayDetails.cover} title={getawayDetails.title} rating={getawayDetails.place_rating} slug={urlToShare} locality={`${getawayDetails.place_locality ===
-														undefined
-														? ""
-														: getawayDetails.place_locality
-														}${getawayDetails.place_locality ===
-															undefined
-															? ""
-															: ","
-														} ${getawayDetails.place_province ||
-														getawayDetails.place_state
-														}, ${getawayDetails.place_country
-														}`} />
+														<li className="flex flex-wrap items-center px-2">
+															<ShareBarModal picture={getawayDetails.cover} title={getawayDetails.title} rating={rating} slug={urlToShare} locality={fullLocation} colorClass={'text-primary-500 text-sm'} />
+														</li>
+													</ul>
 												</div>
 											</div>
-											<div className="w-full mt-5 md:mt-2.5">
-												<div className="flex flex-wrap items-stretch rounded-sm overflow-hidden relative -m-0.5">
-													<button
-														data-fancybox-trigger="gallery"
-														className="inline-flex items-center absolute bottom-5 right-5 text-primary-500 bg-white rounded text-xs py-2 px-3 shadow-md"
-													>
-														<svg
-															xmlns="http://www.w3.org/2000/svg"
-															className="icon icon-tabler icon-tabler-photo mr-1.5"
-															width={19}
-															height={19}
-															viewBox="0 0 24 24"
-															strokeWidth={1.5}
-															stroke="currentColor"
-															fill="none"
-															strokeLinecap="round"
-															strokeLinejoin="round"
-														>
-															<path
-																stroke="none"
-																d="M0 0h24v24H0z"
-																fill="none"
-															></path>
-															<line
-																x1={15}
-																y1={8}
-																x2="15.01"
-																y2={8}
-															></line>
-															<rect
-																x={4}
-																y={4}
-																width={16}
-																height={16}
-																rx={3}
-															></rect>
-															<path d="M4 15l4 -4a3 5 0 0 1 3 0l5 5"></path>
-															<path d="M14 14l1 -1a3 5 0 0 1 3 0l2 2"></path>
-														</svg>
-														Veure{" "}
-														{
-															getawayDetails
-																.images.length
-														}{" "}
-														imatges
-													</button>
+										</div>
+									</div>
+								</div>
+							</section>
+							<section class="pt-8 md:pt-12">
+								{/* Slider images */}
+								<div className="px-5">
+									<div className="relative z-10 rounded-2xl">
+										<Splide options={{
+											type: "slide",
+											gap: "20px",
+											perMove: 1,
+											perPage: 3,
+											breakpoints: {
+												1024: {
+													perPage: 2
+												},
+												768: {
+													perPage: 1
+												}
+											},
+											arrows: true,
+											pagination: false,
+										}} hasTrack={false} aria-label="Carousel d'imatges">
+											<SplideTrack>
+												<SplideSlide>
 													<FancyboxUtil
 														options={{
 															infinite: true,
 														}}
 													>
 														<div
-															className="w-full lg:w-1/2 h-80 lg:h-50vh p-0.5"
+															className="w-full aspect-[4/3] overflow-hidden"
 															data-fancybox="gallery"
 															data-src={
-																getawayDetails.cover
+																getawayCoverImg
 															}
 														>
-															<picture>
-																<img
-																	src={
-																		getawayDetails.cover
-																	}
-																	className="w-full h-full object-cover"
+															<picture className="block w-full h-full">
+																<Image src={getawayCoverImg}
+																	alt={`${getawayDetails.title}`}
+																	className="rounded-2xl"
+																	layout="fill"
+																	priority={true}
+																	loading={"eager"}
+																	placeholder="blur"
+																	blurDataURL={getawayCoverImg}
 																/>
 															</picture>
 														</div>
-														<div className="w-full lg:w-1/2 flex flex-wrap h-40 lg:h-50vh">
-															{getawayDetails
-																.images[0] !==
-																undefined ? (
-																<div
-																	className="w-1/4 lg:w-1/2 flex-auto h-full lg:h-1/2 p-0.5"
-																	data-fancybox="gallery"
-																	data-src={
-																		getawayDetails
-																			.images[0]
-																	}
-																>
-																	<picture>
-																		<img
-																			src={
-																				getawayDetails
-																					.images[0]
-																			}
-																			className="w-full h-full object-cover"
-																		/>
-																	</picture>
-																</div>
-															) : null}
-															{getawayDetails
-																.images[1] !==
-																undefined ? (
-																<div
-																	className="w-1/4 lg:w-1/2 flex-auto h-full lg:h-1/2 p-0.5"
-																	data-fancybox="gallery"
-																	data-src={
-																		getawayDetails
-																			.images[1]
-																	}
-																>
-																	<picture>
-																		<img
-																			src={
-																				getawayDetails
-																					.images[1]
-																			}
-																			className="w-full h-full object-cover"
-																		/>
-																	</picture>
-																</div>
-															) : null}
-															{getawayDetails
-																.images[2] !==
-																undefined ? (
-																<div
-																	className="w-1/4 lg:w-1/2 flex-auto h-full lg:h-1/2 p-0.5"
-																	data-fancybox="gallery"
-																	data-src={
-																		getawayDetails
-																			.images[2]
-																	}
-																>
-																	<picture>
-																		<img
-																			src={
-																				getawayDetails
-																					.images[2]
-																			}
-																			className="w-full h-full object-cover"
-																		/>
-																	</picture>
-																</div>
-															) : null}
-															{getawayDetails
-																.images[3] !==
-																undefined ? (
-																<div
-																	className="w-1/4 lg:w-1/2 flex-auto h-full lg:h-1/2 p-0.5"
-																	data-fancybox="gallery"
-																	data-src={
-																		getawayDetails
-																			.images[3]
-																	}
-																>
-																	<picture>
-																		<img
-																			src={
-																				getawayDetails
-																					.images[3]
-																			}
-																			className="w-full h-full object-cover"
-																		/>
-																	</picture>
-																</div>
-															) : null}
-														</div>
 													</FancyboxUtil>
-												</div>
+												</SplideSlide>
+												{getawayDetails.images
+													? getawayDetails.images.map(
+														(el, idx) => {
+															const imageSrc = el?.substring(0, 51);
+															const imageId = el?.substring(63);
+															const imageModSrc = `${imageSrc}w_805,h_605,c_fill/${imageId}`;
+															return (
+																<SplideSlide key={idx}>
+																	<FancyboxUtil
+																		options={{
+																			infinite: true,
+																		}}
+																	>
+																		<div
+																			className="w-full aspect-[4/3] overflow-hidden"
+																			data-fancybox="gallery"
+																			data-src={
+																				el
+																			}
+																		>
+																			<picture className="block w-full h-full bg-primary-50">
+																				<Image src={imageModSrc}
+																					alt={`${getawayDetails.title} - ${idx}`}
+																					className=" rounded-2xl"
+																					layout="fill"
+																					priority={idx !== undefined && (idx == 0 || idx == 1)
+																						? true
+																						: false}
+																					loading={idx !== undefined && (idx == 0 || idx == 1)
+																						? "eager"
+																						: "lazy"}
+																					placeholder="blur"
+																					blurDataURL={imageModSrc}
+																				/>
+																			</picture>
+																		</div>
+																	</FancyboxUtil>
+																</SplideSlide>
+															);
+														}
+													)
+													: null}
+											</SplideTrack>
+											<div className="splide__arrows">
+												<button className="splide__arrow splide__arrow--prev w-12 h-12 bg-white rounded-full shadow flex items-center justify-center absolute top-1/2 -translate-y-1/2 left-7 md:left-9 lg:left-16 2xl:left-20">
+													<svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-chevron-left" width={24} height={24} viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+														<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+														<path d="M15 6l-6 6l6 6" />
+													</svg>
+												</button>
+												<button className="splide__arrow splide__arrow--next w-12 h-12 bg-white rounded-full shadow flex items-center justify-center absolute top-1/2 -translate-y-1/2 right-7 md:right-9 lg:right-16 2xl:right-20">
+													<svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-chevron-right" width={24} height={24} viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+														<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+														<path d="M9 6l6 6l-6 6" />
+													</svg>
+												</button>
 											</div>
-										</div>
+										</Splide>
 									</div>
-								</section>
-								<section className="pt-5 pb-12 md:pt-10 md:pb-16">
-									<div className="container">
-										<div className="w-full lg:w-10/12 mx-auto">
-											<div className="flex flex-wrap items-start xl:-mx-6">
-												<div className="w-full xl:w-7/12 xl:px-6 mx-auto order-2 lg:order-none">
-													<div>
-														{getawayDetails.relatedStory ? (
-															<Link
-																href={`/histories/${getawayDetails.relatedStory.slug}`}
-															>
-																<a className="p-5 rounded-md border border-primary-50 w-full block group mb-6">
-																	<span className="inline-flex items-center">
-																		<svg
-																			xmlns="http://www.w3.org/2000/svg"
-																			className="mr-1.5 text-secondary-800"
-																			width={
-																				20
-																			}
-																			height={
-																				20
-																			}
-																			viewBox="0 0 24 24"
-																			strokeWidth={
-																				1.5
-																			}
-																			stroke="currentColor"
-																			fill="none"
-																			strokeLinecap="round"
-																			strokeLinejoin="round"
-																		>
-																			<path
-																				stroke="none"
-																				d="M0 0h24v24H0z"
-																				fill="none"
-																			></path>
-																			<path d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-11a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1m3 0v18"></path>
-																			<path d="M13 8l2 0"></path>
-																			<path d="M13 12l2 0"></path>
-																		</svg>
-																		<span className="text-sm relative top-0.5 flex-1">
-																			Llegeix
-																			la
-																			nostra
-																			escapada
-																			a{" "}
-																			<u>
-																				{
-																					getawayDetails.title
-																				}
-																			</u>
-																			:
-																		</span>
-																	</span>
-																	<span className="block text-lg group-hover:text-secondary-800 transition-all duration-300 ease-in-out">
-																		{
-																			getawayDetails
-																				.relatedStory
-																				.title
-																		}
-																	</span>
-																	<time className="text-sm text-primary-300 inline-block -mt-1.5">
-																		Publicada
-																		el{" "}
-																		{formatDateTimeToISODate(
-																			getawayDetails
-																				.relatedStory
-																				.createdAt
-																		)}
-																	</time>
-																</a>
-															</Link>
-														) : null}
-														<h2 className="w-full md:w-9/12">
-															{
-																getawayDetails.subtitle
-															}
-														</h2>
-														<div className="border-y border-primary-200 my-4 md:my-8 py-5">
-															<div className="flex flex-wrap items-start">
-																<div className="pb-6 flex items-start">
-																	<div className="w-6 h-6 flex items-center justify-center">
-																		<svg
-																			xmlns="http://www.w3.org/2000/svg"
-																			className="icon icon-tabler icon-tabler-tag mt-0.5 block"
-																			width={
-																				24
-																			}
-																			height={
-																				24
-																			}
-																			viewBox="0 0 24 24"
-																			strokeWidth={
-																				2
-																			}
-																			stroke="currentColor"
-																			fill="none"
-																			strokeLinecap="round"
-																			strokeLinejoin="round"
-																		>
-																			<path
-																				stroke="none"
-																				d="M0 0h24v24H0z"
-																				fill="none"
-																			></path>
-																			<circle
-																				cx="8.5"
-																				cy="8.5"
-																				r={
-																					1
-																				}
-																				fill="currentColor"
-																			></circle>
-																			<path d="M4 7v3.859c0 .537 .213 1.052 .593 1.432l8.116 8.116a2.025 2.025 0 0 0 2.864 0l4.834 -4.834a2.025 2.025 0 0 0 0 -2.864l-8.117 -8.116a2.025 2.025 0 0 0 -1.431 -.593h-3.859a3 3 0 0 0 -3 3z"></path>
-																		</svg>
-																	</div>
-																	<div className="pl-4">
-																		<p className="text-base text-primary-500 font-semibold mb-0.5">
-																			L'
-																			{getawayDetails.type ==
-																				"place"
-																				? "allotjament"
-																				: "activitat"}{" "}
-																			està
-																			catalogat
-																			com
-																			a{" "}
-																			{
-																				getawayDetails.placeType
-																			}
-																		</p>
-																		<p className="text-sm mb-0 opacity-70">
-																			Els
-																			allotjaments
-																			i
-																			les
-																			activitats
-																			recomanades
-																			a
-																			Escapadesenparella.cat
-																			estan
-																			pensades
-																			per
-																			a
-																			que
-																			les
-																			parelles
-																			gaudeixin
-																			al
-																			màxim
-																			de
-																			les
-																			seves
-																			escapades.
-																		</p>
-																	</div>
-																</div>
-																<div className="pb-6 flex items-start">
-																	<div className="w-6 h-6 flex items-center justify-center">
-																		<svg
-																			xmlns="http://www.w3.org/2000/svg"
-																			className="icon icon-tabler icon-tabler-map-pin mt-0.5 block"
-																			width={
-																				24
-																			}
-																			height={
-																				24
-																			}
-																			viewBox="0 0 24 24"
-																			strokeWidth={
-																				2
-																			}
-																			stroke="currentColor"
-																			fill="none"
-																			strokeLinecap="round"
-																			strokeLinejoin="round"
-																		>
-																			<path
-																				stroke="none"
-																				d="M0 0h24v24H0z"
-																				fill="none"
-																			></path>
-																			<circle
-																				cx={
-																					12
-																				}
-																				cy={
-																					11
-																				}
-																				r={
-																					3
-																				}
-																			></circle>
-																			<path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"></path>
-																		</svg>
-																	</div>
-																	<div className="pl-4">
-																		<p className="text-base text-primary-500 font-semibold mb-0.5">
-																			L'
-																			{getawayDetails.type ==
-																				"place"
-																				? "allotjament"
-																				: "activitat"}{" "}
-																			es
-																			troba
-																			a la
-																			zona
-																			de{" "}
-																			<span className="capitalize">
-																				{
-																					getawayDetails
-																						.region[0]
-																				}
-																			</span>
-																		</p>
-																		<p className="text-sm mb-0 opacity-70">
-																			L'adreça
-																			completa
-																			de
-																			l'allotjament
-																			és{" "}
-																			{
-																				getawayDetails.place_full_address
-																			}
-																			.
-																		</p>
-																	</div>
-																</div>
-																<div className="flex items-start">
-																	<div className="w-6 h-6 flex items-center justify-center">
-																		<svg
-																			xmlns="http://www.w3.org/2000/svg"
-																			className="icon icon-tabler icon-tabler-currency-euro mt-0.5"
-																			width={
-																				24
-																			}
-																			height={
-																				24
-																			}
-																			viewBox="0 0 24 24"
-																			strokeWidth={
-																				2
-																			}
-																			stroke="currentColor"
-																			fill="none"
-																			strokeLinecap="round"
-																			strokeLinejoin="round"
-																		>
-																			<path
-																				stroke="none"
-																				d="M0 0h24v24H0z"
-																				fill="none"
-																			></path>
-																			<path d="M17.2 7a6 7 0 1 0 0 10"></path>
-																			<path d="M13 10h-8m0 4h8"></path>
-																		</svg>
-																	</div>
-																	<div className="pl-4">
-																		<p className="text-base text-primary-500 font-semibold mb-0.5">
-																			L'
-																			{getawayDetails.type ==
-																				"place"
-																				? "allotjament"
-																				: "activitat"}{" "}
-																			té
-																			un
-																			preu
-																			aproximat
-																			de{" "}
-																			{
-																				getawayDetails.price
-																			}{" "}
-																			€ la
-																			nit
-																		</p>
-																		<p className="text-sm mb-0 opacity-70">
-																			Tot
-																			i
-																			que
-																			els
-																			preus
-																			poden
-																			variar
-																			i no
-																			estiguin
-																			constantment
-																			actualitzats,
-																			hem
-																			calculat
-																			que
-																			el
-																			preu
-																			mitjà
-																			per
-																			persona
-																			per
-																			aquest
-																			allotjament
-																			és
-																			de{" "}
-																			{
-																				getawayDetails.price
-																			}{" "}
-																			€ la
-																			nit.
-																		</p>
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
+								</div>
 
-													<div>
-														<h2 className="text-2xl font-body">
-															Sobre{" "}
-															{
-																getawayDetails.title
-															}
-														</h2>
-														<div
-															className="mt-4 listing__description"
-															dangerouslySetInnerHTML={{
-																__html: getawayDetails.description,
-															}}
-														></div>
-													</div>
+								{/* Listing content */}
+								<div className="container py-8 md:py-12 lg:pb-20 listing__description">
 
-													{checkedCharacteristics.length >
-														0 ? (
-														<div className="pt-8">
-															<h2 className="text-2xl font-body">
-																Què trobareu a{" "}
-																{
-																	getawayDetails.title
-																}
-																?
-															</h2>
-															<div className="mt-7">
-																<ul className="p-0 -m-2.5 flex flex-wrap">
-																	{checkedCharacteristics.map(
-																		(
-																			el
-																		) => (
-																			<li
-																				key={
-																					el.name
-																				}
-																				className="flex flex-col items-center w-1/2 md:w-1/3 lg:w-1/4 p-2.5"
-																			>
-																				<span
-																					dangerouslySetInnerHTML={{
-																						__html: el.icon,
-																					}}
-																					className="inline-block [&>svg]:w-9 [&>svg]:h-9 mb-1.5"
-																				></span>
-																				<span className="inline-block text-sm text-center">
-																					{
-																						el.name
-																					}
-																				</span>
-																			</li>
-																		)
-																	)}
-																</ul>
-															</div>
+									<div className="grid grid-cols-1 md:grid-cols-12 gap-5 lg:gap-9">
+										<div className="w-full col-span-1 md:col-start-2 md:col-span-6">
+
+											{/* Verified review */}
+											{getawayDetails.isVerified ? (
+												<div className="max-w-[666px] pt-8">
+													{getawayDetails.review && getawayDetails.review !== 'false' ? (
+														<div className="w-full">
+															<blockquote className="font-headings text-lg lg:text-2xl font-light leading-normal md:leading-loose">
+																"{
+																	getawayDetails.review
+																}"
+																<cite className="block mt-4 text-sm">
+																	<picture>
+																		<img
+																			src="/signatura-andrea-juli.svg"
+																			className="w-32 md:w-36 h-auto"
+																			alt="Andrea i Juli"
+																			loading="lazy"
+																		/>
+																	</picture>
+																</cite>
+															</blockquote>
 														</div>
 													) : null}
 
-													<div className="pt-8">
-														<h2 className="text-2xl font-body">
-															Per què escapar-vos a {" "}
-															{
-																getawayDetails.title
-															}?
-														</h2>
-														<p>Us compartim 5 raons per les quals creiem que hauríeu de fer aquesta escapada:</p>
-														<div
-															className="mt-4 listing__description"
-															dangerouslySetInnerHTML={{
-																__html: getawayDetails.reasons,
-															}}
-														></div>
-													</div>
+												</div>
+											) : null}
 
-													<div className="pt-8">
-														<h2 className="text-2xl font-body">
-															Com arribar a{" "}
-															{
-																getawayDetails.title
-															}
-														</h2>
-														<div className="flex flex-wrap items-center mt-4">
-															<div className="w-5 h-5 mr-2">
-																<svg
-																	xmlns="http://www.w3.org/2000/svg"
-																	width="20"
-																	height="20"
-																	viewBox="0 0 24 24"
-																	strokeWidth="1.5"
-																	stroke="currentColor"
-																	fill="none"
-																	strokeLinecap="round"
-																	strokeLinejoin="round"
-																>
-																	<path
-																		stroke="none"
-																		d="M0 0h24v24H0z"
-																	/>
-																	<circle
-																		cx="12"
-																		cy="11"
-																		r="3"
-																	/>
-																	<path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 0 1 -2.827 0l-4.244-4.243a8 8 0 1 1 11.314 0z" />
-																</svg>
-															</div>
-															<span className="text-15 opacity-80">
-																{
-																	getawayDetails.place_full_address
-																}
-															</span>
-														</div>
-														<div className="w-full mt-5 h-72 rounded-md overflow-hidden">
-															<GoogleMapReact
-																bootstrapURLKeys={{
-																	key: `${process.env.GOOGLE_API_KEY}`,
-																}}
-																defaultCenter={
-																	center
-																}
-																defaultZoom={11}
-																options={
-																	getMapOptions
-																}
-																yesIWantToUseGoogleMapApiInternals
-																onGoogleApiLoaded={({
-																	map,
-																	maps,
-																}) =>
-																	renderMarker(
-																		map,
-																		maps
-																	)
-																}
-															/>
-														</div>
+											{/* About this listing */}
+											<div className={`max-w-[666px] ${getawayDetails.isVerified ? "border-t border-primary-50 pt-8 mt-8 md:pt-12 md:mt-12" : ""}`}>
+												<h2 className="font-body mt-0">
+													Sobre{" "}
+													{
+														getawayDetails.title
+													}
+												</h2>
+												<div
+													className="mt-4 listing__description"
+													dangerouslySetInnerHTML={{
+														__html: getawayDetails.description,
+													}}
+												></div>
+											</div>
+
+											{/* Section reasons / characteristics */}
+											{checkedCharacteristics?.length >
+												0 ? (
+												<div className="pt-8 mt-8 md:pt-12 md:mt-12 border-t border-primary-50 max-w-[666px]">
+													<h2 className="font-body">
+														Què trobareu a{" "}
+														{
+															getawayDetails.title
+														}
+														?
+													</h2>
+													<div className="mt-7">
+														<ul className="p-0 -m-2.5 flex flex-wrap">
+															{checkedCharacteristics.map(
+																(
+																	el
+																) => (
+																	<li
+																		key={
+																			el.name
+																		}
+																		className="flex flex-col items-center w-1/2 md:w-1/3 lg:w-1/4 p-2.5"
+																	>
+																		<span
+																			dangerouslySetInnerHTML={{
+																				__html: el.icon,
+																			}}
+																			className="inline-block [&>svg]:w-9 [&>svg]:h-9 mb-1.5"
+																		></span>
+																		<span className="inline-block text-sm text-center">
+																			{
+																				el.name
+																			}
+																		</span>
+																	</li>
+																)
+															)}
+														</ul>
 													</div>
 												</div>
-												<aside className="w-full xl:w-5/12 xl:px-6 relative xl:sticky xl:top-36 order-1 lg:order-none mb-6 lg:mb-0">
-													<div className="p-5 rounded shadow-lg shadow-primary-50">
-														{getawayDetails.isVerified ? (
-															<div>
-																<div className="flex items-center">
+											) : null}
+
+											{getawayDetails?.reasons && getawayDetails.reasons !== "" ? <div className="pt-8 mt-8 md:pt-12 md:mt-12 border-t border-primary-50 max-w-[666px]">
+												<h2 className="font-body mb-1">
+													Per què realitzar aquesta activitat?
+												</h2>
+												<p>Us compartim 5 raons per les quals creiem que hauríeu de fer aquesta escapada:</p>
+												<div
+													className="mt-4 listing__description"
+													dangerouslySetInnerHTML={{
+														__html: getawayDetails.reasons,
+													}}
+												></div>
+											</div>
+												: null}
+
+											{/* Section how to arrive */}
+											<div className="pt-8 mt-8 md:pt-12 md:mt-12 border-t border-primary-50 max-w-[666px]">
+												<h2 className="font-body">
+													Com arribar a{" "}
+													{
+														getawayDetails.title
+													}
+												</h2>
+												<div className="flex flex-wrap items-center mt-2.5">
+													<div className="w-5 h-5 mr-2">
+														<svg
+															xmlns="http://www.w3.org/2000/svg"
+															width="20"
+															height="20"
+															viewBox="0 0 24 24"
+															strokeWidth="1.5"
+															stroke="currentColor"
+															fill="none"
+															strokeLinecap="round"
+															strokeLinejoin="round"
+														>
+															<path
+																stroke="none"
+																d="M0 0h24v24H0z"
+															/>
+															<circle
+																cx="12"
+																cy="11"
+																r="3"
+															/>
+															<path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 0 1 -2.827 0l-4.244-4.243a8 8 0 1 1 11.314 0z" />
+														</svg>
+													</div>
+													<span className="text-15 opacity-80 flex-1">
+														{
+															fullAddress
+														}
+													</span>
+												</div>
+												<div className="w-full mt-7 aspect-[4/3] md:aspect-[16/9] rounded-xl overflow-hidden">
+													<GoogleMapReact
+														bootstrapURLKeys={{
+															key: `${process.env.GOOGLE_API_KEY}`,
+														}}
+														defaultCenter={
+															center
+														}
+														defaultZoom={11}
+														options={
+															getMapOptions
+														}
+														yesIWantToUseGoogleMapApiInternals
+														onGoogleApiLoaded={({
+															map,
+															maps,
+														}) =>
+															renderMarker(
+																map,
+																maps
+															)
+														}
+													/>
+												</div>
+											</div>
+										</div>
+
+										{/* Listing aside details + contact buttons */}
+										<aside className="w-full col-span-1 md:col-span-4 relative z-10">
+											<div className="relative xl:sticky xl:top-24 p-7 bg-white rounded-2xl border border-primary-50">
+												{getawayDetails.relatedStory ? (
+													<div className="mb-7 pb-7 border-primary-50 border-b">
+														<Link
+															href={`/histories/${getawayDetails.relatedStory.slug}`}
+														>
+															<a className="block">
+																<div class="inline-flex items-center">
 																	<svg
 																		xmlns="http://www.w3.org/2000/svg"
-																		className="mr-1 text-[#57A1FE]"
-																		width={
-																			22
-																		}
-																		height={
-																			22
-																		}
+																		className="mr-1.5"
+																		width={18}
+																		height={18}
 																		viewBox="0 0 24 24"
 																		strokeWidth={
 																			1.5
@@ -2351,151 +786,233 @@ const GetawayListing = ({
 																			strokeWidth={
 																				0
 																			}
-																			fill="currentColor"
+																			fill="#57A1FE"
 																		></path>
 																	</svg>
-																	<span className="inline-block text-sm text-primary-400 font-normal">
-																		Escapada verificada
+																	<span className="text-sm">
+																		T'expliquem la nostra escapada{" "}
+																		<u>
+																			{
+																				getawayDetails.title
+																			}
+																		</u>
+																		:
 																	</span>
 																</div>
-																{getawayDetails.review && getawayDetails.review !== 'false' ? (
-																	<div className="w-full bg-tertiary-50 rounded p-5 mt-3">
-																		<blockquote className="font-headings text-lg pr-8">
+
+																<div className="flex flex-wrap mt-3">
+																	<picture className="block relative w-16 h-16 overflow-hidden rounded-2xl">
+																		<Image src={relatedStoryCoverImg}
+																			alt={getawayDetails
+																				.relatedStory
+																				.title}
+																			fill="true"
+																			layout="fill"
+																			priority={false}
+																			loading={"lazy"}
+																			placeholder="blur"
+																			blurDataURL={relatedStoryCoverImg}
+																		/>
+																	</picture>
+																	<div className="pl-5 flex-1">
+																		<h3 className="block mt-0 mb-0.5">
 																			{
-																				getawayDetails.review
+																				getawayDetails
+																					.relatedStory
+																					.title
 																			}
-																			<cite className="block mt-4 text-sm">
-																				<picture>
-																					<img
-																						src="/signatura-andrea-juli.svg"
-																						className="w-32 h-auto"
-																						alt="Andrea i Juli"
-																						loading="lazy"
-																					/>
-																				</picture>
-																			</cite>
-																		</blockquote>
+																		</h3>
+																		<p className="text-sm font-light mb-4">{
+																			getawayDetails
+																				.relatedStory
+																				.subtitle
+																		}</p>
+																		<div className="flex items-center">
+																			<time className="text-sm block font-light">
+																				Publicada
+																				el{" "}
+																				{formatDateTimeToISODate(
+																					getawayDetails
+																						.relatedStory
+																						.createdAt
+																				)}
+																			</time>
+																			<span className="text-sm inline-block mx-1.5">|</span>
+																			<span className="text-sm inline-block">Llegir-ne més</span>
+																		</div>
 																	</div>
-																) : null}
-															</div>
-														) : null}
-
-														{hasOpeningHours}
-
-														<div className="fixed z-50 lg:z-auto bottom-0 inset-x-0 lg:bottom-auto lg:inset-x-auto lg:relative flex flex-row items-stretch bg-white py-3 px-4 lg:p-0 border-t border-primary-200 lg:border-none mt-5 -mx-1.5">
-															{getawayDetails?.phone !==
-																"-" &&
-																getawayDetails?.phone !==
-																"" ? (
-																<div className="flex-1 px-1.5">
-																	<a
-																		href={`tel:${getawayDetails.phone}`}
-																		className="button button__ghost button__med justify-center items-center w-full"
-																		title="Trucar"
-																		target="_blank"
-																		rel="nofollow noreferrer"
-																	>
-																		<svg
-																			xmlns="http://www.w3.org/2000/svg"
-																			className="mr-1.5"
-																			width={
-																				24
-																			}
-																			height={
-																				24
-																			}
-																			viewBox="0 0 24 24"
-																			strokeWidth={
-																				1.5
-																			}
-																			stroke="currentColor"
-																			fill="none"
-																			strokeLinecap="round"
-																			strokeLinejoin="round"
-																		>
-																			<path
-																				stroke="none"
-																				d="M0 0h24v24H0z"
-																				fill="none"
-																			></path>
-																			<path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2"></path>
-																		</svg>
-																		Trucar
-																	</a>
 																</div>
-															) : null}
-															{getawayDetails?.website !==
-																"-" &&
-																getawayDetails?.website !==
-																"" ? (
-																<div className="flex-1 px-1.5">
-																	<a
-																		href={`${getawayDetails.website}`}
-																		className="button button__primary button__med justify-center items-center w-full"
-																		title="Reservar"
-																		target="_blank"
-																		rel="nofollow noreferrer"
-																	>
-																		<svg
-																			xmlns="http://www.w3.org/2000/svg"
-																			className="mr-1.5"
-																			width={
-																				24
-																			}
-																			height={
-																				24
-																			}
-																			viewBox="0 0 24 24"
-																			strokeWidth={
-																				1.5
-																			}
-																			stroke="currentColor"
-																			fill="none"
-																			strokeLinecap="round"
-																			strokeLinejoin="round"
-																		>
-																			<path
-																				stroke="none"
-																				d="M0 0h24v24H0z"
-																				fill="none"
-																			></path>
-																			<path d="M19.5 7a9 9 0 0 0 -7.5 -4a8.991 8.991 0 0 0 -7.484 4"></path>
-																			<path d="M11.5 3a16.989 16.989 0 0 0 -1.826 4"></path>
-																			<path d="M12.5 3a16.989 16.989 0 0 1 1.828 4"></path>
-																			<path d="M19.5 17a9 9 0 0 1 -7.5 4a8.991 8.991 0 0 1 -7.484 -4"></path>
-																			<path d="M11.5 21a16.989 16.989 0 0 1 -1.826 -4"></path>
-																			<path d="M12.5 21a16.989 16.989 0 0 0 1.828 -4"></path>
-																			<path d="M2 10l1 4l1.5 -4l1.5 4l1 -4"></path>
-																			<path d="M17 10l1 4l1.5 -4l1.5 4l1 -4"></path>
-																			<path d="M9.5 10l1 4l1.5 -4l1.5 4l1 -4"></path>
-																		</svg>
-																		Reservar
-																	</a>
-																</div>
-															) : null}
-														</div>
+															</a>
+														</Link>
 													</div>
-													{getawayDetails.discountCode ? <ListingDiscount discountCode={getawayDetails.discountCode} discountInfo={getawayDetails.discountInfo} /> : null}
-												</aside>
+												) : null}
+
+												{/* Price and location grid */}
+												<div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-9">
+													<div className="">
+														<h3>Tipus d'
+															{getawayDetails.type ==
+																"place"
+																? "allotjament"
+																: "activitat"}{" "}
+														</h3>
+														<p className="font-light capitalize mb-0">
+
+															{
+																mainCategory
+															}
+														</p>
+													</div>
+													<div className="">
+														<h3>Direcció de l'{getawayDetails.type ==
+															"place"
+															? "allotjament"
+															: "activitat"}</h3>
+
+														<p className="font-light mb-0">
+															{
+																fullAddress
+															}
+														</p>
+													</div>
+													<div className="">
+
+														<h3>Preu aproximat *</h3>
+														<p className="font-light mb-0">
+
+															{
+																getawayDetails.price
+															}{" "}
+															€ {getawayDetails.type ==
+																"place"
+																? "/persona/nit"
+																: "/persona"}
+														</p>
+
+													</div>
+													<div>
+														<p className="text-sm font-light mb-0">
+															* Els preus
+															poden
+															variar
+															i pot ser que no
+															estiguin
+															constantment
+															actualitzats
+														</p>
+													</div>
+												</div>
+
+												{getawayDetails.discountCode ? <ListingDiscount discountCode={getawayDetails.discountCode} discountInfo={getawayDetails.discountInfo} /> : null}
+
+												<div className="fixed z-50 lg:z-auto bottom-0 inset-x-0 lg:bottom-auto lg:inset-x-auto lg:relative grid grid-cols-2 gap-x-5 items-stretch bg-white py-4 md:py-7 px-4 lg:px-0 border-t border-primary-50 mt-7">
+													{getawayDetails?.phone !==
+														"-" &&
+														getawayDetails?.phone !==
+														"" ? (
+														<div className="flex-1">
+															<a
+																href={`tel:${getawayDetails.phone}`}
+																className="button button__ghost button__med justify-center items-center w-full"
+																title="Trucar"
+																target="_blank"
+																rel="nofollow noreferrer"
+															>
+																<svg
+																	xmlns="http://www.w3.org/2000/svg"
+																	className="mr-1.5"
+																	width={
+																		24
+																	}
+																	height={
+																		24
+																	}
+																	viewBox="0 0 24 24"
+																	strokeWidth={
+																		1.5
+																	}
+																	stroke="currentColor"
+																	fill="none"
+																	strokeLinecap="round"
+																	strokeLinejoin="round"
+																>
+																	<path
+																		stroke="none"
+																		d="M0 0h24v24H0z"
+																		fill="none"
+																	></path>
+																	<path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2"></path>
+																</svg>
+																Trucar
+															</a>
+														</div>
+													) : null}
+													{getawayDetails?.website !==
+														"-" &&
+														getawayDetails?.website !==
+														"" ? (
+														<div className="flex-1">
+															<a
+																href={`${getawayDetails.website}`}
+																className="button button__primary button__med justify-center items-center w-full"
+																title="Reservar"
+																target="_blank"
+																rel="nofollow noreferrer"
+															>
+																<svg
+																	xmlns="http://www.w3.org/2000/svg"
+																	className="mr-1.5"
+																	width={
+																		24
+																	}
+																	height={
+																		24
+																	}
+																	viewBox="0 0 24 24"
+																	strokeWidth={
+																		1.5
+																	}
+																	stroke="currentColor"
+																	fill="none"
+																	strokeLinecap="round"
+																	strokeLinejoin="round"
+																>
+																	<path
+																		stroke="none"
+																		d="M0 0h24v24H0z"
+																		fill="none"
+																	></path>
+																	<path d="M19.5 7a9 9 0 0 0 -7.5 -4a8.991 8.991 0 0 0 -7.484 4"></path>
+																	<path d="M11.5 3a16.989 16.989 0 0 0 -1.826 4"></path>
+																	<path d="M12.5 3a16.989 16.989 0 0 1 1.828 4"></path>
+																	<path d="M19.5 17a9 9 0 0 1 -7.5 4a8.991 8.991 0 0 1 -7.484 -4"></path>
+																	<path d="M11.5 21a16.989 16.989 0 0 1 -1.826 -4"></path>
+																	<path d="M12.5 21a16.989 16.989 0 0 0 1.828 -4"></path>
+																	<path d="M2 10l1 4l1.5 -4l1.5 4l1 -4"></path>
+																	<path d="M17 10l1 4l1.5 -4l1.5 4l1 -4"></path>
+																	<path d="M9.5 10l1 4l1.5 -4l1.5 4l1 -4"></path>
+																</svg>
+																{getawayDetails.type === 'activity' ? 'Contactar' : 'Reservar'}
+															</a>
+														</div>
+													) : null}
+												</div>
 											</div>
-										</div>
+										</aside>
 									</div>
-								</section>
-							</article>
-						</main>
-						<Footer
-							logo_url={
-								"https://res.cloudinary.com/juligoodie/image/upload/v1619634337/getaways-guru/static-files/logo-escapadesenparella-v4_hf0pr0.svg"
-							}
-						/>
-						<SignUpModal
-							visibility={modalVisibility}
-							hideModal={hideModalVisibility}
-						/>
-					</div>
-				</>
-			);
-		}
+
+								</div>
+							</section>
+						</article>
+					</main >
+					<Footer />
+					<SignUpModal
+						visibility={modalVisibility}
+						hideModal={hideModalVisibility}
+					/>
+				</div >
+			</>
+		);
 	}
 };
 

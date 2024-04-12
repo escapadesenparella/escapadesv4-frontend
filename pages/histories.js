@@ -8,7 +8,6 @@ import StoriesHeader from "../components/headers/StoriesHeader";
 import StoryListing from "../components/listings/StoryListing";
 
 const StoriesList = ({
-	mostRecentStories,
 	featuredStories,
 	stories,
 	totalItems,
@@ -17,7 +16,6 @@ const StoriesList = ({
 	const initialResults = stories;
 
 	const initialState = {
-		mostRecentStories: [],
 		featuredStories: [],
 		results: [],
 		allResults: [],
@@ -35,7 +33,6 @@ const StoriesList = ({
 		if (initialResults) {
 			setState({
 				...state,
-				mostRecentStories: mostRecentStories,
 				featuredStories: featuredStories,
 				hasResults: initialResults.length > 0 ? true : false,
 				numResults: totalItems,
@@ -74,49 +71,17 @@ const StoriesList = ({
 			/>
 			<div className="stories">
 				<NavigationBar />
-				<StoriesHeader mostRecentStories={mostRecentStories} />
+				<StoriesHeader />
 				<main>
-					<section className="pt-6 md:pt-16">
-						<div className="container">
-							<h2>Històries destacades</h2>
-							<div className="flex flex-wrap items-stretch mt-6 -mx-2">
-								{featuredStories
-									? featuredStories.map((el, idx) => (
-											<article
-												key={idx}
-												className="w-full md:w-1/2 lg:w-1/4 px-2 mb-8"
-											>
-												<StoryListing
-													story={el}
-													index={idx}
-												/>
-											</article>
-									  ))
-									: null}
-							</div>
-						</div>
-					</section>
-					<section className="py-6 md:py-16">
-						<div className="container">
-							<div className="w-full">
-								<h2 className="mt-0 mb-1.5">
-									Més històries per a inspirar-vos
-								</h2>
-								<div className="text-primary-400 text-[15px] font-light">
-									Des del Delta de l'Ebre fins al Cap de
-									Creus, passant pels cims més alts dels
-									Pirineus.
-									<br /> Aquí t'expliquem les nostres
-									aventures en parella a Catalunya.
-								</div>
-							</div>
+
+					<section className="pt-6 md:pt-12">
+						<div className="px-5">
 							{initialResults.length > 0 ? (
 								<>
-									<div className="flex flex-wrap items-stretch mt-6 -mx-2">
+									<div className="grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 gap-5">
 										{initialResults.map((el, idx) => (
 											<article
 												key={idx}
-												className="w-full md:w-1/2 lg:w-1/4 px-2 mb-8"
 											>
 												<StoryListing
 													story={el}
@@ -127,7 +92,6 @@ const StoriesList = ({
 										{state.results.map((el, idx) => (
 											<article
 												key={idx}
-												className="w-full md:w-1/2 lg:w-1/4 px-2 mb-8"
 											>
 												<StoryListing
 													story={el}
@@ -137,7 +101,7 @@ const StoriesList = ({
 										))}
 									</div>
 									{state.currentPage !== state.numPages ? (
-										<div className="w-full mt-2 flex justify-center">
+										<div className="col-span-1 md:col-span-3 2xl:col-span-4 w-full mt-10 flex justify-center">
 											{!state.isFetching ? (
 												<button
 													className="button button__primary button__lg"
@@ -206,10 +170,12 @@ const StoriesList = ({
 									)}
 								</>
 							) : (
-								<p className="mt-4">
-									Encara no hi ha publicacions disponibles.
-									Sisplau, torna-ho a provar més endavant.
-								</p>
+								<div className="col-span-1 md:col-span-3 2xl:col-span-4">
+									<p className="text-center mx-auto text-lg">
+										Encara no hi ha publicacions disponibles.
+										Sisplau, torna-ho a provar més endavant.
+									</p>
+								</div>
 							)}
 						</div>
 					</section>
@@ -224,10 +190,8 @@ export async function getServerSideProps() {
 	const service = new ContentService();
 	const { totalItems, stories, featuredStories, numPages } =
 		await service.getStories();
-	const mostRecentStories = await service.getMostRecentStories();
 	return {
 		props: {
-			mostRecentStories,
 			totalItems,
 			stories,
 			featuredStories,

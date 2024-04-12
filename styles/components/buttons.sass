@@ -5,34 +5,33 @@ $white: #ffffff
 $dark-red: #fd8281
 $electric-blue: #002b8f
 $background-input: #f2f7f9
-		
+
 @layer components
 	.button
-		@apply rounded-md transition-all duration-300 ease-in-out inline-flex
+		@apply rounded-xl transition-all duration-300 ease-in-out inline-flex
 
 	.button__primary
-		@apply inline-flex items-center bg-primary-500 text-white
+		@apply inline-flex items-center bg-grey-700 text-white
 		&:hover
 			@apply bg-primary-800 text-white
 
 	.button__secondary
-		@apply inline-flex items-center bg-white text-primary-500 border border-primary-500
+		@apply inline-flex items-center bg-white text-grey-700 border border-grey-700
 		&:hover
-			@apply bg-primary-500 border-primary-500 text-white
+			@apply bg-grey-700 border-grey-700 text-white
 
 	.button__ghost
-		@apply inline-flex items-center bg-transparent text-primary-400 border border-primary-100  
+		@apply inline-flex items-center bg-transparent text-grey-700 border border-grey-700
 		&:hover
-			@apply bg-primary-500 border-primary-500 text-white
+			@apply bg-grey-700 border-grey-700 text-white
 		&.active
-			@apply bg-primary-500 text-white border-primary-500
-	
+			@apply bg-grey-700 text-white border-grey-700
 
 .button__lg
-	@apply py-4 px-5 text-sm
+	@apply py-4 px-6 text-sm
 
 .button__med
-	@apply py-2.5 px-3.5 text-sm
+	@apply py-3 px-6 text-sm
 
 .btn
 	border-radius: 8px !important

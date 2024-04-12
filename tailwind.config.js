@@ -24,8 +24,8 @@ const colors = {
 		900: "#d7654e",
 	},
 	tertiary: {
-		50: "#fef8f0", // block3
-		100: "#fff0d4",
+		50: "#FEF8F2", // block3
+		100: "#FFEEDB",
 		200: "#ffdea9",
 		300: "#ffbd5e",
 		400: "#fea239",
@@ -68,7 +68,7 @@ module.exports = {
 				13: "13px",
 				15: "15px",
 				16: "16px",
-				base: "17px",
+				base: "18px",
 			},
 			fontFamily: {
 				body: ["Circular", "sans-serif"],
@@ -93,5 +93,7 @@ module.exports = {
 	variants: {
 		extend: {},
 	},
-	plugins: [require("@tailwindcss/aspect-ratio")],
+	plugins: [
+		require("@tailwindcss/aspect-ratio"), require('tailwindcss-container-bleed')
+	],
 };

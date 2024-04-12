@@ -52,6 +52,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10.4.0",
-    "postcss": "^8.3.11"
+    "postcss": "^8.3.11",
+    "tailwindcss-container-bleed": "^0.1.3"
   }
 }

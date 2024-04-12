@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const StoryListing = ({ story, index }) => {
@@ -9,7 +10,7 @@ const StoryListing = ({ story, index }) => {
 
 	const coverPath = story.cover.substring(0, 51);
 	const imageId = story.cover.substring(63);
-	const coverImg = `${coverPath}w_507,h_285,c_fill/${imageId}`;
+	const coverImg = `${coverPath}w_457,h_343,c_fill/${imageId}`;
 
 	const avatarPath = story.owner.avatar.substring(0, 51);
 	const ownerImageId = story.owner.avatar.substring(63);
@@ -18,40 +19,41 @@ const StoryListing = ({ story, index }) => {
 	return (
 		<Link href={"histories/" + story.slug} key={index}>
 			<a className="relative">
-				<picture className="block aspect-w-16 aspect-h-9 relative after:block after:w-full after:h-full after:z-20 after:content after:absolute after:inset-0 after:bg-primary-500 after:bg-opacity-0 shadow-md shadow-primary-100 rounded-md overflow-hidden">
-					<img
-						src={coverImg}
-						alt=""
-						className="w-full h-full object-cover rounded-md overflow-hidden"
-						loading="eager"
+				<picture className="block aspect-w-4 aspect-h-3 relative after:block after:w-full after:h-full after:z-20 after:content after:absolute after:inset-0 after:bg-primary-500 after:bg-opacity-0 rounded-2xl overflow-hidden">
+					<Image src={coverImg}
+						alt={story.title}
+						layout="fill"
+						priority={index === 0 || index === 1 || index === 2 ? true : false}
+						loading={index === 0 || index === 1 || index === 2 ? 'eager' : 'lazy'}
+						placeholder="blur"
+						blurDataURL={coverImg}
 					/>
 				</picture>
 
-				<div className="w-full pl-4 pr-8 mx-auto mt-4">
-					<h2 className="text-primary-900 text-base my-0 leading-snug">
+				<div className="w-full pt-3 pb-4">
+					<h3 className="text-block font-normal my-0 pr-10">
 						{story.title}
-					</h2>
-					<div className="flex items-center mt-3">
+					</h3>
+					<div className="flex items-center mt-2 md:mt-3">
 						<div className="w-6 h-6 mr-2 rounded-full overflow-hidden">
 							<picture>
-								<img
-									src={avatarImg}
+								<Image src={avatarImg}
 									alt={story.owner.fullName}
-									width="24"
-									height="24"
-									className="w-full h-full object-cover"
+									width={32}
+									height={32}
+									priority={false}
 									loading="lazy"
 								/>
 							</picture>
 						</div>
 						<div className="flex items-center justify-center">
-							<span className="text-xs inline-block text-primary-900">
+							<span className="text-15 font-light inline-block text-grey-700">
 								{story.owner.fullName}
 							</span>
-							<span className="mx-1.5 text-primary-900 inline-block">
+							<span className="mx-1.5 font-light inline-block text-grey-700">
 								–
 							</span>
-							<span className="text-xs inline-block text-primary-900">
+							<span className="text-15 font-light inline-block text-grey-700">
 								{createdDate}
 							</span>
 						</div>
