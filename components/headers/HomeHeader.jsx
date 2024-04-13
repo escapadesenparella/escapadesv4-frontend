@@ -1,10 +1,22 @@
 import Glide from "@glidejs/glide";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getPicturesBySeason } from "../../utils/helpers";
 import Image from "next/image";
 
 const Hero = () => {
+	const [width, setWidth] = useState(0);
+
+	useEffect(() => {
+		const handleResize = () => setWidth(window.innerWidth);
+		window.addEventListener('resize', handleResize);
+		handleResize();
+
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		}
+	})
+
 	const firstSlidePictures = {
 		spring: {
 			picture_webp: "/home-cover-primavera.webp",
@@ -99,9 +111,9 @@ const Hero = () => {
 												className="glide__slide"
 											>
 												<div className="flex flex-wrap items-stretch overflow-hidden">
-													<div className="relative h-full w-full md:w-1/2 inset-0 ">
-														<picture className="block w-full h-full aspect-[4/3] lg:aspect-[16/9] relative">
-															<Image src={slide.picture_raw} alt={slide.picture_alt} className="rounded-2xl" layout="fill" objectFit="cover" priority={true} loading="eager" />
+													<div className="relative w-full h-full lg:h-auto lg:w-1/2 inset-0 ">
+														<picture className="block w-full h-full aspect-[4/3] md:aspect-[16/9]">
+															<Image src={width > 768 ? slide.picture_webp : slide.picture_webp_mob} alt={slide.picture_alt} className="rounded-2xl w-full h-full" layout="fill" objectFit="cover" priority={true} loading="eager" />
 														</picture>
 													</div>
 													<div className="w-full lg:w-1/2 relative z-10">

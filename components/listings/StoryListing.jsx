@@ -23,8 +23,8 @@ const StoryListing = ({ story, index }) => {
 					<Image src={coverImg}
 						alt={story.title}
 						layout="fill"
-						priority={index === 0 || index === 1 || index === 2 ? true : false}
-						loading={index === 0 || index === 1 || index === 2 ? 'eager' : 'lazy'}
+						priority={false}
+						loading={'lazy'}
 						placeholder="blur"
 						blurDataURL={coverImg}
 					/>

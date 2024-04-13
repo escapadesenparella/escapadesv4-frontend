@@ -124,7 +124,7 @@ const NavigationBar = ({ logo_url, path }) => {
 					<Link href={logoLink}>
 						<a title="Escapadesenparella.cat" className="block mr-8 xl:ml-8 xl:order-2 flex-1 lg:flex-none">
 							<picture>
-								<img src="/logo-escapades-en-parella.svg" alt="Logo Escapadesenparella.cat" className="w-36 md:w-44 h-auto" loading="eager" />
+								<img src="/logo-escapades-en-parella.svg" alt="Logo Escapadesenparella.cat" width={144} height={40} className="w-36 md:w-44 h-auto" loading="eager" />
 							</picture>
 						</a>
 					</Link>

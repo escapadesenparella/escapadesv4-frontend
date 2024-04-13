@@ -313,9 +313,9 @@ const HomePageResults = ({
 			</section>
 
 			{/* About us section */}
-			<section className="pt-8 md:pt-12 lg:pt-20">
+			<section className="py-8 md:pt-12 lg:pt-20">
 				<div className="px-5">
-					<div className="flex flex-wrap items-stretch overflow-hidden">
+					<div className="flex flex-wrap items-stretch overflow-hidden gap-9">
 						<div className="relative h-full w-full md:w-1/2 inset-0 order-2">
 							<picture className="block aspect-[4/3] lg:col-span-7">
 								<source
@@ -348,7 +348,7 @@ const HomePageResults = ({
 						</div>
 						<div className="w-full lg:w-1/2 relative z-10 order-1">
 							<div className="relative h-full md:px-16 2xl:px-20 overflow-hidden flex items-center justify-center lg:justify-start">
-								<div className="relative z-10 md:min-h-[150px] lg:min-h-[300px] flex items-center justify-center rounded-2xl bg-white md:p-10 mt-6 md:mt-0">
+								<div className="relative z-10 md:min-h-[150px] lg:min-h-[300px] flex items-center justify-center rounded-2xl bg-white md:p-10">
 									<div className="max-w-[33rem]">
 										<h2 className="mb-4">
 											{foundationYears} anys descobrint escapades en parella i racons amb encant a Catalunya
@@ -388,14 +388,6 @@ const HomePageResults = ({
 							</div>
 						</div>
 					</div>
-				</div>
-				<div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-center">
-					<div className="lg:col-span-5 self-center">
-						<div className="max-w-[31rem] mx-auto lg:ml-0">
-
-						</div>
-					</div>
-
 				</div>
 			</section >
 
