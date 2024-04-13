@@ -79,61 +79,63 @@ const Footer = () => {
 	return (
 		<>
 			<section className="py-8 md:py-12 lg:py-20 bg-tertiary-50">
-				<div className="max-w-5xl mx-auto">
-					<div className="relative flex flex-wrap items-center">
-						<picture className="block w-64 lg:w-80 h-auto mx-auto mix-blend-multiply">
-							<img src="https://res.cloudinary.com/juligoodie/image/upload/v1626446634/getaways-guru/static-files/email-confirmation_lu3qbp.jpg" width="256" height="170" className="w-full h-auto object-contain" alt="Subscriu-te a la nostra newsletter" loading="lazy" />
-						</picture>
-						<div className="w-full lg:w-auto flex flex-col lg:flew-row items-center lg:items-start gap-5 pt-6 md:pt-0 lg:pl-8 lg:flex-1 max-w-md lg:max-w-full mx-auto lg:mx-0">
-							<div className="w-full md:max-w-xs mx-auto md:ml-0 md:mr-auto mb-3">
-								<h2 className="mb-2 text-center md:text-left">Subscriu-te a la nostra newsletter</h2>
-								<p className="mb-0 font-light text-center md:text-left">Per rebre les últimes novetats i ofertes</p>
-							</div>
-							{!newsletterFormData.submitted ? <form className="form flex flex-wrap items-center flex-1" onSubmit={handleNewsletterFormSubmit}>
-								<fieldset className="form__group w-full md:w-auto">
-									<label htmlFor="name" className="form__label">Nom</label>
-									<input type="text" id="name" name="name" onChange={handleNewsletterFormChange} className="form__control bg-white" />
-								</fieldset>
-								<fieldset className="form__group w-full md:w-auto flex-1">
-									<label htmlFor="email" className="form__label">Correu electrònic</label>
-									<input type="email" id="email" name="email" onChange={handleNewsletterFormChange} className="form__control bg-white" />
-								</fieldset>
-								<fieldset className="form__group w-full lg:w-auto">
-									<button type="submit" className="button button__med button__primary justify-center md:mt-1 lg:mt-5">Subscriure'm</button>
-								</fieldset>
-								<span className="block w-full px-1.5 mt-1 form__text_info">Al fer clic a "Subscriure'm" confirmes haver llegit i estàs d'acord amb la <a href="/politica-privadesa" title="Política de Privacitat" className="text-primary-900 underline">Política de Privacitat.</a></span>
-								{newsletterFormData.error ? <span className="px-1.5 inline-flex items-center mt-2.5 text-sm text-red-500">
-									<svg xmlns="http://www.w3.org/2000/svg" className="mr-1.5" width={24} height={24} viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-										<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-										<path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
-										<path d="M12 8v4" />
-										<path d="M12 16h.01" />
-									</svg>
-									{newsletterFormData.serverMessage}</span>
-									: null}
-							</form> : <div className="flex items-center justify-center md:justify-start xl:justify-center flex-1 lg:flex-none xl:flex-1">
-								<div className="max-w-[280px] mx-auto md:mx-0 flex items-center">
-									<svg xmlns="http://www.w3.org/2000/svg" className="mr-2.5 text-green-500" width={32} height={32} viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-										<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-										<path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-										<path d="M9 12l2 2l4 -4" />
-									</svg>
-									<span className="inline-block flex-1">{newsletterFormData.serverMessage}</span>
+				<div className="px-5">
+					<div className="max-w-5xl mx-auto">
+						<div className="relative flex flex-wrap items-center">
+							<picture className="block w-64 lg:w-80 h-auto mx-auto mix-blend-multiply">
+								<img src="https://res.cloudinary.com/juligoodie/image/upload/v1626446634/getaways-guru/static-files/email-confirmation_lu3qbp.jpg" width="256" height="170" className="w-full h-auto object-contain" alt="Subscriu-te a la nostra newsletter" loading="lazy" />
+							</picture>
+							<div className="w-full lg:w-auto flex flex-col lg:flew-row items-center lg:items-start gap-5 pt-6 md:pt-0 lg:pl-8 lg:flex-1 max-w-md lg:max-w-full mx-auto lg:mx-0">
+								<div className="w-full md:max-w-xs mx-auto md:ml-0 md:mr-auto mb-3">
+									<h2 className="mb-2 text-center md:text-left">Subscriu-te a la nostra newsletter</h2>
+									<p className="mb-0 font-light text-center md:text-left">Per rebre les últimes novetats i ofertes</p>
 								</div>
-							</div>}
+								{!newsletterFormData.submitted ? <form className="form flex flex-wrap items-center flex-1" onSubmit={handleNewsletterFormSubmit}>
+									<fieldset className="form__group w-full md:w-auto">
+										<label htmlFor="name" className="form__label">Nom</label>
+										<input type="text" id="name" name="name" onChange={handleNewsletterFormChange} className="form__control bg-white" />
+									</fieldset>
+									<fieldset className="form__group w-full md:w-auto flex-1">
+										<label htmlFor="email" className="form__label">Correu electrònic</label>
+										<input type="email" id="email" name="email" onChange={handleNewsletterFormChange} className="form__control bg-white" />
+									</fieldset>
+									<fieldset className="form__group w-full lg:w-auto">
+										<button type="submit" className="button button__med button__primary justify-center md:mt-1 lg:mt-5">Subscriure'm</button>
+									</fieldset>
+									<span className="block w-full px-1.5 mt-1 form__text_info">Al fer clic a "Subscriure'm" confirmes haver llegit i estàs d'acord amb la <a href="/politica-privadesa" title="Política de Privacitat" className="text-primary-900 underline">Política de Privacitat.</a></span>
+									{newsletterFormData.error ? <span className="px-1.5 inline-flex items-center mt-2.5 text-sm text-red-500">
+										<svg xmlns="http://www.w3.org/2000/svg" className="mr-1.5" width={24} height={24} viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+											<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+											<path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+											<path d="M12 8v4" />
+											<path d="M12 16h.01" />
+										</svg>
+										{newsletterFormData.serverMessage}</span>
+										: null}
+								</form> : <div className="flex items-center justify-center md:justify-start xl:justify-center flex-1 lg:flex-none xl:flex-1">
+									<div className="max-w-[280px] mx-auto md:mx-0 flex items-center">
+										<svg xmlns="http://www.w3.org/2000/svg" className="mr-2.5 text-green-500" width={32} height={32} viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
+											<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+											<path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+											<path d="M9 12l2 2l4 -4" />
+										</svg>
+										<span className="inline-block flex-1">{newsletterFormData.serverMessage}</span>
+									</div>
+								</div>}
+							</div>
 						</div>
 					</div>
 				</div>
 			</section>
 			<footer id="footer" className="pt-12 pb-2 lg:pt-16">
-				<div className="container">
+				<div className="px-5">
 					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10">
 						<div className="w-full mb-6 lg:mb-0 md:pr-5">
 							<div className="flex flex-col flex-wrap items-start max-w-xs">
 								<picture>
-									<img src="/logo-escapades-en-parella.svg" alt="Logo Escapadesenparella.cat" className="w-32 h-auto" loading="lazy" />
+									<img src="/logo-escapades-en-parella.svg" alt="Logo Escapadesenparella.cat" width={144} height={40} className="w-36 md:w-44 lg:w- h-auto" loading="lazy" />
 								</picture>
-								<span className="text-sm block mt-3">
+								<span className="text-sm block mt-5">
 									Escapadesenparella.cat és el recomanador
 									especialista d'escapades en parella a
 									Catalunya. Segueix-nos per estar al dia de totes les novetats:
