@@ -315,9 +315,9 @@ const HomePageResults = ({
 			{/* About us section */}
 			<section className="py-8 md:pt-12 lg:pt-20">
 				<div className="px-5">
-					<div className="flex flex-wrap items-stretch overflow-hidden gap-9">
-						<div className="relative h-full w-full md:w-1/2 inset-0 order-2">
-							<picture className="block aspect-[4/3] lg:col-span-7">
+					<div className="grid grid-cols-1 lg:grid-cols-2 gap-9">
+						<div className="relative h-full col-span-1 order-2">
+							<picture className="block aspect-[4/3] lg:col-span-7 w-full h-full">
 								<source
 									srcSet="../../home-about-s-m.webp"
 									media="(max-width: 768px)"
@@ -341,12 +341,12 @@ const HomePageResults = ({
 									alt="Escapades en parella, i molt més"
 									width="400"
 									height="300"
-									className="w-full h-full object-cover rounded-xl"
+									className="w-full h-full object-cover rounded-2xl"
 									loading="lazy"
 								/>
 							</picture>
 						</div>
-						<div className="w-full lg:w-1/2 relative z-10 order-1">
+						<div className="col-span-1 order-1">
 							<div className="relative h-full md:px-16 2xl:px-20 overflow-hidden flex items-center justify-center lg:justify-start">
 								<div className="relative z-10 md:min-h-[150px] lg:min-h-[300px] flex items-center justify-center rounded-2xl bg-white md:p-10">
 									<div className="max-w-[33rem]">
