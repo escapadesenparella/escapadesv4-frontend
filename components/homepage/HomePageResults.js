@@ -77,6 +77,7 @@ const HomePageResults = ({
 											}`}</span>
 									);
 								}
+								const priority = idx === 0 ? 'eager' : 'lazy';
 								return (
 									<PublicSquareBox
 										key={el._id}
@@ -97,6 +98,7 @@ const HomePageResults = ({
 										isVerified={el.isVerified}
 										website={el.website}
 										phone={el.phone}
+										imgPriority={priority}
 									/>
 								);
 							})
@@ -276,10 +278,10 @@ const HomePageResults = ({
 																		}
 																		className="w-full h-full object-cover"
 																		width={
-																			48
+																			390
 																		}
 																		height={
-																			48
+																			525
 																		}
 																		loading="lazy"
 																	/>
@@ -392,7 +394,7 @@ const HomePageResults = ({
 			</section >
 
 			{/* Most recent stories */}
-			< section className="py-8 md:py-12 lg:py-20" >
+			<section className="py-8 md:py-12 lg:py-20" >
 				<div className="px-5">
 					<h2 className="my-0">
 						Noves "Històries en parella"

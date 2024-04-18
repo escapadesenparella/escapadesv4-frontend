@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 const PublicSquareBox = ({
@@ -14,6 +13,7 @@ const PublicSquareBox = ({
 	categoria,
 	rating,
 	index,
+	priority
 }) => {
 	let secureWebsite, buttonLight;
 	if (website && (website.includes("https://") || website.includes("http://"))) {
@@ -133,7 +133,7 @@ const PublicSquareBox = ({
 
 	const coverPath = cover?.substring(0, 51);
 	const imageId = cover?.substring(63);
-	const coverImg = `${coverPath}w_400,h_300,c_fill/${imageId}`;
+	const coverImg = `${coverPath}w_457,h_343,c_fill/${imageId}`;
 
 	return (
 		<article className="w-full group">
@@ -145,18 +145,7 @@ const PublicSquareBox = ({
 					<div className="relative overflow-hidden rounded-2xl">
 
 						<picture className="block w-full h-full aspect-w-4 aspect-h-3">
-							<Image src={coverImg}
-								alt={title}
-								layout="fill"
-								priority={index !== undefined && index == 0
-									? true
-									: false}
-								loading={index !== undefined && index == 0
-									? "eager"
-									: "lazy"}
-								placeholder="blur"
-								blurDataURL={coverImg}
-							/>
+							<img src={coverImg} alt={title} className={'w-full h-full object-cover'} width={457} height={343} loading={priority ? priority : 'lazy'} />
 						</picture>
 						{isVerified ? (
 							<span className="inline-flex items-center absolute top-2.5 right-2.5 text-primary-500 bg-white rounded-lg py-1 px-2 shadow-md">

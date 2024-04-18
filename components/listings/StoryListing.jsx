@@ -1,7 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 
-const StoryListing = ({ story, index }) => {
+const StoryListing = ({ story, index, priority }) => {
 	const createdDate = new Date(story.createdAt).toLocaleDateString("ca-es", {
 		year: "numeric",
 		month: "short",
@@ -20,14 +19,7 @@ const StoryListing = ({ story, index }) => {
 		<Link href={"histories/" + story.slug} key={index}>
 			<a className="relative">
 				<picture className="block aspect-w-4 aspect-h-3 relative after:block after:w-full after:h-full after:z-20 after:content after:absolute after:inset-0 after:bg-primary-500 after:bg-opacity-0 rounded-2xl overflow-hidden">
-					<Image src={coverImg}
-						alt={story.title}
-						layout="fill"
-						priority={false}
-						loading={'lazy'}
-						placeholder="blur"
-						blurDataURL={coverImg}
-					/>
+					<img src={coverImg} alt={story.title} className={'w-full h-full object-cover'} width={457} height={343} loading={priority ? priority : 'lazy'} />
 				</picture>
 
 				<div className="w-full pt-3 pb-4">
@@ -37,13 +29,7 @@ const StoryListing = ({ story, index }) => {
 					<div className="flex items-center mt-2 md:mt-3">
 						<div className="w-6 h-6 mr-2 rounded-full overflow-hidden">
 							<picture>
-								<Image src={avatarImg}
-									alt={story.owner.fullName}
-									width={32}
-									height={32}
-									priority={false}
-									loading="lazy"
-								/>
+								<img src={avatarImg} alt={story.owner.fullName} width={32} height={32} className={'w-full h-full object-cover'} loading={priority ? priority : 'lazy'} />
 							</picture>
 						</div>
 						<div className="flex items-center justify-center">
