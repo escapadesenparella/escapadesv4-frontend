@@ -8,6 +8,7 @@ import PublicSquareBox from "../components/listings/PublicSquareBox";
 import MapModal from "../components/modals/MapModal";
 import BreadcrumbRichSnippet from "../components/richsnippets/BreadcrumbRichSnippet";
 import ContentService from "../services/contentService";
+import AdBanner from "../components/ads/AdBanner";
 
 const CategoryPage = ({
 	categoryDetails,
@@ -535,6 +536,15 @@ const CategoryPage = ({
 							/>
 						</div>
 					</section>
+
+					<div className="px-5">
+						<div className="pt-4 pb-8 border-y border-primary-100 mt-8 w-full">
+							<span className="inline-block text-xs">Anunci</span>
+							<AdBanner data-ad-slot="7418001579"
+								data-ad-format="auto"
+								data-full-width-responsive="true" />
+						</div>
+					</div>
 
 					{/* Section listings */}
 					<section className="pt-8 md:pt-12">

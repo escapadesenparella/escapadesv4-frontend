@@ -1,12 +1,7 @@
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import ContentService from "../../services/contentService";
 import NewsletterService from "../../services/newsletterService";
-
-const DynamicKoFiBadge = dynamic(() => import('./KoFiBadge'), {
-	loading: () => <span>Loading...</span>
-});
 
 const Footer = () => {
 	const service = new ContentService();
@@ -408,8 +403,6 @@ const Footer = () => {
 						</ul>
 					</div>
 				</div>
-
-				{/* <DynamicKoFiBadge /> */}
 			</footer>
 		</>
 	);

@@ -2,7 +2,7 @@ import Glide from "@glidejs/glide";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getPicturesBySeason } from "../../utils/helpers";
-import Image from "next/image";
+import AdBanner from "../../components/ads/AdBanner";
 
 const Hero = () => {
 	const [width, setWidth] = useState(0);
@@ -192,6 +192,13 @@ const Hero = () => {
 									: null}
 							</div>
 						</div>
+
+					</div>
+					<div className="pt-4 pb-8 border-y border-primary-100 mt-8 w-full">
+						<span className="inline-block text-xs">Anunci</span>
+						<AdBanner data-ad-slot="7418001579"
+							data-ad-format="auto"
+							data-full-width-responsive="true" />
 					</div>
 				</div>
 			</section>
