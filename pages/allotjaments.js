@@ -589,8 +589,9 @@ const PlaceList = ({
 
 							<div className="grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 gap-5">
 								{state.hasPlaces
-									? state.places.map((el) => (
-										<PublicSquareBox
+									? state.places.map((el, idx) => {
+										const priority = idx === 0 || idx === 1 ? 'eager' : 'lazy';
+										return <PublicSquareBox
 											key={el._id}
 											type={el.type}
 											slug={el.slug}
@@ -614,8 +615,10 @@ const PlaceList = ({
 												? el.place_country
 												: el.place_locality
 												}`}
+											priority={priority}
 										/>
-									))
+									}
+									)
 									: state.emptyBlocksPerRow.map((el, idx) => (
 										<div
 											key={idx}

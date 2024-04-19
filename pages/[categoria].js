@@ -543,8 +543,9 @@ const CategoryPage = ({
 							<div className="grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 gap-5">
 								{state.results.length > 0 ? (
 									<>
-										{state.hasResults ? state.results.map((el, idx) => (
-											<PublicSquareBox
+										{state.hasResults ? state.results.map((el, idx) => {
+											const priority = idx === 0 || idx === 1 ? 'eager' : 'lazy';
+											return <PublicSquareBox
 												key={el._id}
 												type={el.type}
 												slug={el.slug}
@@ -567,8 +568,9 @@ const CategoryPage = ({
 													el.place_locality
 												}
 												index={idx}
+												priority={priority}
 											/>
-										)) : state.emptyBlocksPerRow.map((el, idx) => (
+										}) : state.emptyBlocksPerRow.map((el, idx) => (
 											<div
 												key={idx}
 												className="w-full"
