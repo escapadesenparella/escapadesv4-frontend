@@ -105,7 +105,7 @@ const HomePageResults = ({
 							: state.emptyBlocksPerRow.map((el, idx) => (
 								<div
 									key={idx}
-									className="w-full md:w-1/2 lg:w-1/4 px-2"
+									className="w-full"
 									role="status"
 								>
 									<div className="flex justify-center items-center max-w-sm h-56 bg-gray-300 rounded-md animate-pulse dark:bg-gray-700">
@@ -192,7 +192,7 @@ const HomePageResults = ({
 							: state.emptyBlocksPerRow.map((el, idx) => (
 								<div
 									key={idx}
-									className="w-full md:w-1/2 lg:w-1/4 px-2"
+									className="w-full"
 									role="status"
 								>
 									<div className="flex justify-center items-center max-w-sm h-56 bg-gray-300 rounded-md animate-pulse dark:bg-gray-700">

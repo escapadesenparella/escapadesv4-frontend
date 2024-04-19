@@ -11,7 +11,6 @@ import FancyboxUtil from "../../utils/FancyboxUtils";
 import { formatDateTimeToISODate } from "../../utils/helpers";
 import BreadcrumbRichSnippet from "../../components/richsnippets/BreadcrumbRichSnippet";
 import ArticleRichSnippet from "../../components/richsnippets/ArticleRichSnippet";
-import Image from "next/image";
 import ShareBarModal from "../../components/social/ShareBarModal";
 import AdBanner from "../../components/ads/AdBanner";
 
@@ -66,15 +65,8 @@ const StoryListing = ({ storyDetails }) => {
 									key={idx}
 									className="block rounded-2xl overflow-hidden aspect-1 relative"
 								>
-									<Image src={image}
-										alt={`${storyDetails.title} - ${idx + 1
-											}`}
-										layout="fill"
-										objectFit="cover"
-										blur="true"
-										blurDataURL={image}
-										loading="lazy"
-									/>
+									<img src={image} alt={`${storyDetails.title} - ${idx + 1
+										}`} className={'w-full h-full object-cover'} width={400} height={300} loading="lazy" />
 								</picture>
 							</div>
 						);
@@ -113,6 +105,7 @@ const StoryListing = ({ storyDetails }) => {
 	const coverPath = storyDetails.cover.substring(0, 51);
 	const imageId = storyDetails.cover.substring(63);
 	const coverImg = `${coverPath}w_1392,h_783,c_fill/${imageId}`;
+	const coverImgMob = `${coverPath}w_400,h_300,c_fill/${imageId}`;
 
 	const coverAuthorPath = storyDetails.owner.avatar.substring(0, 51);
 	const imageAuthorId = storyDetails.owner.avatar.substring(63);
@@ -188,13 +181,7 @@ const StoryListing = ({ storyDetails }) => {
 											<div className="flex flex-wrap items-center">
 												<div className="rounded-full overflow-hidden w-8 h-8 mr-2.5">
 													<picture>
-														<Image src={coverAuthorImg}
-															alt={storyDetails.owner.fullName}
-															width={32}
-															height={32}
-															priority={true}
-															loading="eager"
-														/>
+														<img src={coverAuthorImg} alt={storyDetails.owner.fullName} className={'w-full h-full object-cover'} width={32} height={32} loading="eager" fetchpriority="high" />
 													</picture>
 												</div>
 												<span className="text-sm">
@@ -221,7 +208,7 @@ const StoryListing = ({ storyDetails }) => {
 													</time>
 												</span>
 											</div>
-											<ShareBarModal picture={coverImg} title={storyDetails.title} rating={null} slug={`https://escapadesenparella.cat/histories/${storyDetails.slug}`} locality={null} colorClass={'text-primary-500 text-sm'} />
+											<ShareBarModal picture={coverImgMob} title={storyDetails.title} rating={null} slug={`https://escapadesenparella.cat/histories/${storyDetails.slug}`} locality={null} colorClass={'text-primary-500 text-sm'} />
 										</div>
 									</div>
 								</div>
@@ -231,15 +218,10 @@ const StoryListing = ({ storyDetails }) => {
 						{/* Article cover */}
 						<div className="relative after:absolute after:top-0 after:inset-x-0 after:bg-tertiary-50 after:h-20">
 							<div className="container relative z-10">
-								<picture className="block aspect-w-16 aspect-h-9 h-full rounded-2xl overflow-hidden">
-									<Image src={coverImg}
-										alt={storyDetails.title}
-										layout="fill"
-										priority={true}
-										loading="eager"
-										placeholder="blur"
-										blurDataURL={coverImg}
-									/>
+								<picture className="block aspect-w-4 aspect-h-3 lg:aspect-w-16 lg:aspect-h-9 h-full rounded-2xl overflow-hidden">
+									<source src={coverImgMob} media="(max-width: 768px)" />
+									<source src={coverImg} media="(min-width: 768px)" />
+									<img src={coverImg} alt={storyDetails.title} className={'w-full h-full object-cover'} width={400} height={300} loading="eager" fetchpriority="high" />
 								</picture>
 							</div>
 						</div>

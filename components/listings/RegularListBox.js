@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 const RegularListBox = ({
@@ -31,14 +30,7 @@ const RegularListBox = ({
 					className="relative"
 				>
 					<picture className="block aspect-w-4 aspect-h-3 relative after:block after:w-full after:h-full after:z-20 after:content after:absolute after:inset-0 after:bg-primary-500 after:bg-opacity-0 rounded-2xl overflow-hidden">
-						<Image src={coverImg}
-							alt={title}
-							layout="fill"
-							priority={index === 0 || index === 1 || index === 2 ? true : false}
-							loading={index === 0 || index === 1 || index === 2 ? 'eager' : 'lazy'}
-							placeholder="blur"
-							blurDataURL={coverImg}
-						/>
+						<img src={coverImg} alt={title} className={'w-full h-full object-cover'} width={400} height={300} loading={index === 0 || index === 1 || index === 2 ? 'eager' : 'lazy'} fetchpriority={index === 0 || index === 1 || index === 2 ? 'high' : 'low'} />
 					</picture>
 
 					<div className="w-full pt-3 pb-4">
@@ -48,13 +40,7 @@ const RegularListBox = ({
 						<div className="flex items-center mt-2 md:mt-3">
 							<div className="w-6 h-6 mr-2 rounded-full overflow-hidden">
 								<picture>
-									<Image src={avatarImg}
-										alt={owner}
-										width={32}
-										height={32}
-										priority={false}
-										loading="lazy"
-									/>
+									<img src={avatarImg} alt={owner} className={'w-full h-full object-cover'} width={32} height={32} loading={index === 0 || index === 1 || index === 2 ? 'eager' : 'lazy'} fetchpriority={index === 0 || index === 1 || index === 2 ? 'high' : 'low'} />
 								</picture>
 							</div>
 							<div className="flex items-center justify-center">

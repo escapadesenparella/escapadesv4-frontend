@@ -16,7 +16,6 @@ import ListingDiscount from "../../components/listingpage/ListingDiscount";
 import ShareBarModal from "../../components/social/ShareBarModal";
 import { Splide, SplideTrack, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/react-splide/css/core';
-import Image from "next/image";
 
 const GetawayListing = ({
 	getawayDetails,
@@ -508,15 +507,7 @@ const GetawayListing = ({
 															}
 														>
 															<picture className="block w-full h-full">
-																<Image src={getawayCoverImg}
-																	alt={`${getawayDetails.title}`}
-																	className="rounded-2xl"
-																	layout="fill"
-																	priority={true}
-																	loading={"eager"}
-																	placeholder="blur"
-																	blurDataURL={getawayCoverImg}
-																/>
+																<img src={getawayCoverImg} alt={getawayDetails.title} className={'w-full h-full object-cover rounded-2xl'} width={400} height={300} loading="eager" />
 															</picture>
 														</div>
 													</FancyboxUtil>
@@ -527,6 +518,9 @@ const GetawayListing = ({
 															const imageSrc = el?.substring(0, 51);
 															const imageId = el?.substring(63);
 															const imageModSrc = `${imageSrc}w_805,h_605,c_fill/${imageId}`;
+															const imageModSrcMob = `${imageSrc}w_400,h_300,c_fill/${imageId}`;
+
+															const priority = idx === 1 || idx === 2 ? 'eager' : 'lazy';
 															return (
 																<SplideSlide key={idx}>
 																	<FancyboxUtil
@@ -542,19 +536,9 @@ const GetawayListing = ({
 																			}
 																		>
 																			<picture className="block w-full h-full bg-primary-50">
-																				<Image src={imageModSrc}
-																					alt={`${getawayDetails.title} - ${idx}`}
-																					className=" rounded-2xl"
-																					layout="fill"
-																					priority={idx !== undefined && (idx == 0 || idx == 1)
-																						? true
-																						: false}
-																					loading={idx !== undefined && (idx == 0 || idx == 1)
-																						? "eager"
-																						: "lazy"}
-																					placeholder="blur"
-																					blurDataURL={imageModSrc}
-																				/>
+																				<source src={imageModSrcMob} media="(max-width: 768px)" />
+																				<source src={imageModSrc} media="(min-width: 768px)" />
+																				<img src={imageModSrc} alt={`${getawayDetails.title} - ${idx}`} className={'w-full h-full object-cover rounded-2xl'} width={400} height={300} loading={priority} />
 																			</picture>
 																		</div>
 																	</FancyboxUtil>
@@ -802,17 +786,7 @@ const GetawayListing = ({
 
 																<div className="flex flex-wrap mt-3">
 																	<picture className="block relative w-16 h-16 overflow-hidden rounded-2xl">
-																		<Image src={relatedStoryCoverImg}
-																			alt={getawayDetails
-																				.relatedStory
-																				.title}
-																			fill="true"
-																			layout="fill"
-																			priority={false}
-																			loading={"lazy"}
-																			placeholder="blur"
-																			blurDataURL={relatedStoryCoverImg}
-																		/>
+																		<img src={relatedStoryCoverImg} alt={getawayDetails.relatedStory.title} className={'w-full h-full object-cover'} width={64} height={64} loading="lazy" />
 																	</picture>
 																	<div className="pl-5 flex-1">
 																		<h3 className="block mt-0 mb-0.5">

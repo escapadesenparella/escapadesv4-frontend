@@ -12,9 +12,7 @@ import ArticleRichSnippet from "../../components/richsnippets/ArticleRichSnippet
 import BreadcrumbRichSnippet from "../../components/richsnippets/BreadcrumbRichSnippet";
 import { formatDateTimeToISODate } from "../../utils/helpers";
 import ShareBarModal from "../../components/social/ShareBarModal";
-import Image from "next/image";
 import AdBanner from "../../components/ads/AdBanner";
-
 
 const ListView = ({ listDetails }) => {
 	const { user } = useContext(UserContext);
@@ -54,6 +52,7 @@ const ListView = ({ listDetails }) => {
 	const coverPath = listDetails.cover.substring(0, 51);
 	const imageId = listDetails.cover.substring(63);
 	const coverImg = `${coverPath}w_1392,h_783,c_fill/${imageId}`;
+	const coverImgMob = `${coverPath}w_400,h_300,c_fill/${imageId}`;
 
 	const coverAuthorPath = listDetails.owner.avatar.substring(0, 51);
 	const imageAuthorId = listDetails.owner.avatar.substring(63);
@@ -127,13 +126,7 @@ const ListView = ({ listDetails }) => {
 											<div className="flex flex-wrap items-center">
 												<div className="rounded-full overflow-hidden w-8 h-8 mr-2.5">
 													<picture>
-														<Image src={coverAuthorImg}
-															alt={listDetails.owner.fullName}
-															width={32}
-															height={32}
-															priority={true}
-															loading="eager"
-														/>
+														<img src={coverAuthorImg} alt={listDetails.owner.fullName} className={'w-full h-full object-cover'} width={32} height={32} loading="eager" fetchpriority="high" />
 													</picture>
 												</div>
 												<span className="text-sm">
@@ -171,14 +164,11 @@ const ListView = ({ listDetails }) => {
 						<div className="relative after:absolute after:top-0 after:inset-x-0 after:bg-tertiary-50 after:h-20">
 							<div className="container relative z-10">
 								<picture className="block aspect-w-16 aspect-h-9 h-full rounded-2xl overflow-hidden">
-									<Image src={coverImg}
-										alt={listDetails.title}
-										layout="fill"
-										priority={true}
-										loading="eager"
-										placeholder="blur"
-										blurDataURL={coverImg}
-									/>
+									<picture className="block aspect-w-4 aspect-h-3 lg:aspect-w-16 lg:aspect-h-9 h-full rounded-2xl overflow-hidden">
+										<source src={coverImgMob} media="(max-width: 768px)" />
+										<source src={coverImg} media="(min-width: 768px)" />
+										<img src={coverImg} alt={listDetails.title} className={'w-full h-full object-cover'} width={400} height={300} loading="eager" fetchpriority="high" />
+									</picture>
 								</picture>
 							</div>
 						</div>
