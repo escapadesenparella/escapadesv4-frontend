@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import ContentService from "../services/contentService";
 import NavigationBar from "../components/global/NavigationBar";
-import FeaturedListBox from "../components/listings/FeaturedListBox";
 import RegularListBox from "../components/listings/RegularListBox";
 import Footer from "../components/global/Footer";
 import GlobalMetas from "../components/head/GlobalMetas";
 import BreadcrumbRichSnippet from "../components/richsnippets/BreadcrumbRichSnippet";
-import AdBanner from "../components/ads/AdBanner";
 import ShareBarModal from "../components/social/ShareBarModal";
 import ListingHeader from "../components/headers/ListingHeader";
 
@@ -19,6 +17,7 @@ const ListsList = ({ user, totalItems, lists, numPages }) => {
 		numActivities: 0,
 		numPages: 0,
 		currentPage: 1,
+		emptyBlocksPerRow: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
 	};
 	const [state, setState] = useState(initialState);
 

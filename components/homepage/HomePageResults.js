@@ -108,7 +108,7 @@ const HomePageResults = ({
 									className="w-full"
 									role="status"
 								>
-									<div className="flex justify-center items-center max-w-sm h-56 bg-gray-300 rounded-md animate-pulse dark:bg-gray-700">
+									<div className="flex justify-center items-center w-full aspect-[4/3] bg-gray-300 rounded-2xl animate-pulse dark:bg-gray-700">
 										<div className="flex justify-center items-center w-full h-48 bg-gray-300 rounded-md sm:w-96 dark:bg-gray-700">
 											<svg
 												className="w-12 h-12 text-gray-200"
@@ -195,7 +195,7 @@ const HomePageResults = ({
 									className="w-full"
 									role="status"
 								>
-									<div className="flex justify-center items-center max-w-sm h-56 bg-gray-300 rounded-md animate-pulse dark:bg-gray-700">
+									<div className="flex justify-center items-center w-full aspect-[4/3] bg-gray-300 rounded-2xl animate-pulse dark:bg-gray-700">
 										<div className="flex justify-center items-center w-full h-48 bg-gray-300 rounded-md sm:w-96 dark:bg-gray-700">
 											<svg
 												className="w-12 h-12 text-gray-200"
