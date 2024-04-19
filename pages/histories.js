@@ -74,16 +74,6 @@ const StoriesList = ({
 				<NavigationBar />
 				<StoriesHeader />
 				<main>
-
-					<div className="px-5">
-						<div className="pt-4 pb-8 border-y border-primary-100 mt-8 w-full">
-							<span className="inline-block text-xs">Anunci</span>
-							<AdBanner data-ad-slot="7418001579"
-								data-ad-format="auto"
-								data-full-width-responsive="true" />
-						</div>
-					</div>
-
 					<section className="py-8 md:py-12 lg:py-20">
 						<div className="px-5">
 							{initialResults.length > 0 ? (
