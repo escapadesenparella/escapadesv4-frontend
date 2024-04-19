@@ -22,6 +22,9 @@ const AdBanner = (props) => {
 				data-ad-client={process.env.NEXT_PUBLIC_GOOGLE_ADS_CLIENT_ID}
 				{...props}
 			/>
+			<script>
+				(adsbygoogle = window.adsbygoogle || []).push({ });
+			</script>
 		</div>
 	);
 };

@@ -102,13 +102,9 @@ const ListsList = ({ user, totalItems, lists, numPages }) => {
 					<div className="px-5">
 						<div className="pt-4 pb-8 border-y border-primary-100 mt-8 w-full">
 							<span className="inline-block text-xs">Anunci</span>
-							<div className="flex justify-center">
-								<div>
-									<AdBanner data-ad-slot="7418001579"
-										data-ad-format="auto"
-										data-full-width-responsive="true" />
-								</div>
-							</div>
+							<AdBanner data-ad-slot="7418001579"
+								data-ad-format="auto"
+								data-full-width-responsive="true" />
 						</div>
 					</div>
 
