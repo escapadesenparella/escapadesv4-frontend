@@ -536,8 +536,8 @@ const GetawayListing = ({
 																			}
 																		>
 																			<picture className="block w-full h-full bg-primary-50">
-																				<source src={imageModSrcMob} media="(max-width: 768px)" />
-																				<source src={imageModSrc} media="(min-width: 768px)" />
+																				<source srcSet={imageModSrcMob} media="(max-width: 768px)" />
+																				<source srcSet={imageModSrc} media="(min-width: 768px)" />
 																				<img src={imageModSrc} alt={`${getawayDetails.title} - ${idx}`} className={'w-full h-full object-cover rounded-2xl'} width={400} height={300} loading={priority} />
 																			</picture>
 																		</div>

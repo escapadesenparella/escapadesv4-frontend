@@ -113,10 +113,10 @@ const Hero = () => {
 												<div className="flex flex-wrap items-stretch overflow-hidden">
 													<div className="relative w-full h-full lg:h-auto lg:w-1/2 inset-0 ">
 														<picture className="block w-full h-full aspect-[4/3] md:aspect-[16/9]">
-															<source srcset={slide.picture_webp_mob} media="(max-width: 768px)" type="image/webp" />
-															<source srcset={slide.picture_raw_mob} media="(max-width: 768px)" />
-															<source srcset={slide.picture_webp} media="(min-width: 768px)" type="image/webp" />
-															<source srcset={slide.picture_raw} media="(min-width: 768px)" />
+															<source srcSet={slide.picture_webp_mob} media="(max-width: 768px)" type="image/webp" />
+															<source srcSet={slide.picture_raw_mob} media="(max-width: 768px)" />
+															<source srcSet={slide.picture_webp} media="(min-width: 768px)" type="image/webp" />
+															<source srcSet={slide.picture_raw} media="(min-width: 768px)" />
 															<img src={slide.picture_raw} alt={slide.picture_alt} className="rounded-2xl w-full h-full object-cover" width="400" height="300" loading="eager" fetchpriority="high" />
 														</picture>
 													</div>

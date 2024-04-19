@@ -219,8 +219,8 @@ const StoryListing = ({ storyDetails }) => {
 						<div className="relative after:absolute after:top-0 after:inset-x-0 after:bg-tertiary-50 after:h-20">
 							<div className="container relative z-10">
 								<picture className="block aspect-w-4 aspect-h-3 lg:aspect-w-16 lg:aspect-h-9 h-full rounded-2xl overflow-hidden">
-									<source src={coverImgMob} media="(max-width: 768px)" />
-									<source src={coverImg} media="(min-width: 768px)" />
+									<source srcSet={coverImgMob} media="(max-width: 768px)" />
+									<source srcSet={coverImg} media="(min-width: 768px)" />
 									<img src={coverImg} alt={storyDetails.title} className={'w-full h-full object-cover'} width={400} height={300} loading="eager" fetchpriority="high" />
 								</picture>
 							</div>

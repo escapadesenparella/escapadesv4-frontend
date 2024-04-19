@@ -14,7 +14,7 @@ const GlobalMetas = ({
 		<Head>
 			<title>{title} - Escapadesenparella.cat</title>
 			<link rel="icon" href="/favicon.ico" />
-			<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+			<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 			<meta name="description" content={description} />
 			<meta
 				name="robots"
@@ -43,7 +43,7 @@ const GlobalMetas = ({
 			<meta property="og:url" content={url} />
 			<meta property="og:image" content={image} />
 			<meta property="og:image:width" content="1200" />
-			<meta property="og:image:heigth" content="1200" />
+			<meta property="og:image:heigth" content="630" />
 			<link rel="canonical" href={canonical} />
 			<link href={`https://escapadesenparella.cat`} rel="home" />
 			<meta property="fb:pages" content="1725186064424579" />
