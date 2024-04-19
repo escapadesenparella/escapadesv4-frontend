@@ -78,7 +78,8 @@ const Footer = () => {
 					<div className="max-w-5xl mx-auto">
 						<div className="relative flex flex-wrap items-center">
 							<picture className="block w-64 lg:w-80 h-auto mx-auto mix-blend-multiply">
-								<img src="https://res.cloudinary.com/juligoodie/image/upload/v1626446634/getaways-guru/static-files/email-confirmation_lu3qbp.jpg" width="256" height="170" className="w-full h-auto object-contain" alt="Subscriu-te a la nostra newsletter" loading="lazy" />
+								<source src="/email-confirmation.webp" type='image/webp' />
+								<img src="/email-confirmation.jpg" width="256" height="170" className="w-full h-auto object-contain" alt="Subscriu-te a la nostra newsletter" loading="lazy" />
 							</picture>
 							<div className="w-full lg:w-auto flex flex-col lg:flew-row items-center lg:items-start gap-5 pt-6 md:pt-0 lg:pl-8 lg:flex-1 max-w-md lg:max-w-full mx-auto lg:mx-0">
 								<div className="w-full md:max-w-xs mx-auto md:ml-0 md:mr-auto mb-3">

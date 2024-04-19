@@ -41,7 +41,7 @@ const Newsletter = () => {
                 title="Subscriu-te a la newsletter"
                 description="Subscriu-te a la nostra newsletter per rebre les últimes novetats i ofertes."
                 url="https://escapadesenparella.cat/newsletter"
-                image="https://res.cloudinary.com/juligoodie/image/upload/v1626446634/getaways-guru/static-files/email-confirmation_lu3qbp.jpg"
+                image="/email-confirmation.jpg"
                 canonical="https://escapadesenparella.cat/newsletter"
                 index="false"
             />
@@ -58,7 +58,8 @@ const Newsletter = () => {
                         <div className="flex flex-col items-center">
                             <div className='bg-primary-50 rounded-md px-8 pb-8 pt-6 md:px-12 md:pt-8 md:pb-12 relative'>
                                 <picture className="block w-64 lg:w-80 h-auto mx-auto mix-blend-multiply">
-                                    <img src="https://res.cloudinary.com/juligoodie/image/upload/v1626446634/getaways-guru/static-files/email-confirmation_lu3qbp.jpg" width="256" height="170" className="w-full h-auto object-contain" alt="Subscriu-te a la nostra newsletter" loading="lazy" />
+                                    <source src="/email-confirmation.webp" type='image/webp' />
+                                    <img src="/email-confirmation.jpg" width="256" height="170" className="w-full h-auto object-contain" alt="Subscriu-te a la nostra newsletter" loading="lazy" />
                                 </picture>
                                 <div className="w-full md:max-w-md flex flex-col items-center gap-5 pt-6 md:pt-0 md:flex-1">
                                     <div className="w-full md:max-w-xs">

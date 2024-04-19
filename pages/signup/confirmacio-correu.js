@@ -59,7 +59,7 @@ const ConfirmEmail = () => {
             <Col lg={12}>
               <div className="content-wrapper">
                 <img
-                  src="https://res.cloudinary.com/juligoodie/image/upload/v1626446634/getaways-guru/static-files/email-confirmation_lu3qbp.jpg"
+                  src="/email-confirmation.jpg"
                   alt=""
                 />
                 <h1>Confirma el teu correu</h1>
