@@ -9,6 +9,7 @@ const CreateTripCategoryModal = ({ visibility, hideModal, fetchData }) => {
 	const service = new ContentService();
 
 	const initialState = {
+		slug: "",
 		title: "",
 		image: "",
 		blopImage: "",
@@ -136,7 +137,7 @@ const CreateTripCategoryModal = ({ visibility, hideModal, fetchData }) => {
 	};
 
 	const submitTripCategory = async () => {
-		const slug = await slugify(tripCategory.title, {
+		const slug = await slugify(tripCategory.slug, {
 			remove: /[*+~.,()'"!:@]/g,
 			lower: true,
 		});
@@ -378,6 +379,19 @@ const CreateTripCategoryModal = ({ visibility, hideModal, fetchData }) => {
 									</div>
 								</div>
 							</div>
+						</div>
+						<div className="form__group">
+							<label htmlFor="slug" className="form__label">
+								URL de la categoria
+							</label>
+							<input
+								type="text"
+								name="slug"
+								placeholder="Entra l'slug de la categoria"
+								className="form__control"
+								value={tripCategory.slug}
+								onChange={handleChange}
+							/>
 						</div>
 						<div className="form__group">
 							<label
