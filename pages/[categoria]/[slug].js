@@ -16,7 +16,7 @@ import ListingDiscount from "../../components/listingpage/ListingDiscount";
 import ShareBarModal from "../../components/social/ShareBarModal";
 import { Splide, SplideTrack, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/react-splide/css/core';
-import AdBanner from "../components/ads/AdBanner";
+import AdBanner from "../../components/ads/AdBanner";
 
 const GetawayListing = ({
 	getawayDetails,
