@@ -16,6 +16,7 @@ import ListingDiscount from "../../components/listingpage/ListingDiscount";
 import ShareBarModal from "../../components/social/ShareBarModal";
 import { Splide, SplideTrack, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/react-splide/css/core';
+import AdBanner from "../components/ads/AdBanner";
 
 const GetawayListing = ({
 	getawayDetails,
@@ -738,19 +739,170 @@ const GetawayListing = ({
 
 										{/* Listing aside details + contact buttons */}
 										<aside className="w-full col-span-1 md:col-span-4 relative z-10">
-											<div className="relative xl:sticky xl:top-24 p-7 bg-white rounded-2xl border border-primary-50">
-												{getawayDetails.relatedStory ? (
-													<div className="mb-7 pb-7 border-primary-50 border-b">
-														<Link
-															href={`/histories/${getawayDetails.relatedStory.slug}`}
-														>
-															<a className="block">
-																<div class="inline-flex items-center">
+											<div className="relative xl:sticky xl:top-24">
+												<div className="p-7 bg-white rounded-2xl border border-primary-50">
+													{getawayDetails.relatedStory ? (
+														<div className="mb-7 pb-7 border-primary-50 border-b">
+															<Link
+																href={`/histories/${getawayDetails.relatedStory.slug}`}
+															>
+																<a className="block">
+																	<div class="inline-flex items-center">
+																		<svg
+																			xmlns="http://www.w3.org/2000/svg"
+																			className="mr-1.5"
+																			width={18}
+																			height={18}
+																			viewBox="0 0 24 24"
+																			strokeWidth={
+																				1.5
+																			}
+																			stroke="currentColor"
+																			fill="none"
+																			strokeLinecap="round"
+																			strokeLinejoin="round"
+																		>
+																			<path
+																				stroke="none"
+																				d="M0 0h24v24H0z"
+																				fill="none"
+																			></path>
+																			<path
+																				d="M12.01 2.011a3.2 3.2 0 0 1 2.113 .797l.154 .145l.698 .698a1.2 1.2 0 0 0 .71 .341l.135 .008h1a3.2 3.2 0 0 1 3.195 3.018l.005 .182v1c0 .27 .092 .533 .258 .743l.09 .1l.697 .698a3.2 3.2 0 0 1 .147 4.382l-.145 .154l-.698 .698a1.2 1.2 0 0 0 -.341 .71l-.008 .135v1a3.2 3.2 0 0 1 -3.018 3.195l-.182 .005h-1a1.2 1.2 0 0 0 -.743 .258l-.1 .09l-.698 .697a3.2 3.2 0 0 1 -4.382 .147l-.154 -.145l-.698 -.698a1.2 1.2 0 0 0 -.71 -.341l-.135 -.008h-1a3.2 3.2 0 0 1 -3.195 -3.018l-.005 -.182v-1a1.2 1.2 0 0 0 -.258 -.743l-.09 -.1l-.697 -.698a3.2 3.2 0 0 1 -.147 -4.382l.145 -.154l.698 -.698a1.2 1.2 0 0 0 .341 -.71l.008 -.135v-1l.005 -.182a3.2 3.2 0 0 1 3.013 -3.013l.182 -.005h1a1.2 1.2 0 0 0 .743 -.258l.1 -.09l.698 -.697a3.2 3.2 0 0 1 2.269 -.944zm3.697 7.282a1 1 0 0 0 -1.414 0l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.32 1.497l2 2l.094 .083a1 1 0 0 0 1.32 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z"
+																				strokeWidth={
+																					0
+																				}
+																				fill="#57A1FE"
+																			></path>
+																		</svg>
+																		<span className="text-sm">
+																			T'expliquem la nostra escapada{" "}
+																			<u>
+																				{
+																					getawayDetails.title
+																				}
+																			</u>
+																			:
+																		</span>
+																	</div>
+
+																	<div className="flex flex-wrap mt-3">
+																		<picture className="block relative w-16 h-16 overflow-hidden rounded-2xl">
+																			<img src={relatedStoryCoverImg} alt={getawayDetails.relatedStory.title} className={'w-full h-full object-cover'} width={64} height={64} loading="lazy" />
+																		</picture>
+																		<div className="pl-5 flex-1">
+																			<h3 className="block mt-0 mb-0.5">
+																				{
+																					getawayDetails
+																						.relatedStory
+																						.title
+																				}
+																			</h3>
+																			<p className="text-sm font-light mb-4">{
+																				getawayDetails
+																					.relatedStory
+																					.subtitle
+																			}</p>
+																			<div className="flex items-center">
+																				<time className="text-sm block font-light">
+																					Publicada
+																					el{" "}
+																					{formatDateTimeToISODate(
+																						getawayDetails
+																							.relatedStory
+																							.createdAt
+																					)}
+																				</time>
+																				<span className="text-sm inline-block mx-1.5">|</span>
+																				<span className="text-sm inline-block">Llegir-ne més</span>
+																			</div>
+																		</div>
+																	</div>
+																</a>
+															</Link>
+														</div>
+													) : null}
+
+													{/* Price and location grid */}
+													<div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-9">
+														<div className="">
+															<h3>Tipus d'
+																{getawayDetails.type ==
+																	"place"
+																	? "allotjament"
+																	: "activitat"}{" "}
+															</h3>
+															<p className="font-light capitalize mb-0">
+
+																{
+																	mainCategory
+																}
+															</p>
+														</div>
+														<div className="">
+															<h3>Direcció de l'{getawayDetails.type ==
+																"place"
+																? "allotjament"
+																: "activitat"}</h3>
+
+															<p className="font-light mb-0">
+																{
+																	fullAddress
+																}
+															</p>
+														</div>
+														<div className="">
+
+															<h3>Preu aproximat *</h3>
+															<p className="font-light mb-0">
+
+																{
+																	getawayDetails.price
+																}{" "}
+																€ {getawayDetails.type ==
+																	"place"
+																	? "/persona/nit"
+																	: "/persona"}
+															</p>
+
+														</div>
+														<div>
+															<p className="text-sm font-light mb-0">
+																* Els preus
+																poden
+																variar
+																i pot ser que no
+																estiguin
+																constantment
+																actualitzats
+															</p>
+														</div>
+													</div>
+
+													{getawayDetails.discountCode ? <ListingDiscount discountCode={getawayDetails.discountCode} discountInfo={getawayDetails.discountInfo} /> : null}
+
+													<div className="fixed z-50 lg:z-auto bottom-0 inset-x-0 lg:bottom-auto lg:inset-x-auto lg:relative grid grid-cols-2 gap-x-5 items-stretch bg-white py-4 md:py-7 px-4 lg:px-0 border-t border-primary-50 mt-7">
+														{getawayDetails?.phone !==
+															"-" &&
+															getawayDetails?.phone !==
+															"" ? (
+															<div className="flex-1">
+																<a
+																	href={`tel:${getawayDetails.phone}`}
+																	className="button button__ghost button__med justify-center items-center w-full"
+																	title="Trucar"
+																	target="_blank"
+																	rel="nofollow noreferrer"
+																>
 																	<svg
 																		xmlns="http://www.w3.org/2000/svg"
 																		className="mr-1.5"
-																		width={18}
-																		height={18}
+																		width={
+																			24
+																		}
+																		height={
+																			24
+																		}
 																		viewBox="0 0 24 24"
 																		strokeWidth={
 																			1.5
@@ -765,213 +917,74 @@ const GetawayListing = ({
 																			d="M0 0h24v24H0z"
 																			fill="none"
 																		></path>
-																		<path
-																			d="M12.01 2.011a3.2 3.2 0 0 1 2.113 .797l.154 .145l.698 .698a1.2 1.2 0 0 0 .71 .341l.135 .008h1a3.2 3.2 0 0 1 3.195 3.018l.005 .182v1c0 .27 .092 .533 .258 .743l.09 .1l.697 .698a3.2 3.2 0 0 1 .147 4.382l-.145 .154l-.698 .698a1.2 1.2 0 0 0 -.341 .71l-.008 .135v1a3.2 3.2 0 0 1 -3.018 3.195l-.182 .005h-1a1.2 1.2 0 0 0 -.743 .258l-.1 .09l-.698 .697a3.2 3.2 0 0 1 -4.382 .147l-.154 -.145l-.698 -.698a1.2 1.2 0 0 0 -.71 -.341l-.135 -.008h-1a3.2 3.2 0 0 1 -3.195 -3.018l-.005 -.182v-1a1.2 1.2 0 0 0 -.258 -.743l-.09 -.1l-.697 -.698a3.2 3.2 0 0 1 -.147 -4.382l.145 -.154l.698 -.698a1.2 1.2 0 0 0 .341 -.71l.008 -.135v-1l.005 -.182a3.2 3.2 0 0 1 3.013 -3.013l.182 -.005h1a1.2 1.2 0 0 0 .743 -.258l.1 -.09l.698 -.697a3.2 3.2 0 0 1 2.269 -.944zm3.697 7.282a1 1 0 0 0 -1.414 0l-3.293 3.292l-1.293 -1.292l-.094 -.083a1 1 0 0 0 -1.32 1.497l2 2l.094 .083a1 1 0 0 0 1.32 -.083l4 -4l.083 -.094a1 1 0 0 0 -.083 -1.32z"
-																			strokeWidth={
-																				0
-																			}
-																			fill="#57A1FE"
-																		></path>
+																		<path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2"></path>
 																	</svg>
-																	<span className="text-sm">
-																		T'expliquem la nostra escapada{" "}
-																		<u>
-																			{
-																				getawayDetails.title
-																			}
-																		</u>
-																		:
-																	</span>
-																</div>
-
-																<div className="flex flex-wrap mt-3">
-																	<picture className="block relative w-16 h-16 overflow-hidden rounded-2xl">
-																		<img src={relatedStoryCoverImg} alt={getawayDetails.relatedStory.title} className={'w-full h-full object-cover'} width={64} height={64} loading="lazy" />
-																	</picture>
-																	<div className="pl-5 flex-1">
-																		<h3 className="block mt-0 mb-0.5">
-																			{
-																				getawayDetails
-																					.relatedStory
-																					.title
-																			}
-																		</h3>
-																		<p className="text-sm font-light mb-4">{
-																			getawayDetails
-																				.relatedStory
-																				.subtitle
-																		}</p>
-																		<div className="flex items-center">
-																			<time className="text-sm block font-light">
-																				Publicada
-																				el{" "}
-																				{formatDateTimeToISODate(
-																					getawayDetails
-																						.relatedStory
-																						.createdAt
-																				)}
-																			</time>
-																			<span className="text-sm inline-block mx-1.5">|</span>
-																			<span className="text-sm inline-block">Llegir-ne més</span>
-																		</div>
-																	</div>
-																</div>
-															</a>
-														</Link>
-													</div>
-												) : null}
-
-												{/* Price and location grid */}
-												<div className="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-9">
-													<div className="">
-														<h3>Tipus d'
-															{getawayDetails.type ==
-																"place"
-																? "allotjament"
-																: "activitat"}{" "}
-														</h3>
-														<p className="font-light capitalize mb-0">
-
-															{
-																mainCategory
-															}
-														</p>
-													</div>
-													<div className="">
-														<h3>Direcció de l'{getawayDetails.type ==
-															"place"
-															? "allotjament"
-															: "activitat"}</h3>
-
-														<p className="font-light mb-0">
-															{
-																fullAddress
-															}
-														</p>
-													</div>
-													<div className="">
-
-														<h3>Preu aproximat *</h3>
-														<p className="font-light mb-0">
-
-															{
-																getawayDetails.price
-															}{" "}
-															€ {getawayDetails.type ==
-																"place"
-																? "/persona/nit"
-																: "/persona"}
-														</p>
-
-													</div>
-													<div>
-														<p className="text-sm font-light mb-0">
-															* Els preus
-															poden
-															variar
-															i pot ser que no
-															estiguin
-															constantment
-															actualitzats
-														</p>
+																	Trucar
+																</a>
+															</div>
+														) : null}
+														{getawayDetails?.website !==
+															"-" &&
+															getawayDetails?.website !==
+															"" ? (
+															<div className="flex-1">
+																<a
+																	href={`${getawayDetails.website}`}
+																	className="button button__primary button__med justify-center items-center w-full"
+																	title="Reservar"
+																	target="_blank"
+																	rel="nofollow noreferrer"
+																>
+																	<svg
+																		xmlns="http://www.w3.org/2000/svg"
+																		className="mr-1.5"
+																		width={
+																			24
+																		}
+																		height={
+																			24
+																		}
+																		viewBox="0 0 24 24"
+																		strokeWidth={
+																			1.5
+																		}
+																		stroke="currentColor"
+																		fill="none"
+																		strokeLinecap="round"
+																		strokeLinejoin="round"
+																	>
+																		<path
+																			stroke="none"
+																			d="M0 0h24v24H0z"
+																			fill="none"
+																		></path>
+																		<path d="M19.5 7a9 9 0 0 0 -7.5 -4a8.991 8.991 0 0 0 -7.484 4"></path>
+																		<path d="M11.5 3a16.989 16.989 0 0 0 -1.826 4"></path>
+																		<path d="M12.5 3a16.989 16.989 0 0 1 1.828 4"></path>
+																		<path d="M19.5 17a9 9 0 0 1 -7.5 4a8.991 8.991 0 0 1 -7.484 -4"></path>
+																		<path d="M11.5 21a16.989 16.989 0 0 1 -1.826 -4"></path>
+																		<path d="M12.5 21a16.989 16.989 0 0 0 1.828 -4"></path>
+																		<path d="M2 10l1 4l1.5 -4l1.5 4l1 -4"></path>
+																		<path d="M17 10l1 4l1.5 -4l1.5 4l1 -4"></path>
+																		<path d="M9.5 10l1 4l1.5 -4l1.5 4l1 -4"></path>
+																	</svg>
+																	{getawayDetails.type === 'activity' ? 'Contactar' : 'Reservar'}
+																</a>
+															</div>
+														) : null}
 													</div>
 												</div>
 
-												{getawayDetails.discountCode ? <ListingDiscount discountCode={getawayDetails.discountCode} discountInfo={getawayDetails.discountInfo} /> : null}
-
-												<div className="fixed z-50 lg:z-auto bottom-0 inset-x-0 lg:bottom-auto lg:inset-x-auto lg:relative grid grid-cols-2 gap-x-5 items-stretch bg-white py-4 md:py-7 px-4 lg:px-0 border-t border-primary-50 mt-7">
-													{getawayDetails?.phone !==
-														"-" &&
-														getawayDetails?.phone !==
-														"" ? (
-														<div className="flex-1">
-															<a
-																href={`tel:${getawayDetails.phone}`}
-																className="button button__ghost button__med justify-center items-center w-full"
-																title="Trucar"
-																target="_blank"
-																rel="nofollow noreferrer"
-															>
-																<svg
-																	xmlns="http://www.w3.org/2000/svg"
-																	className="mr-1.5"
-																	width={
-																		24
-																	}
-																	height={
-																		24
-																	}
-																	viewBox="0 0 24 24"
-																	strokeWidth={
-																		1.5
-																	}
-																	stroke="currentColor"
-																	fill="none"
-																	strokeLinecap="round"
-																	strokeLinejoin="round"
-																>
-																	<path
-																		stroke="none"
-																		d="M0 0h24v24H0z"
-																		fill="none"
-																	></path>
-																	<path d="M5 4h4l2 5l-2.5 1.5a11 11 0 0 0 5 5l1.5 -2.5l5 2v4a2 2 0 0 1 -2 2a16 16 0 0 1 -15 -15a2 2 0 0 1 2 -2"></path>
-																</svg>
-																Trucar
-															</a>
-														</div>
-													) : null}
-													{getawayDetails?.website !==
-														"-" &&
-														getawayDetails?.website !==
-														"" ? (
-														<div className="flex-1">
-															<a
-																href={`${getawayDetails.website}`}
-																className="button button__primary button__med justify-center items-center w-full"
-																title="Reservar"
-																target="_blank"
-																rel="nofollow noreferrer"
-															>
-																<svg
-																	xmlns="http://www.w3.org/2000/svg"
-																	className="mr-1.5"
-																	width={
-																		24
-																	}
-																	height={
-																		24
-																	}
-																	viewBox="0 0 24 24"
-																	strokeWidth={
-																		1.5
-																	}
-																	stroke="currentColor"
-																	fill="none"
-																	strokeLinecap="round"
-																	strokeLinejoin="round"
-																>
-																	<path
-																		stroke="none"
-																		d="M0 0h24v24H0z"
-																		fill="none"
-																	></path>
-																	<path d="M19.5 7a9 9 0 0 0 -7.5 -4a8.991 8.991 0 0 0 -7.484 4"></path>
-																	<path d="M11.5 3a16.989 16.989 0 0 0 -1.826 4"></path>
-																	<path d="M12.5 3a16.989 16.989 0 0 1 1.828 4"></path>
-																	<path d="M19.5 17a9 9 0 0 1 -7.5 4a8.991 8.991 0 0 1 -7.484 -4"></path>
-																	<path d="M11.5 21a16.989 16.989 0 0 1 -1.826 -4"></path>
-																	<path d="M12.5 21a16.989 16.989 0 0 0 1.828 -4"></path>
-																	<path d="M2 10l1 4l1.5 -4l1.5 4l1 -4"></path>
-																	<path d="M17 10l1 4l1.5 -4l1.5 4l1 -4"></path>
-																	<path d="M9.5 10l1 4l1.5 -4l1.5 4l1 -4"></path>
-																</svg>
-																{getawayDetails.type === 'activity' ? 'Contactar' : 'Reservar'}
-															</a>
-														</div>
-													) : null}
+												{/* Ad unit */}
+												<div className="p-7 bg-white rounded-2xl border border-primary-50 mt-7">
+													<span className="inline-block text-xs">Anunci</span>
+													<AdBanner data-ad-slot="4940975412"
+														data-ad-format="auto"
+														data-full-width-responsive="true" />
 												</div>
 											</div>
+
+
 										</aside>
 									</div>
 

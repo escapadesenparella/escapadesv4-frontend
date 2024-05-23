@@ -262,10 +262,14 @@ const StoryListing = ({ storyDetails }) => {
 
 										{/* Aside */}
 										<aside className="md:col-span-4">
-											<span className="inline-block text-xs">Anunci</span>
-											<AdBanner data-ad-slot="9182372294"
-												data-ad-format="auto"
-												data-full-width-responsive="true" />
+											<div className="relative xl:sticky xl:top-24">
+												<div className="p-7 bg-white rounded-2xl border border-primary-50 mt-7">
+													<span className="inline-block text-xs">Anunci</span>
+													<AdBanner data-ad-slot="4940975412"
+														data-ad-format="auto"
+														data-full-width-responsive="true" />
+												</div>
+											</div>
 										</aside>
 									</div>
 								</div>
