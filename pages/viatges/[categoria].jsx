@@ -334,28 +334,19 @@ const CategoryTrip = ({
 	);
 };
 
-export async function getStaticPaths() {
-	const service = new ContentService();
-	const tripCategories = await service.getTripCategories();
-	const paths = tripCategories.map((categoria) => ({
-		params: { categoria: categoria.slug },
-	}));
-	return { paths, fallback: false };
-}
-
-export async function getStaticProps({ params }) {
+export async function getServerSideProps({ params }) {
 	const service = new ContentService();
 	const categoryDetails = await service.getTripCategoryDetails(
 		params.categoria
 	);
-	let { allTrips, totalItems, trips, numPages } =
-		await service.getTripCategoryResults(categoryDetails._id);
 
-	if (!categoryDetails) {
+	if (categoryDetails == null) {
 		return {
 			notFound: true,
 		};
-	}
+	};
+
+	let { allTrips, totalItems, trips, numPages } = await service.getTripCategoryResults(categoryDetails._id);
 
 	return {
 		props: {
@@ -364,9 +355,8 @@ export async function getStaticProps({ params }) {
 			totalItems,
 			trips,
 			numPages,
-		},
-		revalidate: 120,
-	};
+		}
+	}
 }
 
 export default CategoryTrip;
