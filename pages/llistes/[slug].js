@@ -6,7 +6,7 @@ import ShareModal from "../../components/modals/ShareModal";
 import SignUpModal from "../../components/modals/SignUpModal";
 import UserContext from "../../contexts/UserContext";
 import ContentService from "../../services/contentService";
-import FooterHistoria from "../../components/global/FooterHistoria";
+import FollowInstagramBox from "../../components/global/FollowInstagramBox";
 import GlobalMetas from "../../components/head/GlobalMetas";
 import ArticleRichSnippet from "../../components/richsnippets/ArticleRichSnippet";
 import BreadcrumbRichSnippet from "../../components/richsnippets/BreadcrumbRichSnippet";
@@ -206,7 +206,10 @@ const ListView = ({ listDetails }) => {
 
 										{/* Aside */}
 										<aside className="md:col-span-4">
-											<div className="relative xl:sticky xl:top-24">
+											<div className="relative xl:sticky xl:top-24 mt-1.5">
+												<div className="p-7 bg-white rounded-2xl border border-primary-50">
+													<FollowInstagramBox />
+												</div>
 												<div className="p-7 bg-white rounded-2xl border border-primary-50 mt-7">
 													<span className="inline-block text-xs">Anunci</span>
 													<AdBanner data-ad-slot="4940975412"
@@ -221,9 +224,13 @@ const ListView = ({ listDetails }) => {
 						</section>
 					</article>
 				</main>
-				<section>
+				<section className="py-8 md:py-12">
 					<div className="container">
-						<FooterHistoria />
+						<div className="border-t border-primary-50 pt-8 md:pt-12">
+							<AdBanner data-ad-slot="9222117584"
+								data-ad-format="autorelaxed"
+							/>
+						</div>
 					</div>
 				</section>
 

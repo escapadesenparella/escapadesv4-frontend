@@ -5,7 +5,7 @@ import ContentService from "../../services/contentService";
 import UserContext from "../../contexts/UserContext";
 import parse from "html-react-parser";
 import Footer from "../../components/global/Footer";
-import FooterHistoria from "../../components/global/FooterHistoria";
+import FollowInstagramBox from "../../components/global/FollowInstagramBox";
 import GlobalMetas from "../../components/head/GlobalMetas";
 import FancyboxUtil from "../../utils/FancyboxUtils";
 import { formatDateTimeToISODate } from "../../utils/helpers";
@@ -227,7 +227,7 @@ const StoryListing = ({ storyDetails }) => {
 						</div>
 
 						{/* Article description */}
-						<section className="pt-6">
+						<section className="pt-7">
 							<div className="container">
 								<div className="max-w-5xl mx-auto">
 									<div className="grid grid-cols-1 md:grid-cols-12 gap-y-8 gap-x-12">
@@ -262,7 +262,10 @@ const StoryListing = ({ storyDetails }) => {
 
 										{/* Aside */}
 										<aside className="md:col-span-4">
-											<div className="relative xl:sticky xl:top-24">
+											<div className="relative xl:sticky xl:top-24 mt-1.5">
+												<div className="p-7 bg-white rounded-2xl border border-primary-50">
+													<FollowInstagramBox />
+												</div>
 												<div className="p-7 bg-white rounded-2xl border border-primary-50 mt-7">
 													<span className="inline-block text-xs">Anunci</span>
 													<AdBanner data-ad-slot="4940975412"
@@ -277,9 +280,13 @@ const StoryListing = ({ storyDetails }) => {
 						</section>
 					</article>
 				</main>
-				<section>
+				<section className="py-8 md:py-12">
 					<div className="container">
-						<FooterHistoria />
+						<div className="border-t border-primary-50 pt-8 md:pt-12">
+							<AdBanner data-ad-slot="9222117584"
+								data-ad-format="autorelaxed"
+							/>
+						</div>
 					</div>
 				</section>
 			</div >
