@@ -11,8 +11,8 @@ const Homepage = (props) => {
 		<>
 			{/* Browser metas  */}
 			<GlobalMetas
-				title="Escapades en parella a Catalunya, descobreix les millors!"
-				description="Troba les millors escapades en parella a Catalunya. Escapades en parella verificades, amb valoracions i recomanacions. Si busques escapar-te en parella, fes clic aquí, t'esperem a Escapadesenparella.cat!"
+				title="Escapades originals a Catalunya"
+				description="Escapades en parella per gaudir i desconnectar. Experiències i allotjaments verificats i originals, pernsats per a una escapada en parella per recordar."
 				url="https://escapadesenparella.cat"
 				image="https://res.cloudinary.com/juligoodie/image/upload/v1652527292/getaways-guru/IMGP9489-s_izgty6.jpg"
 				canonical="https://escapadesenparella.cat"
