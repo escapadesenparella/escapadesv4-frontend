@@ -17,6 +17,7 @@ import ShareBarModal from "../../components/social/ShareBarModal";
 import { Splide, SplideTrack, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/react-splide/css/core';
 import AdBanner from "../../components/ads/AdBanner";
+import ArticleRichSnippet from "../../components/richsnippets/ArticleRichSnippet";
 
 const GetawayListing = ({
 	getawayDetails,
@@ -319,6 +320,14 @@ const GetawayListing = ({
 					page2Url={`https://escapadesenparella.cat/${categoryDetails.slug}`}
 					page3Title={getawayDetails.metaTitle}
 					page3Url={`https://escapadesenparella.cat/${categoryDetails.slug}/${getawayDetails.slug}`}
+				/>
+				<ArticleRichSnippet
+					headline={getawayDetails.title}
+					summary={getawayDetails.subtitle}
+					image={getawayDetails.cover}
+					author={getawayDetails.owner.fullName}
+					publicationDate={getawayDetails.createdAt}
+					modificationDate={getawayDetails.updatedAt}
 				/>
 				<div id="listingPage">
 					<NavigationBar user={user} />

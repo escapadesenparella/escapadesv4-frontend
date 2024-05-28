@@ -8,7 +8,7 @@ import UserContext from "../../contexts/UserContext";
 import ContentService from "../../services/contentService";
 import FollowInstagramBox from "../../components/global/FollowInstagramBox";
 import GlobalMetas from "../../components/head/GlobalMetas";
-import ArticleRichSnippet from "../../components/richsnippets/ArticleRichSnippet";
+import BlogPostingRichSnippet from "../../components/richsnippets/BlogPostingRichSnippet";
 import BreadcrumbRichSnippet from "../../components/richsnippets/BreadcrumbRichSnippet";
 import { formatDateTimeToISODate } from "../../utils/helpers";
 import ShareBarModal from "../../components/social/ShareBarModal";
@@ -76,7 +76,7 @@ const ListView = ({ listDetails }) => {
 				page3Title={listDetails.metaTitle}
 				page3Url={`https://escapadesenparella.cat/llistes/${listDetails.slug}`}
 			/>
-			<ArticleRichSnippet
+			<BlogPostingRichSnippet
 				headline={listDetails.title}
 				summary={listDetails.subtitle}
 				image={listDetails.cover}

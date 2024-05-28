@@ -10,7 +10,7 @@ import GlobalMetas from "../../components/head/GlobalMetas";
 import FancyboxUtil from "../../utils/FancyboxUtils";
 import { formatDateTimeToISODate } from "../../utils/helpers";
 import BreadcrumbRichSnippet from "../../components/richsnippets/BreadcrumbRichSnippet";
-import ArticleRichSnippet from "../../components/richsnippets/ArticleRichSnippet";
+import BlogPostingRichSnippet from "../../components/richsnippets/BlogPostingRichSnippet";
 import ShareBarModal from "../../components/social/ShareBarModal";
 import AdBanner from "../../components/ads/AdBanner";
 
@@ -131,7 +131,7 @@ const StoryListing = ({ storyDetails }) => {
 				page3Title={storyDetails.metaTitle}
 				page3Url={`https://escapadesenparella.cat/histories/${storyDetails.slug}`}
 			/>
-			<ArticleRichSnippet
+			<BlogPostingRichSnippet
 				headline={storyDetails.title}
 				summary={storyDetails.subtitle}
 				image={storyDetails.cover}

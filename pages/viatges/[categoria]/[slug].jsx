@@ -7,7 +7,7 @@ import Footer from "../../../components/global/Footer";
 import GlobalMetas from "../../../components/head/GlobalMetas";
 import FancyboxUtil from "../../../utils/FancyboxUtils";
 import { formatDateTimeToISODate } from "../../../utils/helpers";
-import ArticleRichSnippet from "../../../components/richsnippets/ArticleRichSnippet";
+import BlogPostingRichSnippet from "../../../components/richsnippets/BlogPostingRichSnippet";
 import BreadcrumbRichSnippet from "../../../components/richsnippets/BreadcrumbRichSnippet";
 
 const StoryListing = ({ tripEntryDetails, categoryDetails }) => {
@@ -39,9 +39,8 @@ const StoryListing = ({ tripEntryDetails, categoryDetails }) => {
 								>
 									<img
 										src={image}
-										alt={`${tripEntryDetails.title} - ${
-											idx + 1
-										}`}
+										alt={`${tripEntryDetails.title} - ${idx + 1
+											}`}
 										width={400}
 										height={300}
 										className="w-full h-full object-cover object-center"
@@ -111,7 +110,7 @@ const StoryListing = ({ tripEntryDetails, categoryDetails }) => {
 				page4Title={tripEntryDetails.metaTitle}
 				page4Url={`https://escapadesenparella.cat/viatges/${categoryDetails.slug}/${tripEntryDetails.slug}`}
 			/>
-			<ArticleRichSnippet
+			<BlogPostingRichSnippet
 				headline={tripEntryDetails.title}
 				summary={tripEntryDetails.subtitle}
 				image={tripEntryDetails.cover}

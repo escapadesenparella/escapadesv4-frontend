@@ -1,6 +1,7 @@
 import Head from "next/head";
+import React from "react";
 
-const ArticleRichSnippet = ({
+const BlogPostingRichSnippet = ({
   headline,
   summary,
   image,
@@ -15,7 +16,7 @@ const ArticleRichSnippet = ({
         dangerouslySetInnerHTML={{
           __html: `{
   "@context": "https://schema.org",
-  "@type": "Article",
+  "@type": "BlogPosting",
   "headline": "${headline}",
   "description": "${summary}",
   "image": "${image}",  
@@ -40,4 +41,4 @@ const ArticleRichSnippet = ({
   );
 };
 
-export default ArticleRichSnippet;
+export default BlogPostingRichSnippet;
