@@ -1,10 +1,9 @@
 import Glide from "@glidejs/glide";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { getPicturesBySeason } from "../../utils/helpers";
 import AdBanner from "../../components/ads/AdBanner";
 
-const Hero = () => {
+const Hero = ({ slideImage }) => {
 	const [width, setWidth] = useState(0);
 
 	useEffect(() => {
@@ -16,36 +15,6 @@ const Hero = () => {
 			window.removeEventListener('resize', handleResize);
 		}
 	})
-
-	const firstSlidePictures = {
-		spring: {
-			picture_webp: "/home-cover-primavera.webp",
-			picture_raw: "/home-cover-primavera.jpg",
-			picture_webp_mob: "/home-cover-primavera-m.webp",
-			picture_raw_mob: "/home-cover-primavera-m.jpg",
-		},
-		summer: {
-			picture_webp: "/home-cover-estiu.webp",
-			picture_raw: "/home-cover-estiu.jpg",
-			picture_webp_mob: "/home-cover-estiu-m.webp",
-			picture_raw_mob: "/home-cover-estiu-m.jpg",
-		},
-		autumn: {
-			picture_webp: "/home-cover-tardor.webp",
-			picture_raw: "/home-cover-tardor.jpg",
-			picture_webp_mob: "/home-cover-tardor-m.webp",
-			picture_raw_mob: "/home-cover-tardor-m.jpg",
-		},
-		winter: {
-			picture_webp: "/home-cover-hivern.webp",
-			picture_raw: "/home-cover-hivern.jpg",
-			picture_webp_mob: "/home-cover-hivern-m.webp",
-			picture_raw_mob: "/home-cover-hivern-m.jpg",
-		},
-	};
-
-	const currentDate = new Date();
-	const slideImage = getPicturesBySeason(currentDate, firstSlidePictures);
 
 	const slides = [
 		{
