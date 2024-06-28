@@ -1,9 +1,10 @@
 import Router from "next/router";
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import UserContext from "../../contexts/UserContext";
+import ContentBar from "../homepage/ContentBar";
 
-const NavigationBar = ({ logo_url, path }) => {
+const NavigationBar = () => {
 	const { user } = useContext(UserContext);
 	const searchInputRef = useRef(null);
 
@@ -11,6 +12,7 @@ const NavigationBar = ({ logo_url, path }) => {
 		searchQuery: "",
 		isResponsiveMenuOpen: false,
 		isSearchPanelOpen: false,
+		logoUrl: "/",
 	};
 	const [state, setState] = useState(initialState);
 
@@ -30,23 +32,37 @@ const NavigationBar = ({ logo_url, path }) => {
 			e.preventDefault();
 			searchInputRef.current.focus();
 		}
-	}
+	};
 
-	const handleResponsiveMenu = () => !state.isResponsiveMenuOpen ? setState({ ...state, isResponsiveMenuOpen: true }) : setState({ ...state, isResponsiveMenuOpen: false });
-	const handleSearchPanel = () => !state.isSearchPanelOpen ? setState({ ...state, isSearchPanelOpen: true }) : setState({ ...state, isSearchPanelOpen: false });
+	const handleResponsiveMenu = () =>
+		!state.isResponsiveMenuOpen
+			? setState({ ...state, isResponsiveMenuOpen: true })
+			: setState({ ...state, isResponsiveMenuOpen: false });
+	const handleSearchPanel = () =>
+		!state.isSearchPanelOpen
+			? setState({ ...state, isSearchPanelOpen: true })
+			: setState({ ...state, isSearchPanelOpen: false });
 
-	let logoLink =
-		user === "null" || !user || user === undefined
-			? "/"
-			: "/2i8ZXlkM4cFKUPBrm3-admin-panel";
+	useEffect(() => {
+		if (user) {
+			setState({
+				...initialState,
+				logoUrl: "/2i8ZXlkM4cFKUPBrm3-admin-panel",
+			});
+		}
+	}, [user]);
 
 	return (
-		<header className="z-50 bg-white w-full sticky top-0">
+		<header className="z-50 bg-white w-full sticky top-0 border-b border-primary-50">
 			<nav className="px-5 py-4 md:py-5 menu">
 				<div className="w-full flex items-center justify-between lg:justify-start">
 					{/* Search input */}
 					<div className="flex xl:w-5/12 order-2 xl:order-1 lg:flex-1 lg:mr-8">
-						<button className="search__open" onClick={() => handleSearchPanel()} aria-label="Obrir panell de cerca">
+						<button
+							className="search__open"
+							onClick={() => handleSearchPanel()}
+							aria-label="Obrir panell de cerca"
+						>
 							<svg
 								xmlns="http://www.w3.org/2000/svg"
 								width="26"
@@ -63,7 +79,11 @@ const NavigationBar = ({ logo_url, path }) => {
 								<line x1="21" y1="21" x2="15" y2="15" />
 							</svg>
 						</button>
-						<div className={`search__panel ${state.isSearchPanelOpen ? 'open' : ''}`}>
+						<div
+							className={`search__panel ${
+								state.isSearchPanelOpen ? "open" : ""
+							}`}
+						>
 							{/* Button close */}
 							<button
 								className="search__close"
@@ -81,14 +101,23 @@ const NavigationBar = ({ logo_url, path }) => {
 									strokeLinecap="round"
 									strokeLinejoin="round"
 								>
-									<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+									<path
+										stroke="none"
+										d="M0 0h24v24H0z"
+										fill="none"
+									/>
 									<line x1="18" y1="6" x2="6" y2="18" />
 									<line x1="6" y1="6" x2="18" y2="18" />
 								</svg>
 							</button>
 							<form className="search__form xl:max-w-md">
 								<fieldset className="search__fieldset">
-									<label htmlFor="search" className="search__label">Cerca experiències i allotjaments</label>
+									<label
+										htmlFor="search"
+										className="search__label"
+									>
+										Cerca experiències i allotjaments
+									</label>
 
 									<input
 										onKeyDown={handleKeyPress}
@@ -100,7 +129,11 @@ const NavigationBar = ({ logo_url, path }) => {
 										className="search__input"
 									/>
 
-									<button type="submit" className="search__submit button button__med button__primary" onClick={handleSearchSubmit}>
+									<button
+										type="submit"
+										className="search__submit button button__med button__primary"
+										onClick={handleSearchSubmit}
+									>
 										<span>Buscar</span>
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
@@ -113,23 +146,49 @@ const NavigationBar = ({ logo_url, path }) => {
 											strokeLinecap="round"
 											strokeLinejoin="round"
 										>
-											<path stroke="none" d="M0 0h24v24H0z" />
+											<path
+												stroke="none"
+												d="M0 0h24v24H0z"
+											/>
 											<circle cx="10" cy="10" r="7" />
-											<line x1="21" y1="21" x2="15" y2="15" />
-										</svg></button>
+											<line
+												x1="21"
+												y1="21"
+												x2="15"
+												y2="15"
+											/>
+										</svg>
+									</button>
 								</fieldset>
 							</form>
 						</div>
 					</div>
-					<Link href={logoLink}>
-						<a title="Escapadesenparella.cat" className="block mr-8 xl:ml-8 xl:order-2 flex-1 lg:flex-none">
+					<Link
+						href={{
+							pathname: state.logoUrl,
+						}}
+					>
+						<a
+							title="Inici"
+							className="block mr-8 xl:ml-8 xl:order-2 flex-1 lg:flex-none"
+						>
 							<picture>
-								<img src="/logo-escapades-en-parella.svg" alt="Logo Escapadesenparella.cat" width={144} height={40} className="w-36 md:w-44 h-auto" loading="eager" />
+								<img
+									src="/logo-escapades-en-parella.svg"
+									alt="Logo Escapadesenparella.cat"
+									width={144}
+									height={40}
+									className="w-36 md:w-44 h-auto"
+									loading="eager"
+								/>
 							</picture>
 						</a>
 					</Link>
-					<div className={`menu ${state.isResponsiveMenuOpen ? 'open' : ''} xl:w-5/12 order-3 md:order-2 flex-none`}>
-
+					<div
+						className={`menu ${
+							state.isResponsiveMenuOpen ? "open" : ""
+						} xl:w-5/12 order-3 md:order-2 flex-none`}
+					>
 						{/* Button open */}
 						<button
 							className="menu__open"
@@ -179,7 +238,11 @@ const NavigationBar = ({ logo_url, path }) => {
 										strokeLinecap="round"
 										strokeLinejoin="round"
 									>
-										<path stroke="none" d="M0 0h24v24H0z" fill="none" />
+										<path
+											stroke="none"
+											d="M0 0h24v24H0z"
+											fill="none"
+										/>
 										<line x1="18" y1="6" x2="6" y2="18" />
 										<line x1="6" y1="6" x2="18" y2="18" />
 									</svg>
@@ -187,37 +250,32 @@ const NavigationBar = ({ logo_url, path }) => {
 							</li>
 							<li className="menu__item">
 								<Link href="/activitats">
-									<a className="menu__link" title="Experiències en parella a Catalunya">
+									<a
+										className="menu__link"
+										title="Experiències en parella a Catalunya"
+									>
 										Experiències
 									</a>
 								</Link>
 							</li>
 							<li className="menu__item">
 								<Link href="/allotjaments">
-									<a className="menu__link">
-										Allotjaments
-									</a>
+									<a className="menu__link">Allotjaments</a>
 								</Link>
 							</li>
 							<li className="menu__item">
 								<Link href="/histories">
-									<a className="menu__link">
-										Històries
-									</a>
+									<a className="menu__link">Històries</a>
 								</Link>
 							</li>
 							<li className="menu__item">
 								<Link href="/llistes">
-									<a className="menu__link">
-										Llistes
-									</a>
+									<a className="menu__link">Llistes</a>
 								</Link>
 							</li>
 							<li className="menu__item">
 								<Link href="/viatges">
-									<a className="menu__link">
-										Viatges
-									</a>
+									<a className="menu__link">Viatges</a>
 								</Link>
 							</li>
 							<li className="menu__item">
@@ -231,6 +289,7 @@ const NavigationBar = ({ logo_url, path }) => {
 					</div>
 				</div>
 			</nav>
+			<ContentBar />
 		</header>
 	);
 };

@@ -65,7 +65,7 @@ const Hero = ({ slideImage }) => {
 
 	return (
 		<>
-			<section id="hero" className="flex items-stretch lg:mt-6">
+			<section id="hero" className="flex items-stretch pt-6">
 				<div className="px-5 w-full">
 					<div
 						className={`glide ${

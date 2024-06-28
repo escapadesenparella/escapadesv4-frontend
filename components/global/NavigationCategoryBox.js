@@ -4,8 +4,12 @@ const NavigationCategoryBox = ({ icon, slug, pluralName }) => {
 		<a
 			href={`/${slug}`}
 			title="upperName"
-			className="inline-flex whitespace-nowrap items-center p-2.5"
+			className="inline-flex gap-x-1.5 whitespace-nowrap items-center py-2.5"
 		>
+			<span
+				dangerouslySetInnerHTML={{ __html: icon }}
+				className="inline-block [&>svg]:w-5 [&>svg]:h-5"
+			></span>
 			<span className="text-sm">{upperName}</span>
 		</a>
 	);
