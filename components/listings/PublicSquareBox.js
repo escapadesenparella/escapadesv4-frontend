@@ -13,10 +13,13 @@ const PublicSquareBox = ({
 	categoria,
 	rating,
 	index,
-	priority
+	priority,
 }) => {
 	let secureWebsite, buttonLight;
-	if (website && (website.includes("https://") || website.includes("http://"))) {
+	if (
+		website &&
+		(website.includes("https://") || website.includes("http://"))
+	) {
 		secureWebsite = website;
 	} else {
 		secureWebsite = `https://${website}`;
@@ -133,7 +136,9 @@ const PublicSquareBox = ({
 
 	const coverPath = cover?.substring(0, 51);
 	const imageId = cover?.substring(63);
+	const imageIdWebp = cover?.substring(63).replace("jpg", "webp");
 	const coverImg = `${coverPath}w_457,h_343,c_fill/${imageId}`;
+	const coverImgWebp = `${coverPath}f_webp/w_457,h_343,c_fill/${imageIdWebp}`;
 
 	return (
 		<article className="w-full group">
@@ -143,9 +148,23 @@ const PublicSquareBox = ({
 					className="flex flex-col justify-between overflow-hidden relative"
 				>
 					<div className="relative overflow-hidden rounded-2xl">
-
 						<picture className="block w-full h-full aspect-w-4 aspect-h-3">
-							<img src={coverImg} alt={title} className={'w-full h-full object-cover'} width={457} height={343} loading={priority ? priority : 'lazy'} />
+							{coverImgWebp ? (
+								<source
+									srcSet={coverImgWebp}
+									type="image/webp"
+								/>
+							) : (
+								""
+							)}
+							<img
+								src={coverImg}
+								alt={title}
+								className={"w-full h-full object-cover"}
+								width={457}
+								height={343}
+								loading={priority ? priority : "lazy"}
+							/>
 						</picture>
 						{isVerified ? (
 							<span className="inline-flex items-center absolute top-2.5 right-2.5 text-primary-500 bg-white rounded-lg py-1 px-2 shadow-md">
