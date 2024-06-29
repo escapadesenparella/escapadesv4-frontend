@@ -12,6 +12,7 @@ const NavigationBar = () => {
 		searchQuery: "",
 		isResponsiveMenuOpen: false,
 		isSearchPanelOpen: false,
+		isMenuDropdownOpen: false,
 		logoUrl: "/",
 	};
 	const [state, setState] = useState(initialState);
@@ -38,10 +39,16 @@ const NavigationBar = () => {
 		!state.isResponsiveMenuOpen
 			? setState({ ...state, isResponsiveMenuOpen: true })
 			: setState({ ...state, isResponsiveMenuOpen: false });
+
 	const handleSearchPanel = () =>
 		!state.isSearchPanelOpen
 			? setState({ ...state, isSearchPanelOpen: true })
 			: setState({ ...state, isSearchPanelOpen: false });
+
+	const handleMenuDropdownVisibility = () =>
+		!state.isMenuDropdownOpen
+			? setState({ ...state, isMenuDropdownOpen: true })
+			: setState({ ...state, isMenuDropdownOpen: false });
 
 	useEffect(() => {
 		if (user) {
@@ -221,7 +228,7 @@ const NavigationBar = () => {
 						{/* Menu list */}
 						<ul className="menu__list">
 							{/* Button close */}
-							<li>
+							<li className="lg:hidden">
 								<button
 									className="menu__close"
 									aria-label="Botó tancar menu"
@@ -254,36 +261,182 @@ const NavigationBar = () => {
 										className="menu__link"
 										title="Experiències en parella a Catalunya"
 									>
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											width="22"
+											height="22"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="1.5"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										>
+											<path
+												stroke="none"
+												d="M0 0h24v24H0z"
+												fill="none"
+											/>
+											<path d="M3 19a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+											<path d="M19 7a2 2 0 1 0 0 -4a2 2 0 0 0 0 4z" />
+											<path d="M11 19h5.5a3.5 3.5 0 0 0 0 -7h-8a3.5 3.5 0 0 1 0 -7h4.5" />
+										</svg>
 										Experiències
 									</a>
 								</Link>
 							</li>
 							<li className="menu__item">
 								<Link href="/allotjaments">
-									<a className="menu__link">Allotjaments</a>
-								</Link>
-							</li>
-							<li className="menu__item">
-								<Link href="/histories">
-									<a className="menu__link">Històries</a>
-								</Link>
-							</li>
-							<li className="menu__item">
-								<Link href="/llistes">
-									<a className="menu__link">Llistes</a>
-								</Link>
-							</li>
-							<li className="menu__item">
-								<Link href="/viatges">
-									<a className="menu__link">Viatges</a>
-								</Link>
-							</li>
-							<li className="menu__item">
-								<Link href="/contacte">
-									<a className="button button__primary button__med menu__link">
-										Contacta'ns
+									<a className="menu__link">
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											width="22"
+											height="22"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="1.5"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+										>
+											<path
+												stroke="none"
+												d="M0 0h24v24H0z"
+												fill="none"
+											/>
+											<path d="M11 14l4 6h6l-9 -16l-9 16h6l4 -6" />
+										</svg>
+										Allotjaments
 									</a>
 								</Link>
+							</li>
+							<li
+								className={`menu__item menu-dropdown ${
+									state.isMenuDropdownOpen ? "open" : ""
+								}`}
+							>
+								<button
+									className={`menu__link menu__link-more menu-dropdown__button`}
+									onClick={() =>
+										handleMenuDropdownVisibility()
+									}
+									aria-label="Gestionar menú"
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="24"
+										height="24"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="1.5"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									>
+										<path
+											stroke="none"
+											d="M0 0h24v24H0z"
+											fill="none"
+										/>
+										<path d="M4 6l16 0" />
+										<path d="M4 12l16 0" />
+										<path d="M4 18l16 0" />
+									</svg>
+									Menú
+								</button>
+								<ul className="menu-dropdown__list">
+									<li className="menu__item">
+										<Link href="/histories">
+											<a className="menu__link">
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													width="20"
+													height="20"
+													viewBox="0 0 24 24"
+													fill="none"
+													stroke="currentColor"
+													stroke-width="1.5"
+													stroke-linecap="round"
+													stroke-linejoin="round"
+												>
+													<path
+														stroke="none"
+														d="M0 0h24v24H0z"
+														fill="none"
+													/>
+													<path d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-11a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1m3 0v18" />
+													<path d="M13 8l2 0" />
+													<path d="M13 12l2 0" />
+												</svg>
+												Històries
+											</a>
+										</Link>
+									</li>
+									<li className="menu__item">
+										<Link href="/llistes">
+											<a className="menu__link">
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													width="20"
+													height="20"
+													viewBox="0 0 24 24"
+													fill="none"
+													stroke="currentColor"
+													stroke-width="1.5"
+													stroke-linecap="round"
+													stroke-linejoin="round"
+												>
+													<path
+														stroke="none"
+														d="M0 0h24v24H0z"
+														fill="none"
+													/>
+													<path d="M13 5h8" />
+													<path d="M13 9h5" />
+													<path d="M13 15h8" />
+													<path d="M13 19h5" />
+													<path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+													<path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+												</svg>
+												Llistes
+											</a>
+										</Link>
+									</li>
+									<li className="menu__item">
+										<Link href="/viatges">
+											<a className="menu__link">
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													width="20"
+													height="20"
+													viewBox="0 0 24 24"
+													fill="none"
+													stroke="currentColor"
+													stroke-width="1.5"
+													stroke-linecap="round"
+													stroke-linejoin="round"
+												>
+													<path
+														stroke="none"
+														d="M0 0h24v24H0z"
+														fill="none"
+													/>
+													<path d="M10 19m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v1a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" />
+													<path d="M12 16c3.314 0 6 -4.686 6 -8a6 6 0 1 0 -12 0c0 3.314 2.686 8 6 8z" />
+													<path d="M12 9m-2 0a2 7 0 1 0 4 0a2 7 0 1 0 -4 0" />
+												</svg>
+												Viatges
+											</a>
+										</Link>
+									</li>
+									<li className="menu__item mt-2">
+										<Link href="/contacte">
+											<a className="button button__primary button__med menu__link">
+												Contacta'ns
+											</a>
+										</Link>
+									</li>
+								</ul>
 							</li>
 						</ul>
 					</div>
