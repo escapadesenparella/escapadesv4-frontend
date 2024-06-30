@@ -6,15 +6,17 @@
 
     html
         @apply scroll-smooth text-[16px]
+        @screen lg
+            scroll-padding: 131px
 
     body
         @apply text-base text-grey-700 font-normal leading-normal font-body
 
     h1, h2
-        @apply font-headings font-light
+        @apply font-headings font-light text-balance
 
     h3, h4, h5
-        @apply font-medium font-headings
+        @apply font-medium font-headings text-balance
 
     h1
         font-size: clamp(28px, 3vw, 40px)
@@ -34,6 +36,11 @@
         @screen md
             @apply text-lg font-medium leading-snug
 
+        &.font-display
+            font-size: clamp(22px, 3vw, 28px)
+            line-height: clamp(24px, 3.5vw, 30px)
+            @apply font-light
+
     h3.text-block
         line-height: clamp(20px, 2vw, 24px)
 
@@ -49,6 +56,7 @@
     p, .text-block
         font-size: clamp(16px, 2vw, 18px)
         line-height: clamp(24px, 2vw, 27px)
+        text-wrap: balance
         @apply mb-5
 
     ol, ul, menu

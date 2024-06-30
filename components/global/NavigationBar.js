@@ -59,6 +59,100 @@ const NavigationBar = () => {
 		}
 	}, [user]);
 
+	const dropdownItems = [
+		{
+			href: "/histories",
+			title: "Històries en parella",
+			icon: `<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="20"
+					height="20"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.5"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<path
+						stroke="none"
+						d="M0 0h24v24H0z"
+						fill="none"
+					/>
+					<path d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-11a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1m3 0v18" />
+					<path d="M13 8l2 0" />
+					<path d="M13 12l2 0" />
+				</svg>`,
+			text: "Històries",
+		},
+		{
+			href: "/llistes",
+			title: "Llistes",
+			icon: `<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="20"
+					height="20"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.5"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<path
+						stroke="none"
+						d="M0 0h24v24H0z"
+						fill="none"
+					/>
+					<path d="M13 5h8" />
+					<path d="M13 9h5" />
+					<path d="M13 15h8" />
+					<path d="M13 19h5" />
+					<path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+					<path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
+				</svg>`,
+			text: "Llistes",
+		},
+		{
+			href: "/viatges",
+			title: "Viatges",
+			icon: `<svg
+					xmlns="http://www.w3.org/2000/svg"
+					width="20"
+					height="20"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="1.5"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<path
+						stroke="none"
+						d="M0 0h24v24H0z"
+						fill="none"
+					/>
+					<path d="M10 19m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v1a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" />
+					<path d="M12 16c3.314 0 6 -4.686 6 -8a6 6 0 1 0 -12 0c0 3.314 2.686 8 6 8z" />
+					<path d="M12 9m-2 0a2 7 0 1 0 4 0a2 7 0 1 0 -4 0" />
+				</svg>`,
+			text: "Viatges",
+		},
+		{
+			href: "/sobre-nosaltres",
+			title: "Sobre nosaltres",
+			icon: `<svg  xmlns="http://www.w3.org/2000/svg"  width="20"  height="20"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="1.5"  stroke-linecap="round"  stroke-linejoin="round" ><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" /><path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /><path d="M21 21v-2a4 4 0 0 0 -3 -3.85" /></svg>`,
+			text: "Sobre nosaltres",
+		},
+		{
+			href: "/contacte",
+			title: "Contacta'ns",
+			liClassName: "mt-2",
+			aClassName: "button button__primary button__med",
+			text: "Contacta'ns",
+		},
+	];
+
 	return (
 		<header className="z-50 bg-white w-full sticky top-0 border-b border-primary-50">
 			<nav className="px-5 py-4 md:py-5 menu">
@@ -287,7 +381,10 @@ const NavigationBar = () => {
 							</li>
 							<li className="menu__item">
 								<Link href="/allotjaments">
-									<a className="menu__link">
+									<a
+										className="menu__link"
+										title="Allotjaments amb encant a Catalunya"
+									>
 										<svg
 											xmlns="http://www.w3.org/2000/svg"
 											width="22"
@@ -345,97 +442,38 @@ const NavigationBar = () => {
 									Menú
 								</button>
 								<ul className="menu-dropdown__list">
-									<li className="menu__item">
-										<Link href="/histories">
-											<a className="menu__link">
-												<svg
-													xmlns="http://www.w3.org/2000/svg"
-													width="20"
-													height="20"
-													viewBox="0 0 24 24"
-													fill="none"
-													stroke="currentColor"
-													stroke-width="1.5"
-													stroke-linecap="round"
-													stroke-linejoin="round"
-												>
-													<path
-														stroke="none"
-														d="M0 0h24v24H0z"
-														fill="none"
-													/>
-													<path d="M6 4h11a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-11a1 1 0 0 1 -1 -1v-14a1 1 0 0 1 1 -1m3 0v18" />
-													<path d="M13 8l2 0" />
-													<path d="M13 12l2 0" />
-												</svg>
-												Històries
-											</a>
-										</Link>
-									</li>
-									<li className="menu__item">
-										<Link href="/llistes">
-											<a className="menu__link">
-												<svg
-													xmlns="http://www.w3.org/2000/svg"
-													width="20"
-													height="20"
-													viewBox="0 0 24 24"
-													fill="none"
-													stroke="currentColor"
-													stroke-width="1.5"
-													stroke-linecap="round"
-													stroke-linejoin="round"
-												>
-													<path
-														stroke="none"
-														d="M0 0h24v24H0z"
-														fill="none"
-													/>
-													<path d="M13 5h8" />
-													<path d="M13 9h5" />
-													<path d="M13 15h8" />
-													<path d="M13 19h5" />
-													<path d="M3 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
-													<path d="M3 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z" />
-												</svg>
-												Llistes
-											</a>
-										</Link>
-									</li>
-									<li className="menu__item">
-										<Link href="/viatges">
-											<a className="menu__link">
-												<svg
-													xmlns="http://www.w3.org/2000/svg"
-													width="20"
-													height="20"
-													viewBox="0 0 24 24"
-													fill="none"
-													stroke="currentColor"
-													stroke-width="1.5"
-													stroke-linecap="round"
-													stroke-linejoin="round"
-												>
-													<path
-														stroke="none"
-														d="M0 0h24v24H0z"
-														fill="none"
-													/>
-													<path d="M10 19m0 1a1 1 0 0 1 1 -1h2a1 1 0 0 1 1 1v1a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1z" />
-													<path d="M12 16c3.314 0 6 -4.686 6 -8a6 6 0 1 0 -12 0c0 3.314 2.686 8 6 8z" />
-													<path d="M12 9m-2 0a2 7 0 1 0 4 0a2 7 0 1 0 -4 0" />
-												</svg>
-												Viatges
-											</a>
-										</Link>
-									</li>
-									<li className="menu__item mt-2">
-										<Link href="/contacte">
-											<a className="button button__primary button__med menu__link">
-												Contacta'ns
-											</a>
-										</Link>
-									</li>
+									{dropdownItems.map((item) => {
+										return (
+											<li
+												className={`menu__item ${
+													item.liClassName
+														? item.liClassName
+														: ""
+												}`}
+											>
+												<Link href={item.href}>
+													<a
+														className={`menu__link ${
+															item.aClassName
+																? item.aClassName
+																: ""
+														}`}
+													>
+														{item.icon ? (
+															<span
+																dangerouslySetInnerHTML={{
+																	__html: item.icon,
+																}}
+															></span>
+														) : (
+															""
+														)}
+														{item.text}
+													</a>
+												</Link>
+											</li>
+										);
+									})}
 								</ul>
 							</li>
 						</ul>

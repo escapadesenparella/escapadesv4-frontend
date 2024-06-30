@@ -11,11 +11,11 @@ const Footer = () => {
 	});
 
 	const [newsletterFormData, setNewsletterFormData] = useState({
-		name: '',
-		email: '',
-		serverMessage: '',
+		name: "",
+		email: "",
+		serverMessage: "",
 		submitted: false,
-		error: false
+		error: false,
 	});
 
 	const newsletterService = new NewsletterService();
@@ -52,7 +52,10 @@ const Footer = () => {
 	copyrightDate = copyrightDate.getFullYear();
 
 	const handleNewsletterFormChange = (e) => {
-		setNewsletterFormData({ ...newsletterFormData, [e.target.name]: e.target.value })
+		setNewsletterFormData({
+			...newsletterFormData,
+			[e.target.name]: e.target.value,
+		});
 	};
 
 	const handleNewsletterFormSubmit = (e) => {
@@ -62,10 +65,19 @@ const Footer = () => {
 		if (name !== "" && email !== "") {
 			newsletterService.subscribeToNewsletter(name, email).then((res) => {
 				if (res.status === 200) {
-					setNewsletterFormData({ ...newsletterFormData, serverMessage: res.message, submitted: true, error: false })
+					setNewsletterFormData({
+						...newsletterFormData,
+						serverMessage: res.message,
+						submitted: true,
+						error: false,
+					});
 				}
 				if (res.status === 400 || res.status === 500) {
-					setNewsletterFormData({ ...newsletterFormData, serverMessage: res.message, error: true });
+					setNewsletterFormData({
+						...newsletterFormData,
+						serverMessage: res.message,
+						error: true,
+					});
 				}
 			});
 		}
@@ -78,46 +90,147 @@ const Footer = () => {
 					<div className="max-w-5xl mx-auto">
 						<div className="relative flex flex-wrap items-center">
 							<picture className="block w-64 lg:w-80 h-auto mx-auto mix-blend-multiply">
-								<source srcSet="/email-confirmation.webp" type='image/webp' />
-								<img src="/email-confirmation.jpg" width="256" height="170" className="w-full h-auto object-contain" alt="Subscriu-te a la nostra newsletter" loading="lazy" />
+								<source
+									srcSet="/email-confirmation.webp"
+									type="image/webp"
+								/>
+								<img
+									src="/email-confirmation.jpg"
+									width="256"
+									height="170"
+									className="w-full h-auto object-contain"
+									alt="Subscriu-te a la nostra newsletter"
+									loading="lazy"
+								/>
 							</picture>
 							<div className="w-full lg:w-auto flex flex-col lg:flew-row items-center lg:items-start gap-5 pt-6 md:pt-0 lg:pl-8 lg:flex-1 max-w-md lg:max-w-full mx-auto lg:mx-0">
 								<div className="w-full md:max-w-xs mx-auto md:ml-0 md:mr-auto mb-3">
-									<h2 className="mb-2 text-center md:text-left">Subscriu-te a la nostra newsletter</h2>
-									<p className="mb-0 font-light text-center md:text-left">Per rebre les últimes novetats i ofertes</p>
+									<h2 className="mb-2 text-center md:text-left">
+										Subscriu-te a la nostra newsletter
+									</h2>
+									<p className="mb-0 font-light text-center md:text-left">
+										Per rebre les últimes novetats i ofertes
+									</p>
 								</div>
-								{!newsletterFormData.submitted ? <form className="form flex flex-wrap items-center flex-1" onSubmit={handleNewsletterFormSubmit}>
-									<fieldset className="form__group w-full md:w-auto">
-										<label htmlFor="name" className="form__label">Nom</label>
-										<input type="text" id="name" name="name" onChange={handleNewsletterFormChange} className="form__control bg-white" />
-									</fieldset>
-									<fieldset className="form__group w-full md:w-auto flex-1">
-										<label htmlFor="email" className="form__label">Correu electrònic</label>
-										<input type="email" id="email" name="email" onChange={handleNewsletterFormChange} className="form__control bg-white" />
-									</fieldset>
-									<fieldset className="form__group w-full lg:w-auto">
-										<button type="submit" className="button button__med button__primary justify-center md:mt-1 lg:mt-5">Subscriure'm</button>
-									</fieldset>
-									<span className="block w-full px-1.5 mt-1 form__text_info">Al fer clic a "Subscriure'm" confirmes haver llegit i estàs d'acord amb la <a href="/politica-privadesa" title="Política de Privacitat" className="text-primary-900 underline">Política de Privacitat.</a></span>
-									{newsletterFormData.error ? <span className="px-1.5 inline-flex items-center mt-2.5 text-sm text-red-500">
-										<svg xmlns="http://www.w3.org/2000/svg" className="mr-1.5" width={24} height={24} viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-											<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-											<path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
-											<path d="M12 8v4" />
-											<path d="M12 16h.01" />
-										</svg>
-										{newsletterFormData.serverMessage}</span>
-										: null}
-								</form> : <div className="flex items-center justify-center md:justify-start xl:justify-center flex-1 lg:flex-none xl:flex-1">
-									<div className="max-w-[280px] mx-auto md:mx-0 flex items-center">
-										<svg xmlns="http://www.w3.org/2000/svg" className="mr-2.5 text-green-500" width={32} height={32} viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" fill="none" strokeLinecap="round" strokeLinejoin="round">
-											<path stroke="none" d="M0 0h24v24H0z" fill="none" />
-											<path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
-											<path d="M9 12l2 2l4 -4" />
-										</svg>
-										<span className="inline-block flex-1">{newsletterFormData.serverMessage}</span>
+								{!newsletterFormData.submitted ? (
+									<form
+										className="form flex flex-wrap items-center flex-1"
+										onSubmit={handleNewsletterFormSubmit}
+									>
+										<fieldset className="form__group w-full md:w-auto">
+											<label
+												htmlFor="name"
+												className="form__label"
+											>
+												Nom
+											</label>
+											<input
+												type="text"
+												id="name"
+												name="name"
+												onChange={
+													handleNewsletterFormChange
+												}
+												className="form__control bg-white"
+											/>
+										</fieldset>
+										<fieldset className="form__group w-full md:w-auto flex-1">
+											<label
+												htmlFor="email"
+												className="form__label"
+											>
+												Correu electrònic
+											</label>
+											<input
+												type="email"
+												id="email"
+												name="email"
+												onChange={
+													handleNewsletterFormChange
+												}
+												className="form__control bg-white"
+											/>
+										</fieldset>
+										<fieldset className="form__group w-full lg:w-auto">
+											<button
+												type="submit"
+												className="button button__med button__primary justify-center md:mt-1 lg:mt-5"
+											>
+												Subscriure'm
+											</button>
+										</fieldset>
+										<span className="block w-full px-1.5 mt-1 form__text_info">
+											Al fer clic a "Subscriure'm"
+											confirmes haver llegit i estàs
+											d'acord amb la{" "}
+											<a
+												href="/politica-privadesa"
+												title="Política de Privacitat"
+												className="text-primary-900 underline"
+											>
+												Política de Privacitat.
+											</a>
+										</span>
+										{newsletterFormData.error ? (
+											<span className="px-1.5 inline-flex items-center mt-2.5 text-sm xl:text-15 text-red-500">
+												<svg
+													xmlns="http://www.w3.org/2000/svg"
+													className="mr-1.5"
+													width={24}
+													height={24}
+													viewBox="0 0 24 24"
+													strokeWidth={1.5}
+													stroke="currentColor"
+													fill="none"
+													strokeLinecap="round"
+													strokeLinejoin="round"
+												>
+													<path
+														stroke="none"
+														d="M0 0h24v24H0z"
+														fill="none"
+													/>
+													<path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0" />
+													<path d="M12 8v4" />
+													<path d="M12 16h.01" />
+												</svg>
+												{
+													newsletterFormData.serverMessage
+												}
+											</span>
+										) : null}
+									</form>
+								) : (
+									<div className="flex items-center justify-center md:justify-start xl:justify-center flex-1 lg:flex-none xl:flex-1">
+										<div className="max-w-[280px] mx-auto md:mx-0 flex items-center">
+											<svg
+												xmlns="http://www.w3.org/2000/svg"
+												className="mr-2.5 text-green-500"
+												width={32}
+												height={32}
+												viewBox="0 0 24 24"
+												strokeWidth={1.5}
+												stroke="currentColor"
+												fill="none"
+												strokeLinecap="round"
+												strokeLinejoin="round"
+											>
+												<path
+													stroke="none"
+													d="M0 0h24v24H0z"
+													fill="none"
+												/>
+												<path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+												<path d="M9 12l2 2l4 -4" />
+											</svg>
+											<span className="inline-block flex-1">
+												{
+													newsletterFormData.serverMessage
+												}
+											</span>
+										</div>
 									</div>
-								</div>}
+								)}
 							</div>
 						</div>
 					</div>
@@ -129,15 +242,23 @@ const Footer = () => {
 						<div className="w-full mb-6 lg:mb-0 md:pr-5">
 							<div className="flex flex-col flex-wrap items-start max-w-xs">
 								<picture>
-									<img src="/logo-escapades-en-parella.svg" alt="Logo Escapadesenparella.cat" width={144} height={40} className="w-36 md:w-44 lg:w- h-auto" loading="lazy" />
+									<img
+										src="/logo-escapades-en-parella.svg"
+										alt="Logo Escapadesenparella.cat"
+										width={144}
+										height={40}
+										className="w-36 md:w-44 lg:w- h-auto"
+										loading="lazy"
+									/>
 								</picture>
-								<span className="text-sm block mt-5">
+								<span className="text-sm xl:text-15 block mt-5">
 									Escapadesenparella.cat és el recomanador
 									especialista d'escapades en parella a
-									Catalunya. Segueix-nos per estar al dia de totes les novetats:
+									Catalunya. Segueix-nos per estar al dia de
+									totes les novetats:
 								</span>
 								<ul className="list-none flex items-center mx-0 mt-3 mb-4 p-0 space-x-3">
-									<li className="py-1 text-sm leading-tight">
+									<li className="py-1 text-sm xl:text-15 leading-tight">
 										<a
 											href="https://www.instagram.com/escapadesenparella"
 											title="Segueix-nos a Instagram"
@@ -179,7 +300,7 @@ const Footer = () => {
 											</svg>
 										</a>
 									</li>
-									<li className="py-1 text-sm leading-tight">
+									<li className="py-1 text-sm xl:text-15 leading-tight">
 										<a
 											href="https://twitter.com/escapaenparella"
 											title="Segueix-nos a Twitter"
@@ -207,7 +328,7 @@ const Footer = () => {
 											</svg>
 										</a>
 									</li>
-									<li className="py-1 text-sm leading-tight">
+									<li className="py-1 text-sm xl:text-15 leading-tight">
 										<a
 											href="https://facebook.com/escapadesenparella"
 											title="Segueix-nos a Facebook"
@@ -293,15 +414,25 @@ const Footer = () => {
 								<ul className="list-none m-0 p-0">
 									{state.activityCategories
 										? state.activityCategories.map(
-											(category, idx) => (
-												<li
-													key={idx}
-													className="py-1 text-sm leading-tight"
-												>
-													<a href={"/" + category.slug} title={category.title}>{category.title}</a>
-												</li>
-											)
-										)
+												(category, idx) => (
+													<li
+														key={idx}
+														className="py-1.5 text-sm xl:text-15 leading-tight"
+													>
+														<a
+															href={
+																"/" +
+																category.slug
+															}
+															title={
+																category.title
+															}
+														>
+															{category.title}
+														</a>
+													</li>
+												)
+										  )
 										: null}
 								</ul>
 							</div>
@@ -314,15 +445,25 @@ const Footer = () => {
 								<ul className="list-none m-0 p-0">
 									{state.placeCategories
 										? state.placeCategories.map(
-											(category, idx) => (
-												<li
-													key={idx}
-													className="py-1 text-sm leading-tight"
-												>
-													<a href={"/" + category.slug} title={category.title}>{category.title}</a>
-												</li>
-											)
-										)
+												(category, idx) => (
+													<li
+														key={idx}
+														className="py-1.5 text-sm xl:text-15 leading-tight"
+													>
+														<a
+															href={
+																"/" +
+																category.slug
+															}
+															title={
+																category.title
+															}
+														>
+															{category.title}
+														</a>
+													</li>
+												)
+										  )
 										: null}
 								</ul>
 							</div>
@@ -333,49 +474,56 @@ const Footer = () => {
 									Nosaltres
 								</span>
 								<ul className="list-none m-0 p-0">
-									<li className="py-1 text-sm leading-tight">
+									<li className="py-1.5 text-sm xl:text-15 leading-tight">
+										<Link href="/sobre-nosaltres">
+											<a title="Sobre Escapadesenparella.cat">
+												Sobre nosaltres
+											</a>
+										</Link>
+									</li>
+									<li className="py-1.5 text-sm xl:text-15 leading-tight">
 										<Link href="/allotjaments">
 											<a title="Allotjaments amb encant a Catalunya">
 												Allotjaments
 											</a>
 										</Link>
 									</li>
-									<li className="py-1 text-sm leading-tight">
+									<li className="py-1.5 text-sm xl:text-15 leading-tight">
 										<Link href="/activitats">
 											<a title="Experiències en parella">
 												Experiències
 											</a>
 										</Link>
 									</li>
-									<li className="py-1 text-sm leading-tight">
+									<li className="py-1.5 text-sm xl:text-15 leading-tight">
 										<Link href="/histories">
 											<a title="Històries en parella">
 												Històries en parella
 											</a>
 										</Link>
 									</li>
-									<li className="py-1 text-sm leading-tight">
+									<li className="py-1.5 text-sm xl:text-15 leading-tight">
 										<Link href="/empreses">
-											<a title="Serveis per a empreses">Serveis empreses</a>
+											<a title="Serveis per a empreses">
+												Serveis empreses
+											</a>
 										</Link>
 									</li>
-									<li className="disabled py-1 text-sm leading-tight">
-										<Link href="#">Qui som?</Link>
-									</li>
-									<li className="disabled py-1 text-sm leading-tight">
-										<Link href="#">Què fem?</Link>
-									</li>
-									<li className="py-1 text-sm leading-tight">
+									<li className="py-1.5 text-sm xl:text-15 leading-tight">
 										<Link href="/descomptes-viatjar">
-											<a title="Descomptes per viatjar">Descomptes per viatjar</a>
+											<a title="Descomptes per viatjar">
+												Descomptes per viatjar
+											</a>
 										</Link>
 									</li>
-									<li className="py-1 text-sm leading-tight">
+									<li className="py-1.5 text-sm xl:text-15 leading-tight">
 										<Link href="/newsletter">
-											<a title="Subscriu-te a la newsletter">Subscriu-te a la newsletter</a>
+											<a title="Subscriu-te a la newsletter">
+												Subscriu-te a la newsletter
+											</a>
 										</Link>
 									</li>
-									<li className="pt-1 text-sm leading-tight">
+									<li className="pt-1.5 text-sm xl:text-15 leading-tight">
 										<Link href="/contacte">
 											<a title="Contacte">Contacte</a>
 										</Link>
@@ -386,17 +534,17 @@ const Footer = () => {
 					</div>
 					<div className="w-full mt-8 md:mt-12 border-t border-primary-50 pt-8">
 						<ul className="list-none px-0 flex flex-col md:flex-row md:items-center -mx-2">
-							<li className="pb-1.5 px-2 text-sm">
+							<li className="pb-1.5 px-2 text-sm xl:text-15">
 								<Link href="/politica-privadesa">
 									<a>Política de privadesa</a>
 								</Link>
 							</li>
-							<li className="pb-1.5 px-2 text-sm">
+							<li className="pb-1.5 px-2 text-sm xl:text-15">
 								<Link href="/condicions-us">
 									<a>Condicions d'ús</a>
 								</Link>
 							</li>
-							<li className="pb-1.5 px-2 text-sm">
+							<li className="pb-1.5 px-2 text-sm xl:text-15">
 								<Link href="/politica-privadesa#politicacookies">
 									<a>Política de cookies</a>
 								</Link>
