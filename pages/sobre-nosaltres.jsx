@@ -480,7 +480,7 @@ const AboutUs = () => {
 											escapades culturals i de la
 											caldereta de llagosta. Programador
 											web apassionat pel disseny
-											d'interífices. Sempre amb la càmara
+											d'interfícies. Sempre amb la càmera
 											a punt. Un superpoder: poder volar.
 										</p>
 										<a
@@ -529,10 +529,10 @@ const AboutUs = () => {
 										<p className="mt-2.5 text-block font-light leading-normal">
 											Incansable i valent. Amant de totes
 											les escapades on pugui anar i del
-											iogurt. Treballant dur per ser el
-											millor secretari. Rastrejador per
-											naturalesa. Sempre amb la pilota a
-											la boca. Un superpoder: tenir les
+											iogurt. Treballant intensament per
+											ser el millor secretari. Rastrejador
+											per naturalesa. Sempre amb la pilota
+											a la boca. Un superpoder: tenir les
 											potes llargues.
 										</p>
 										<a
