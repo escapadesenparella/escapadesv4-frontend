@@ -82,7 +82,7 @@ const PublicSquareBox = ({
 	}
 
 	let categoryModified;
-	if (categoria) {
+	if (categoria && categoria.length > 0) {
 		if (categoria[0].includes("romantica")) {
 			categoryModified = "romàntica";
 			linkPath = "escapades-romantiques";
