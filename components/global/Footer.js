@@ -503,6 +503,13 @@ const Footer = () => {
 										</Link>
 									</li>
 									<li className="py-1.5 text-sm xl:text-15 leading-tight">
+										<Link href="/premsa-i-mitjans">
+											<a title="Premsa i mitjans">
+												Premsa i mitjans
+											</a>
+										</Link>
+									</li>
+									<li className="py-1.5 text-sm xl:text-15 leading-tight">
 										<Link href="/empreses">
 											<a title="Serveis per a empreses">
 												Serveis empreses
