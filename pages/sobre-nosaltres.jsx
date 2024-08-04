@@ -174,13 +174,23 @@ const AboutUs = () => {
 														escapada en parella per
 														recordar.
 													</p>
-													<a
-														href="#equip"
-														title="Conèix-nos"
-														className="button button__primary button__med lg:mt-2.5"
-													>
-														Conèix-nos
-													</a>
+													<div className="flex gap-2.5 lg:mt-2.5">
+														<a
+															href="#equip"
+															title="Conèix-nos"
+															className="button button__primary button__med"
+														>
+															Conèix-nos
+														</a>
+														<a
+															href="/premsa-i-mitjans"
+															title="Premsa i mitjans"
+															className="button button__ghost button__med"
+														>
+															Mencions als mitjans
+														</a>
+
+													</div>
 												</div>
 											</div>
 										</div>
