@@ -7,11 +7,11 @@ const TripCategoryBox = ({ image, title, subtitle, slug, country }) => {
 			<Link href={`/viatges/${slug}`}>
 				<a
 					title={title}
-					className="block bg-[#eeeeee] rounded-lg md:rounded-2xl overflow-hidden group h-full"
+					className="block bg-gray-50 rounded-lg md:rounded-2xl overflow-hidden group h-full"
 				>
 					<div className="flex flex-wrap items-stretch h-full">
 						<div className="w-full md:w-1/2">
-							<picture className="block w-full h-full rounded-lg md:rounded-2xl bg-primary-300 overflow-hidden">
+							<picture className="block w-full h-full rounded-lg md:rounded-2xl overflow-hidden">
 								<img
 									src={image}
 									alt={title}
@@ -20,14 +20,14 @@ const TripCategoryBox = ({ image, title, subtitle, slug, country }) => {
 								/>
 							</picture>
 						</div>
-						<div className="w-full md:w-1/2 p-10">
+						<div className="w-full md:w-1/2 p-8">
 							<div className="max-w-xs flex flex-col h-full">
 								<div className="flex-1">
-									<h2 className="text-xl my-0 font-medium">
+									<h2 className="text-block font-normal my-0">
 										{title}
 									</h2>
 									<div
-										className="text-block mt-1.5 text-15 text-primary-400 line-clamp-4"
+										className="text-block text-block--sm mt-1.5 line-clamp-4"
 										dangerouslySetInnerHTML={{
 											__html: subtitle,
 										}}
