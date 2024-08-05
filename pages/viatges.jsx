@@ -7,6 +7,7 @@ import UserContext from "../contexts/UserContext";
 import { useContext, useEffect } from "react";
 import ContentService from "../services/contentService";
 import TripCategoryBox from "../components/listings/TripCategoryBox";
+import ShareBarModal from "../components/social/ShareBarModal";
 
 const Trips = ({ tripCategories, featuredTripCategories }) => {
 	const { user } = useContext(UserContext);
@@ -37,10 +38,10 @@ const Trips = ({ tripCategories, featuredTripCategories }) => {
 				<NavigationBar user={user} />
 				<main>
 					{/* Section cover */}
-					<section className="px-6 pt-3">
+					<section className="px-5 pt-5">
 						<div className="flex flex-wrap items-stretch -mx-3">
 							<div className="px-3 w-full lg:w-auto">
-								<div className="bg-[#eeeeee] flex items-center justify-center pl-14 pr-16 py-14 rounded-lg md:rounded-2xl h-full">
+								<div className="bg-gray-50 flex items-center justify-center p-8 md:pl-14 md:pr-16 md:py-14 rounded-lg md:rounded-2xl h-full">
 									<div className="max-w-xs">
 										<ul className="breadcrumb mb-3">
 											<li className="breadcrumb__item">
@@ -58,16 +59,29 @@ const Trips = ({ tripCategories, featuredTripCategories }) => {
 												</span>
 											</li>
 										</ul>
-										<h1 className="underlined-element">
-											Viatges en parella
+										<h1 className="mt-4 md:mt-7 mb-0">
+											<span className="text-secondary-500">
+												Viatges
+											</span>{" "}
+											en parella
 										</h1>
-										<div className="mt-6 mb-0">
+										<div className="mt-4 text-block font-light leading-normal">
 											Descobreix el món amb nosaltres.
 											<br />
 											T'expliquem els nostres viatges,
 											aventures i consells a mesura que
 											anem descobrint nous països.
 										</div>
+										<ShareBarModal
+											picture={null}
+											title={"Viatges en parella"}
+											rating={null}
+											slug={`https://escapadesenparella.cat/viatges`}
+											locality={null}
+											colorClass={
+												"text-primary-500 text-sm"
+											}
+										/>
 									</div>
 								</div>
 							</div>
@@ -109,13 +123,13 @@ const Trips = ({ tripCategories, featuredTripCategories }) => {
 																						<span className="bg-secondary-600 px-3 py-1 text-xs text-white rounded-md inline-block mb-4">
 																							Destacat
 																						</span>
-																						<h2 className="text-xl my-0 font-medium">
+																						<h2 className="text-block font-normal my-0">
 																							{
 																								category.title
 																							}
 																						</h2>
 																						<div
-																							className="text-block mt-1.5 text-15 text-primary-400 line-clamp-4"
+																							className="text-block text-block--sm mt-1.5 line-clamp-4"
 																							dangerouslySetInnerHTML={{
 																								__html: category.seoTextHeader,
 																							}}
@@ -199,7 +213,7 @@ const Trips = ({ tripCategories, featuredTripCategories }) => {
 					</section>
 
 					{/* Section trips list */}
-					<section className="p-6">
+					<section className="px-5 pt-6 pb-8">
 						<div className="flex flex-wrap items-stretch -mx-3">
 							{tripCategories
 								? tripCategories.map((tripCategory) => {

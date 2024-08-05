@@ -87,6 +87,18 @@
             &:last-child
                 @apply mb-0
 
+    .text-block--sm
+        @extend .text-block
+        font-size: clamp(14px, 2vw, 16px)
+        line-height: clamp(20px, 2vw, 24px)
+
+        *:not(h1, h2, h3, h4)
+            font-size: clamp(14px, 2vw, 16px)
+            line-height: clamp(20px, 2vw, 24px)
+
+            &:last-child
+                @apply mb-0
+
     #animate-area
         width: 100%
         height: 442px
