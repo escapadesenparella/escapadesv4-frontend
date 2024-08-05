@@ -9,6 +9,9 @@ import FancyboxUtil from "../../../utils/FancyboxUtils";
 import { formatDateTimeToISODate } from "../../../utils/helpers";
 import BlogPostingRichSnippet from "../../../components/richsnippets/BlogPostingRichSnippet";
 import BreadcrumbRichSnippet from "../../../components/richsnippets/BreadcrumbRichSnippet";
+import ShareBarModal from "../../../components/social/ShareBarModal";
+import FollowInstagramBox from "../../../components/global/FollowInstagramBox";
+import AdBanner from "../../../components/ads/AdBanner";
 
 const StoryListing = ({ tripEntryDetails, categoryDetails }) => {
 	const { user } = useContext(UserContext);
@@ -35,12 +38,13 @@ const StoryListing = ({ tripEntryDetails, categoryDetails }) => {
 							>
 								<picture
 									key={idx}
-									className="block rounded-md overflow-hidden aspect-1"
+									className="block rounded-2xl overflow-hidden aspect-1 relative"
 								>
 									<img
 										src={image}
-										alt={`${tripEntryDetails.title} - ${idx + 1
-											}`}
+										alt={`${tripEntryDetails.title} - ${
+											idx + 1
+										}`}
 										width={400}
 										height={300}
 										className="w-full h-full object-cover object-center"
@@ -82,8 +86,8 @@ const StoryListing = ({ tripEntryDetails, categoryDetails }) => {
 
 	const coverPath = tripEntryDetails.cover.substring(0, 51);
 	const imageId = tripEntryDetails.cover.substring(63);
-	const coverImgDesktop = `${coverPath}w_896,h_504,c_fill/${imageId}`;
-	const coverImgMobile = `${coverPath}w_366,h_206,c_fill/${imageId}`;
+	const coverImgDesktop = `${coverPath}w_1392,h_783,c_fill/${imageId}`;
+	const coverImgMobile = `${coverPath}w_400,h_300,c_fill/${imageId}`;
 
 	const coverAuthorPath = tripEntryDetails.owner.avatar.substring(0, 51);
 	const imageAuthorId = tripEntryDetails.owner.avatar.substring(63);
@@ -125,144 +129,206 @@ const StoryListing = ({ tripEntryDetails, categoryDetails }) => {
 					}
 					user={user}
 				/>
-				<div className="pt-3 px-4">
-					<div className="w-full">
-						<ul className="breadcrumb">
-							<li className="breadcrumb__item">
-								<a
-									href="/"
-									title="Inici"
-									className="breadcrumb__link"
-								>
-									Inici
-								</a>
-							</li>
-							<li className="breadcrumb__item">
-								<a href="/viatges" className="breadcrumb__link">
-									Viatges
-								</a>
-							</li>
-							<li className="breadcrumb__item">
-								<a
-									href={`/viatges/${categoryDetails.slug}`}
-									title={categoryDetails.title}
-									className="breadcrumb__link"
-								>
-									{categoryDetails.title}
-								</a>
-							</li>
-							<li className="breadcrumb__item">
-								<span className="breadcrumb__link active">
-									{tripEntryDetails.title}
-								</span>
-							</li>
-						</ul>
-					</div>
-				</div>
 				<main>
-					<article className="pt-12 pb-4">
-						<div className="container">
-							<div className="max-w-full md:max-w-2xl mx-auto">
-								<h1 className="md:text-center">
-									{tripEntryDetails.title}
-								</h1>
-								<p className="text-lg md:text-xl md:text-center md:px-16 mt-2.5">
-									{tripEntryDetails.subtitle}
-								</p>
-								<div className="mt-3 flex flex-wrap items-center md:justify-center">
-									<div className="flex flex-wrap items-center">
-										<div className="rounded-full overflow-hidden w-8 h-8 mr-2.5">
-											<picture>
-												<img
-													src={coverAuthorImg}
-													alt={
+					<article>
+						<section className="pt-8 md:pt-10 lg:pt-12 pb-6 md:pb-8 bg-tertiary-50 ">
+							{/* Breadcrumb + article header */}
+							<div className="w-full">
+								<div className="container">
+									<ul className="breadcrumb max-w-5xl mx-auto">
+										<li className="breadcrumb__item">
+											<a
+												href="/"
+												className="breadcrumb__link"
+											>
+												Inici
+											</a>
+										</li>
+										<li className="breadcrumb__item">
+											<a
+												href="/viatges"
+												className="breadcrumb__link"
+											>
+												Viatges
+											</a>
+										</li>
+										<li className="breadcrumb__item">
+											<a
+												href={`https://escapadesenparella.cat/viatges/${categoryDetails.slug}`}
+												className="breadcrumb__link"
+											>
+												{categoryDetails.title}
+											</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+
+							{/* Article heading + subtitle + meta info */}
+							<div className="relative mt-4 md:mt-7">
+								<div className="container">
+									<div className="md:max-w-xl lg:max-w-5xl lg:mx-auto">
+										<h1 className="font-display max-w-3xl my-0">
+											{tripEntryDetails.title}
+										</h1>
+										<p className="lg:text-xl font-light mt-2.5 mb-3 md:mt-3 md:mb-4 max-w-3xl">
+											{tripEntryDetails.subtitle}
+										</p>
+										{/* Informació de l'autor */}
+										<div className="flex flex-wrap items-center gap-4">
+											<div className="flex flex-wrap items-center">
+												<div className="rounded-full overflow-hidden w-8 h-8 mr-2.5">
+													<picture>
+														<img
+															src={coverAuthorImg}
+															alt={
+																tripEntryDetails
+																	.owner
+																	.fullName
+															}
+															className={
+																"w-full h-full object-cover"
+															}
+															width={32}
+															height={32}
+															loading="eager"
+															fetchpriority="high"
+														/>
+													</picture>
+												</div>
+												<span className="text-sm">
+													{
 														tripEntryDetails.owner
 															.fullName
 													}
-													width={32}
-													height={32}
-													className="w-full h-full object-cover"
-													loadgin="eager"
-													fetchpriority="high"
-												/>
-											</picture>
+												</span>
+												<span className="mx-2 text-sm ">
+													–
+												</span>
+												<span className="text-sm ">
+													<time
+														dateTime={formatDateTimeToISODate(
+															tripEntryDetails.createdAt
+														)}
+													>
+														<u>
+															{formatDateTimeToISODate(
+																tripEntryDetails.createdAt
+															)}
+														</u>
+													</time>
+												</span>
+											</div>
+											<ShareBarModal
+												picture={coverImgMobile}
+												title={tripEntryDetails.title}
+												rating={null}
+												slug={`https://escapadesenparella.cat/viatges/${categoryDetails.slug}/${tripEntryDetails.slug}`}
+												locality={null}
+												colorClass={
+													"text-primary-500 text-sm"
+												}
+											/>
 										</div>
-										<span className="text-sm text-primary-400 text-opacity-80">
-											{tripEntryDetails.owner.fullName}
-										</span>
-										<span className="mx-2 text-sm text-primary-400 text-opacity-80">
-											·
-										</span>
-										<span className="text-sm text-primary-400 text-opacity-80">
-											Publicat el{" "}
-											<time
-												dateTime={formatDateTimeToISODate(
-													tripEntryDetails.createdAt
-												)}
-											>
-												<u>
-													{formatDateTimeToISODate(
-														tripEntryDetails.createdAt
-													)}
-												</u>
-											</time>
-										</span>
 									</div>
 								</div>
 							</div>
+						</section>
 
-							<div className="w-full max-w-full md:max-w-4xl md:mx-auto mt-6">
-								<div className="aspect-w-16 aspect-h-9 rounded-md overflow-hidden">
-									<picture>
-										<source
-											srcSet={coverImgMobile}
-											media="(max-width: 768px)"
-										/>
-										<source
-											srcSet={coverImgDesktop}
-											media="(min-width: 768px)"
-										/>
-										<img
-											src={coverImgDesktop}
-											alt={tripEntryDetails.title}
-											width={400}
-											height={300}
-											className="w-full h-full object-cover"
-											fetchpriority="high"
-											loading="eager"
-										/>
-									</picture>
-								</div>
-								<figcaption className="text-xs mt-2 text-primary-400 text-opacity-80">
-									Foto d' <u>Andrea Prat</u> i{" "}
-									<u>Juli Ramon</u> per Escapadesenparella.cat
-								</figcaption>
-							</div>
-
-							<div className="w-full max-w-full md:max-w-2xl mx-auto pt-8">
-								<div className="text-center text-tertiary-500 text-opacity-80 text-sm py-4 mb-5 md:mb-6 bg-tertiary-100 bg-opacity-50 flex items-center justify-center rounded-md">
-									<span className="inline-block">
-										Darrera actualització:{" "}
-										<time
-											dateTime={formatDateTimeToISODate(
-												tripEntryDetails.updatedAt
-											)}
-										>
-											<u>
-												{formatDateTimeToISODate(
-													tripEntryDetails.updatedAt
-												)}
-											</u>
-										</time>
-									</span>
-								</div>
-								<div className="listing-description">
-									{slicedDescription}
-								</div>
+						{/* Article cover */}
+						<div className="relative after:absolute after:top-0 after:inset-x-0 after:bg-tertiary-50 after:h-20">
+							<div className="container relative z-10">
+								<picture className="block aspect-w-4 aspect-h-3 lg:aspect-w-16 lg:aspect-h-9 h-full rounded-2xl overflow-hidden">
+									<source
+										srcSet={coverImgMobile}
+										media="(max-width: 768px)"
+									/>
+									<source
+										srcSet={coverImgDesktop}
+										media="(min-width: 768px)"
+									/>
+									<img
+										src={coverImgDesktop}
+										alt={tripEntryDetails.title}
+										className={"w-full h-full object-cover"}
+										width={400}
+										height={300}
+										loading="eager"
+										fetchpriority="high"
+									/>
+								</picture>
 							</div>
 						</div>
+
+						{/* Article description */}
+						<section className="pt-7">
+							<div className="container">
+								<div className="max-w-5xl mx-auto">
+									<div className="grid grid-cols-1 md:grid-cols-12 gap-y-8 gap-x-12">
+										<div className="md:col-span-8">
+											<div className="w-full border-b border-primary-50 pb-8">
+												<div className="flex flex-col h-full">
+													<span className="block text-sm">
+														Darrera actualització:{" "}
+														<time
+															dateTime={formatDateTimeToISODate(
+																tripEntryDetails.updatedAt
+															)}
+														>
+															<u>
+																{formatDateTimeToISODate(
+																	tripEntryDetails.updatedAt
+																)}
+															</u>
+														</time>
+													</span>
+													<figcaption className="text-sm font-light block">
+														Foto d'{" "}
+														<u>Andrea Prat</u> i{" "}
+														<u>Juli Ramon</u> per
+														Escapadesenparella.cat
+													</figcaption>
+												</div>
+											</div>
+											<div className="listing-description w-full mt-6 md:mt-8">
+												{slicedDescription}
+											</div>
+										</div>
+
+										{/* Aside */}
+										<aside className="md:col-span-4">
+											<div className="relative xl:sticky xl:top-24 mt-1.5">
+												<div className="p-7 bg-white rounded-2xl border border-primary-50">
+													<FollowInstagramBox />
+												</div>
+												<div className="p-7 bg-white rounded-2xl border border-primary-50 mt-7">
+													<span className="inline-block text-xs">
+														Anunci
+													</span>
+													<AdBanner
+														data-ad-slot="4940975412"
+														data-ad-format="auto"
+														data-full-width-responsive="true"
+													/>
+												</div>
+											</div>
+										</aside>
+									</div>
+								</div>
+							</div>
+						</section>
 					</article>
 				</main>
+				<section className="py-8 md:py-12">
+					<div className="container">
+						<div className="border-t border-primary-50 pt-8 md:pt-12">
+							<AdBanner
+								data-ad-slot="9222117584"
+								data-ad-format="autorelaxed"
+							/>
+						</div>
+					</div>
+				</section>
 			</div>
 			<Footer
 				logo_url={
