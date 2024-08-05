@@ -41,16 +41,17 @@ const handleFilesUpload = async (coverImage, bodyImages) => {
 	let uploadedCover = null;
 	let uploadedImages = [];
 
-	if (coverImage) {
+	if (coverImage && typeof coverImage === "object") {
 		uploadedCover = await uploadCoverImage();
-	};
+	}
 
-	if (bodyImages.length > 0) {
-		await uploadBodyImages(0, bodyImages)
+	if (bodyImages.length > 0 && typeof bodyImages === "object") {
+		await uploadBodyImages(0, bodyImages);
 	}
 
 	return {
-		uploadedCover, uploadedImages
+		uploadedCover,
+		uploadedImages,
 	};
 };
 
@@ -122,7 +123,7 @@ const getPicturesBySeason = (thisDate, objImages) => {
 	const currentMonth = thisDate.getMonth() + 1;
 	const currentDay = thisDate.getUTCDate();
 
-	let currentDate = currentMonth + '/' + currentDay + '/' + currentYear;
+	let currentDate = currentMonth + "/" + currentDay + "/" + currentYear;
 	// currentDate = '01/21/2024';
 
 	const triggers = {
@@ -149,16 +150,22 @@ const getPicturesBySeason = (thisDate, objImages) => {
 	let selectedImages;
 
 	switch (true) {
-		case new Date(currentDate) <= new Date(triggers.spring) && new Date(currentDate) >= new Date(triggersLastYear.winter) || new Date(currentDate) >= new Date(triggers.winter) && new Date(currentDate) <= new Date(triggersNextYear.spring):
+		case (new Date(currentDate) <= new Date(triggers.spring) &&
+			new Date(currentDate) >= new Date(triggersLastYear.winter)) ||
+			(new Date(currentDate) >= new Date(triggers.winter) &&
+				new Date(currentDate) <= new Date(triggersNextYear.spring)):
 			selectedImages = objImages.winter;
 			break;
-		case new Date(currentDate) <= new Date(triggers.summer) && new Date(currentDate) >= new Date(triggers.spring):
+		case new Date(currentDate) <= new Date(triggers.summer) &&
+			new Date(currentDate) >= new Date(triggers.spring):
 			selectedImages = objImages.spring;
 			break;
-		case new Date(currentDate) <= new Date(triggers.autumn) && new Date(currentDate) >= new Date(triggers.summer):
+		case new Date(currentDate) <= new Date(triggers.autumn) &&
+			new Date(currentDate) >= new Date(triggers.summer):
 			selectedImages = objImages.summer;
 			break;
-		case new Date(currentDate) <= new Date(triggers.winter) && new Date(currentDate) >= new Date(triggers.autumn):
+		case new Date(currentDate) <= new Date(triggers.winter) &&
+			new Date(currentDate) >= new Date(triggers.autumn):
 			selectedImages = objImages.autumn;
 			break;
 	}
@@ -168,21 +175,21 @@ const getPicturesBySeason = (thisDate, objImages) => {
 
 /**
  * copyContentToClipboard
- * 
+ *
  * Utility function to copy the innerText of the clicked element into the clipboard
- * 
+ *
  * @param {object} e
  */
 
-const copyTextToClipboard = e => {
+const copyTextToClipboard = (e) => {
 	e.preventDefault();
-	navigator.clipboard.writeText(e.currentTarget.innerText)
-}
+	navigator.clipboard.writeText(e.currentTarget.innerText);
+};
 
 export {
 	handleFilesUpload,
 	removeImage,
 	formatDateTimeToISODate,
 	getPicturesBySeason,
-	copyTextToClipboard
+	copyTextToClipboard,
 };

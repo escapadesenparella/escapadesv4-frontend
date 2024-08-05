@@ -64,6 +64,7 @@ const StoryListing = ({ tripEntryDetails, categoryDetails }) => {
 		parsedDescription.map((el) => slicedDescription.push(el));
 		if (slicedDescription.length > 1) {
 			slicedDescription.forEach((el, idx) => {
+				console.log(el.props.children);
 				if (
 					typeof el.props.children == "string" &&
 					el.props.children.includes("post_images")
@@ -206,7 +207,7 @@ const StoryListing = ({ tripEntryDetails, categoryDetails }) => {
 													–
 												</span>
 												<span className="text-sm ">
-													<time
+													{/* <time
 														dateTime={formatDateTimeToISODate(
 															tripEntryDetails.createdAt
 														)}
@@ -216,7 +217,7 @@ const StoryListing = ({ tripEntryDetails, categoryDetails }) => {
 																tripEntryDetails.createdAt
 															)}
 														</u>
-													</time>
+													</time> */}
 												</span>
 											</div>
 											<ShareBarModal
@@ -270,7 +271,7 @@ const StoryListing = ({ tripEntryDetails, categoryDetails }) => {
 												<div className="flex flex-col h-full">
 													<span className="block text-sm">
 														Darrera actualització:{" "}
-														<time
+														{/* <time
 															dateTime={formatDateTimeToISODate(
 																tripEntryDetails.updatedAt
 															)}
@@ -280,7 +281,7 @@ const StoryListing = ({ tripEntryDetails, categoryDetails }) => {
 																	tripEntryDetails.updatedAt
 																)}
 															</u>
-														</time>
+														</time> */}
 													</span>
 													<figcaption className="text-sm font-light block">
 														Foto d'{" "}
