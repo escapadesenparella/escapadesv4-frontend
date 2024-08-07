@@ -364,7 +364,7 @@ const EditTripCategoryModal = ({
 		cloudSponsorLogo !== ""
 			? (categorySponsorLogo = cloudSponsorLogo)
 			: (categorySponsorLogo = sponsorLogo);
-		cloudCarouselImages.length > 0
+		cloudCarouselImages !== null
 			? (categoryCarouselImages = cloudCarouselImages)
 			: (categoryCarouselImages = carouselImages);
 		service
