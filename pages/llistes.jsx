@@ -71,7 +71,6 @@ const ListsList = ({ user, totalItems, lists, numPages }) => {
 					user={user}
 				/>
 				<main>
-
 					{/* Main column - Listings */}
 					<div className="lg:mt-6">
 						<div className="px-5">
@@ -99,28 +98,25 @@ const ListsList = ({ user, totalItems, lists, numPages }) => {
 					</div>
 
 					{/* Section lists' list */}
-					<section className="py-8 md:py-12 lg:py-20">
+					<section className="py-8 md:pb-12 lg:pb-20">
 						<div className="px-5">
-
 							<div className="grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 gap-x-5">
 								{state.hasLists
 									? state.lists.map((el, idx) => (
-										<article className="mb-8">
-											<RegularListBox
-												index={idx}
-												key={el._id}
-												slug={el.slug}
-												cover={el.cover}
-												title={el.title}
-												subtitle={el.subtitle}
-												avatar={el.owner.avatar}
-												owner={
-													el.owner.fullName
-												}
-												date={el.createdAt}
-											/>
-										</article>
-									))
+											<article className="mb-8">
+												<RegularListBox
+													index={idx}
+													key={el._id}
+													slug={el.slug}
+													cover={el.cover}
+													title={el.title}
+													subtitle={el.subtitle}
+													avatar={el.owner.avatar}
+													owner={el.owner.fullName}
+													date={el.createdAt}
+												/>
+											</article>
+									  ))
 									: ""}
 							</div>
 							{state.currentPage !== state.numPages ? (

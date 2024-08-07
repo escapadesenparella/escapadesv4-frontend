@@ -50,7 +50,9 @@ const CategoryPage = ({
 				hasResults: true,
 				numResults: totalItems,
 				numPages: numPages,
-				queryPlaceType: categoryDetails?.isPlace ? [`placeType=${categoryDetails.name}`] : [],
+				queryPlaceType: categoryDetails?.isPlace
+					? [`placeType=${categoryDetails.name}`]
+					: [],
 			});
 		}
 	}, []);
@@ -518,84 +520,110 @@ const CategoryPage = ({
 								</li>
 							</ul>
 							<ListingHeader
-								title={`<span class="capitalize">${!categoryDetails.isPlace
-									? "Escapades"
-									: categoryDetails.pluralName
-									}</span> <span class="text-secondary-500 lowercase">${categoryDetails.isPlace
+								title={`<span class="capitalize">${
+									!categoryDetails.isPlace
+										? "Escapades"
+										: categoryDetails.pluralName
+								}</span> <span class="text-secondary-500 lowercase">${
+									categoryDetails.isPlace
 										? "amb encant"
 										: categoryDetails.pluralName
-									}</span>`}
-								subtitle={`Descobreix <strong>${allResults.length
-									} ${!categoryDetails.isPlace ? "escapades" : ""
-									} ${categoryDetails.pluralName} ${categoryDetails.isPlace ? "amb encant" : ""
-									}</strong> a Catalunya. ${categoryDetails.seoTextHeader
+								}</span>`}
+								subtitle={`Descobreix <strong>${
+									allResults.length
+								} ${
+									!categoryDetails.isPlace ? "escapades" : ""
+								} ${categoryDetails.pluralName} ${
+									categoryDetails.isPlace ? "amb encant" : ""
+								}</strong> a Catalunya. ${
+									categoryDetails.seoTextHeader
 										? categoryDetails.seoTextHeader
 										: ""
-									}`}
+								}`}
 								sponsorData={sponsorBlock}
 							/>
 						</div>
 					</section>
 
 					{/* Section listings */}
-					<section className="pt-8 md:pt-12">
+					<section className="pt-8">
 						<div className="px-5">
-							<div className="grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 gap-5">
+							<div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-5">
 								{state.results.length > 0 ? (
 									<>
-										{state.hasResults ? state.results.map((el, idx) => {
-											const priority = idx === 0 || idx === 1 ? 'eager' : 'lazy';
-											return <PublicSquareBox
-												key={el._id}
-												type={el.type}
-												slug={el.slug}
-												id={el._id}
-												cover={el.cover}
-												title={el.title}
-												subtitle={el.subtitle}
-												rating={
-													el.activity_rating ||
-													el.place_rating
-												}
-												placeType={el.placeType}
-												categoria={el.categories}
-												duration={el.duration}
-												website={el.website}
-												phone={el.phone}
-												isVerified={el.isVerified}
-												location={
-													el.activity_locality ||
-													el.place_locality
-												}
-												index={idx}
-												priority={priority}
-											/>
-										}) : state.emptyBlocksPerRow.map((el, idx) => (
-											<div
-												key={idx}
-												className="w-full"
-												role="status"
-											>
-												<div className="flex justify-center items-center w-full aspect-[4/3] bg-gray-300 rounded-2xl animate-pulse dark:bg-gray-700">
-													<div className="flex justify-center items-center w-full h-48 bg-gray-300 rounded-md sm:w-96 dark:bg-gray-700">
-														<svg
-															className="w-12 h-12 text-gray-200"
-															xmlns="http://www.w3.org/2000/svg"
-															aria-hidden="true"
-															fill="currentColor"
-															viewBox="0 0 640 512"
+										{state.hasResults
+											? state.results.map((el, idx) => {
+													const priority =
+														idx === 0 || idx === 1
+															? "eager"
+															: "lazy";
+													return (
+														<PublicSquareBox
+															key={el._id}
+															type={el.type}
+															slug={el.slug}
+															id={el._id}
+															cover={el.cover}
+															title={el.title}
+															subtitle={
+																el.subtitle
+															}
+															rating={
+																el.activity_rating ||
+																el.place_rating
+															}
+															placeType={
+																el.placeType
+															}
+															categoria={
+																el.categories
+															}
+															duration={
+																el.duration
+															}
+															website={el.website}
+															phone={el.phone}
+															isVerified={
+																el.isVerified
+															}
+															location={
+																el.activity_locality ||
+																el.place_locality
+															}
+															index={idx}
+															priority={priority}
+														/>
+													);
+											  })
+											: state.emptyBlocksPerRow.map(
+													(el, idx) => (
+														<div
+															key={idx}
+															className="w-full"
+															role="status"
 														>
-															<path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" />
-														</svg>
-													</div>
-													<span className="sr-only">
-														Loading...
-													</span>
-												</div>
-											</div>
-										))}
+															<div className="flex justify-center items-center w-full aspect-[4/3] bg-gray-300 rounded-2xl animate-pulse dark:bg-gray-700">
+																<div className="flex justify-center items-center w-full h-48 bg-gray-300 rounded-md sm:w-96 dark:bg-gray-700">
+																	<svg
+																		className="w-12 h-12 text-gray-200"
+																		xmlns="http://www.w3.org/2000/svg"
+																		aria-hidden="true"
+																		fill="currentColor"
+																		viewBox="0 0 640 512"
+																	>
+																		<path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" />
+																	</svg>
+																</div>
+																<span className="sr-only">
+																	Loading...
+																</span>
+															</div>
+														</div>
+													)
+											  )}
 
-										{state.currentPage !== state.numPages && checkAreFiltersActive() ? (
+										{state.currentPage !== state.numPages &&
+										checkAreFiltersActive() ? (
 											<div className="col-span-1 md:col-span-3 2xl:col-span-4 w-full mt-10 flex justify-center">
 												{!state.isFetching ? (
 													<button
@@ -668,9 +696,10 @@ const CategoryPage = ({
 								) : (
 									<div className="col-span-1 md:col-span-3 2xl:col-span-4">
 										<p className="text-center mx-auto text-lg">
-											No s'han trobat escapades per aquesta
-											categoria.
-											<br /> Torna-ho a provar més endavant.
+											No s'han trobat escapades per
+											aquesta categoria.
+											<br /> Torna-ho a provar més
+											endavant.
 										</p>
 									</div>
 								)}
@@ -719,7 +748,6 @@ const CategoryPage = ({
 								Veure-les al mapa
 							</button>
 						</div> */}
-
 				</main>
 			</div>
 

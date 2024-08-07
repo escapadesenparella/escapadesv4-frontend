@@ -8,12 +8,7 @@ import StoriesHeader from "../components/headers/StoriesHeader";
 import StoryListing from "../components/listings/StoryListing";
 import AdBanner from "../components/ads/AdBanner";
 
-const StoriesList = ({
-	featuredStories,
-	stories,
-	totalItems,
-	numPages,
-}) => {
+const StoriesList = ({ featuredStories, stories, totalItems, numPages }) => {
 	const initialResults = stories;
 
 	const initialState = {
@@ -74,15 +69,13 @@ const StoriesList = ({
 				<NavigationBar />
 				<StoriesHeader />
 				<main>
-					<section className="py-8 md:py-12 lg:py-20">
+					<section className="py-8 md:pb-12 lg:pb-20">
 						<div className="px-5">
 							{initialResults.length > 0 ? (
 								<>
-									<div className="grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 gap-5">
+									<div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-5">
 										{initialResults.map((el, idx) => (
-											<article
-												key={idx}
-											>
+											<article key={idx}>
 												<StoryListing
 													story={el}
 													index={idx}
@@ -90,9 +83,7 @@ const StoriesList = ({
 											</article>
 										))}
 										{state.results.map((el, idx) => (
-											<article
-												key={idx}
-											>
+											<article key={idx}>
 												<StoryListing
 													story={el}
 													index={idx}
@@ -172,8 +163,9 @@ const StoriesList = ({
 							) : (
 								<div className="col-span-1 md:col-span-3 2xl:col-span-4">
 									<p className="text-center mx-auto text-lg">
-										Encara no hi ha publicacions disponibles.
-										Sisplau, torna-ho a provar més endavant.
+										Encara no hi ha publicacions
+										disponibles. Sisplau, torna-ho a provar
+										més endavant.
 									</p>
 								</div>
 							)}

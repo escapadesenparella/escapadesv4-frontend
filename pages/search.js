@@ -44,7 +44,7 @@ const Search = (props) => {
 			} else if (searchQueryResults instanceof Object) {
 				let hasResults;
 				searchQueryResults.places.length > 0 ||
-					searchQueryResults.activities.length > 0
+				searchQueryResults.activities.length > 0
 					? (hasResults = true)
 					: (hasResults = false);
 				setState({
@@ -69,7 +69,7 @@ const Search = (props) => {
 				);
 				let hasResults;
 				searchQueryResults.places.length > 0 ||
-					searchQueryResults.activities.length > 0
+				searchQueryResults.activities.length > 0
 					? (hasResults = true)
 					: (hasResults = false);
 				setState({
@@ -247,9 +247,7 @@ const Search = (props) => {
 					<section className="pt-6 pb-12">
 						<div className="px-5 w-full">
 							<div className="border-b border-primary-50">
-								<h1>
-									Resultats de cerca
-								</h1>
+								<h1>Resultats de cerca</h1>
 								<p className="mt-2">
 									Hem trobat{" "}
 									<span>{searchResultsLength} resultats</span>{" "}
@@ -257,7 +255,7 @@ const Search = (props) => {
 									<b>"{browsedText}"</b>:
 								</p>
 							</div>
-							<div className="grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 gap-5 mt-5">
+							<div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-5 mt-5">
 								{searchResultsList}
 							</div>
 						</div>

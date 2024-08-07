@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
-import slugify from "slugify";
+import { useState, useEffect } from "react";
 import ContentService from "../../services/contentService";
+import EditorNavbar from "../../components/editor/EditorNavbar";
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 
 const EditRegionModal = ({
   visibility,
@@ -10,9 +11,15 @@ const EditRegionModal = ({
   name,
   pluralName,
   title,
+  richTitle,
   subtitle,
+  illustration,
   image,
+  imageCaption,
+  icon,
+  seoTextHeader,
   seoText,
+  slug,
   isSponsored,
   isFeatured,
   sponsorURL,
@@ -26,12 +33,21 @@ const EditRegionModal = ({
     name: name,
     pluralName: pluralName,
     title: title,
+    richTitle: richTitle,
     subtitle: subtitle,
+    illustration: illustration,
+    blopIllustration: "",
+    cloudIllustration: "",
+    cloudIllustrationUploaded: false,
     image: image,
     blopImage: "",
     cloudImage: "",
     cloudImageUploaded: false,
+    imageCaption: imageCaption,
+    icon: icon,
+    seoTextHeader: seoTextHeader,
     seoText: seoText,
+    slug: slug,
     isSponsored: isSponsored,
     isFeatured: isFeatured,
     sponsorURL: sponsorURL,
@@ -41,14 +57,58 @@ const EditRegionModal = ({
     cloudSponsorLogoUploaded: false,
     sponsorClaim: sponsorClaim,
     updatedImage: false,
+    updatedIllustration: false,
+    updatedSponsorLogo: false,
+    isSubmitable: false,
   };
 
   const [region, setRegion] = useState(initialState);
+  const [editorDataHeader, setEditorDataHeader] = useState(seoTextHeader);
+  const [editorData, setEditorData] = useState(seoText);
+
+  const editor = useEditor({
+    extensions: [StarterKit, Image],
+    content: seoText !== "" ? seoText : "",
+    onUpdate: (props) => {
+      const data = {
+        html: props.editor.getHTML(),
+        text: props.editor.state.doc.textContent,
+      };
+      setEditorData(data.html);
+    },
+    autofocus: false,
+    parseOptions: {
+      preserveWhitespace: true,
+    },
+  });
+
+  const editorHeader = useEditor({
+    extensions: [StarterKit, Image],
+    content: seoTextHeader !== "" ? seoTextHeader : "",
+    onUpdate: (props) => {
+      const data = {
+        html: props.editor.getHTML(),
+        text: props.editor.state.doc.textContent,
+      };
+      setEditorDataHeader(data.html);
+    },
+    autofocus: false,
+    parseOptions: {
+      preserveWhitespace: true,
+    },
+  });
 
   const handleChange = (e) =>
     setRegion({ ...region, [e.target.name]: e.target.value });
 
   const handleCheck = (e) => {
+
+    if (e.target.checked === true) {
+      setRegion({ ...region, isSponsored: true });
+    } else {
+      setRegion({ ...region, isSponsored: false });
+    }
+
     if (e.target.name === "isFeatured") {
       e.target.checked
         ? setRegion({ ...region, isFeatured: true })
@@ -58,6 +118,14 @@ const EditRegionModal = ({
 
   const saveFileToStatus = (e) => {
     const fileToUpload = e.target.files[0];
+    if (e.target.name === "illustration") {
+      setRegion({
+        ...region,
+        blopIllustration: URL.createObjectURL(fileToUpload),
+        illustration: fileToUpload,
+        updatedIllustration: true,
+      });
+    }
     if (e.target.name === "image") {
       setRegion({
         ...region,
@@ -76,70 +144,56 @@ const EditRegionModal = ({
     }
   };
 
+  let imageUploaded, sponsorLogoUploaded, illustrationUploaded;
+
   const handleFileUpload = async (e) => {
-    if (region.updatedImage && !region.updatedSponsorLogo) {
+    if (region.updatedImage) {
       const image = region.image;
       const uploadData = new FormData();
       uploadData.append("imageUrl", image);
-      service.uploadFile(uploadData).then((res) => {
-        setRegion({
-          ...region,
-          cloudImage: res.path,
-          cloudImageUploaded: true,
-        });
-      });
+      imageUploaded = await service.uploadFile(uploadData);
     }
-    if (region.updatedSponsorLogo && !region.updatedImage) {
+    if (region.updatedSponsorLogo) {
       const sponsorLogo = region.sponsorLogo;
       const uploadData = new FormData();
       uploadData.append("imageUrl", sponsorLogo);
-      service.uploadFile(uploadData).then((res) => {
-        setRegion({
-          ...region,
-          cloudSponsorLogo: res.path,
-          cloudSponsorLogoUploaded: true,
-        });
-      });
+      sponsorLogoUploaded = await service.uploadFile(uploadData);
     }
-    if (region.updatedImage && region.updatedSponsorLogo) {
-      const image = region.image;
-      const sponsorLogo = region.sponsorLogo;
-      let uploadedImage, uploadedSponsorLogo;
+    if (region.updatedIllustration) {
+      const illustration = region.illustration;
       const uploadData = new FormData();
-      uploadData.append("imageUrl", image);
-      service.uploadFile(uploadData).then((res) => {
-        uploadedImage = res.path;
-        const uploadData = new FormData();
-        uploadData.append("imageUrl", sponsorLogo);
-        service.uploadFile(uploadData).then((res) => {
-          uploadedSponsorLogo = res.path;
-          setRegion({
-            ...region,
-            cloudImage: uploadedImage,
-            cloudImageUploaded: true,
-            cloudSponsorLogo: uploadedSponsorLogo,
-            cloudSponsorLogoUploaded: true,
-          });
-        });
-      });
+      uploadData.append("imageUrl", illustration);
+      illustrationUploaded = await service.uploadFile(uploadData);
     }
+
+    setRegion({
+      ...region,
+      cloudImage: imageUploaded != undefined ? imageUploaded.path : "",
+      cloudImageUploaded: imageUploaded != undefined ? true : false,
+      cloudSponsorLogo:
+        sponsorLogoUploaded != undefined ? sponsorLogoUploaded.path : "",
+      cloudSponsorLogoUploaded: sponsorLogoUploaded != undefined ? true : false,
+      cloudIllustration:
+        illustrationUploaded != undefined ? illustrationUploaded.path : "",
+      cloudIllustrationUploaded:
+        illustrationUploaded != undefined ? true : false,
+      isSubmitable: true,
+    });
   };
 
   const submitRegion = async () => {
-    const slug = await slugify(region.title, {
-      remove: /[*+~.,()'"!:@]/g,
-      lower: true,
-    });
     const {
       id,
       name,
       pluralName,
       title,
+      richTitle,
       subtitle,
       image,
       cloudImage,
-      seoText,
+      slug,
       isSponsored,
+      isFeatured,
       sponsorURL,
       sponsorLogo,
       cloudSponsorLogo,
@@ -151,16 +205,19 @@ const EditRegionModal = ({
       ? (regionSponsorLogo = cloudSponsorLogo)
       : (regionSponsorLogo = sponsorLogo);
     service
-      .editCategory(
+      .editRegion(
         id,
         slug,
         name,
         pluralName,
         title,
+        richTitle,
         subtitle,
         regionImage,
-        seoText,
+        editorDataHeader,
+        editorData,
         isSponsored,
+        isFeatured,
         sponsorURL,
         regionSponsorLogo,
         sponsorClaim
@@ -173,30 +230,48 @@ const EditRegionModal = ({
   };
 
   useEffect(() => {
-    if (region.cloudImageUploaded || region.cloudSponsorLogoUploaded) {
+    if (region.isSubmitable) {
       submitRegion();
     }
   }, [region]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (region.updatedImage || region.updatedSponsorLogo) {
+    if (
+      region.updatedIllustration ||
+      region.updatedImage ||
+      region.updatedSponsorLogo
+    ) {
       handleFileUpload();
     } else {
       submitRegion();
     }
   };
 
-  let imagePreview, sponsorLogoPreview;
+  let illustrationPreview, imagePreview, sponsorLogoPreview;
+  if (region.blopIllustration) {
+    illustrationPreview = (
+      <div className="m-2 relative w-48 h-auto overflow-hidden rounded-md border-8 border-white shadow">
+        <img src={region.blopIllustration} />
+      </div>
+    );
+  } else {
+    illustrationPreview = (
+      <div className="m-2 relative w-48 h-auto overflow-hidden rounded-md border-8 border-white shadow">
+        <img src={region.illustration} />
+      </div>
+    );
+  }
+
   if (region.blopImage) {
     imagePreview = (
-      <div className="image">
+      <div className="m-2 relative w-48 h-auto overflow-hidden rounded-md border-8 border-white shadow">
         <img src={region.blopImage} />
       </div>
     );
   } else {
     imagePreview = (
-      <div className="image">
+      <div className="m-2 relative w-48 h-auto overflow-hidden rounded-md border-8 border-white shadow">
         <img src={region.image} />
       </div>
     );
@@ -204,13 +279,13 @@ const EditRegionModal = ({
 
   if (region.blopSponsorLogo) {
     sponsorLogoPreview = (
-      <div className="image">
+      <div className="m-2 relative w-48 h-auto overflow-hidden rounded-md border-8 border-white shadow">
         <img src={region.blopSponsorLogo} />
       </div>
     );
   } else {
     sponsorLogoPreview = (
-      <div className="image">
+      <div className="m-2 relative w-48 h-auto overflow-hidden rounded-md border-8 border-white shadow">
         <img src={region.sponsorLogo} />
       </div>
     );
@@ -221,214 +296,354 @@ const EditRegionModal = ({
     isChecked = "checked";
   }
 
-  const regionPublicationForm = (
-    <Form>
-      <Form.Group controlId="regionName">
-        <Form.Label>Nom de la regió</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Entra el nom de la regió"
-          name="name"
-          onChange={handleChange}
-          value={region.name}
-        />
-      </Form.Group>
-      <Form.Group controlId="regionName">
-        <Form.Label>Nom en plural de la regió</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Entra el nom en plural de la regió"
-          name="pluralName"
-          onChange={handleChange}
-          value={region.pluralName}
-        />
-      </Form.Group>
-      <Form.Group controlId="regionIsPlace">
-        <Form.Check
-          type="checkbox"
-          label="És regió d'allotjament?"
-          name="isPlace"
-          checked={region.isPlace}
-          onChange={handleCheck}
-        />
-      </Form.Group>
-      <Form.Group controlId="regionTitle">
-        <Form.Label>Títol de la regió</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Entra el títol de la regió"
-          name="title"
-          onChange={handleChange}
-          value={region.title}
-        />
-      </Form.Group>
-      <Form.Group controlId="regionSubtitle">
-        <Form.Label>Subtítol de la regió</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Entra el subtítol de la regió"
-          name="subtitle"
-          onChange={handleChange}
-          value={region.subtitle}
-        />
-      </Form.Group>
-      <div className="image">
-        <span>Imatge de la regió</span>
-        <div className="images-wrapper">
-          <div className="top-bar">
-            <Form.Group>
-              <div className="image-drop-zone">
-                <Form.Label>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="icon icon-tabler icon-tabler-camera-plus"
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="#0d1f44"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <circle cx="12" cy="13" r="3" />
-                    <path d="M5 7h2a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h2m9 7v7a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />
-                    <line x1="15" y1="6" x2="21" y2="6" />
-                    <line x1="18" y1="3" x2="18" y2="9" />
-                  </svg>
-                  Afegir imatge
-                  <Form.Control
-                    type="file"
-                    name="image"
-                    onChange={saveFileToStatus}
-                    max="1"
-                  />
-                </Form.Label>
-              </div>
-            </Form.Group>
-          </div>
-          <div className="images-list-wrapper">
-            <div className="image-wrapper">{imagePreview}</div>
-          </div>
-        </div>
-      </div>
-      <Form.Group controlId="regionSeoText">
-        <Form.Label>Text SEO de la regió</Form.Label>
-        <textarea
-          rows="6"
-          cols="30"
-          placeholder="Entra el text SEO per a la regió"
-          className="form-control"
-          name="seoText"
-          onChange={handleChange}
-          value={region.seoText}
-        ></textarea>
-      </Form.Group>
-      <Form.Group controlId="regionIsFeatured">
-        <Form.Check
-          type="checkbox"
-          label="Regió destacada?"
-          name="isFeatured"
-          checked={isFeatured}
-          onChange={handleCheck}
-        />
-      </Form.Group>
-      <Form.Group controlId="regionIsSponsored">
-        <Form.Check
-          type="checkbox"
-          label="Regió patrocinada?"
-          name="isSponsored"
-          checked={isChecked}
-          onChange={handleCheck}
-        />
-      </Form.Group>
-      <Form.Group controlId="regionSponsorURL">
-        <Form.Label>URL del patrocinador</Form.Label>
-        <Form.Control
-          type="url"
-          placeholder="Entra la URL del patrocinador"
-          name="sponsorURL"
-          onChange={handleChange}
-          value={region.sponsorURL}
-        />
-      </Form.Group>
-      <div className="image">
-        <span>Logo del patrocinador</span>
-        <div className="images-wrapper">
-          <div className="top-bar">
-            <Form.Group>
-              <div className="image-drop-zone">
-                <Form.Label>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="icon icon-tabler icon-tabler-camera-plus"
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="#0d1f44"
-                    fill="none"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <circle cx="12" cy="13" r="3" />
-                    <path d="M5 7h2a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h2m9 7v7a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />
-                    <line x1="15" y1="6" x2="21" y2="6" />
-                    <line x1="18" y1="3" x2="18" y2="9" />
-                  </svg>
-                  Afegir logo
-                  <Form.Control
-                    type="file"
-                    name="sponsorLogo"
-                    onChange={saveFileToStatus}
-                    max="1"
-                  />
-                </Form.Label>
-              </div>
-            </Form.Group>
-          </div>
-          <div className="images-list-wrapper">
-            <div className="image-wrapper">{sponsorLogoPreview}</div>
-          </div>
-        </div>
-      </div>
-      <Form.Group controlId="regionSponsorClaim">
-        <Form.Label>Claim del patrocinador</Form.Label>
-        <Form.Control
-          type="text"
-          placeholder="Entra el claim del patrocinador"
-          name="sponsorClaim"
-          onChange={handleChange}
-          value={region.sponsorClaim}
-        />
-      </Form.Group>
-    </Form>
-  );
   return (
-    <Modal
-      show={visibility}
-      onHide={hideModal}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-      className="regionPublicationModal"
-    >
-      <Modal.Header closeButton>
-        <Modal.Title>Edita la regió</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>{regionPublicationForm}</Modal.Body>
-      <Modal.Footer>
-        <Button
-          variant="none"
-          className="btn btn-m btn-dark"
-          onClick={handleSubmit}
-        >
-          Editar regió
-        </Button>
-      </Modal.Footer>
-    </Modal>
+    <div className={`modal ${visibility == true ? "active" : ""}`}>
+      <div className="modal__wrapper">
+        <div className="modal__header">
+          <span>Edita la regió</span>
+          <button onClick={() => hideModal()} className="modal__close">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="icon icon-tabler icon-tabler-x"
+              width={24}
+              height={24}
+              viewBox="0 0 24 24"
+              strokeWidth="2"
+              stroke="currentColor"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <line x1={18} y1={6} x2={6} y2={18}></line>
+              <line x1={6} y1={6} x2={18} y2={18}></line>
+            </svg>
+          </button>
+        </div>
+        <div className="modal__body">
+          <form className="form">
+            <div className="form__group ">
+              <label htmlFor="name" className="form__label">
+                Nom de la regió
+              </label>
+              <input
+                type="text"
+                name="name"
+                placeholder="Entra el nom de la regió"
+                className="form__control"
+                value={region.name}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form__group ">
+              <label htmlFor="pluralName" className="form__label">
+                Nom en plural de la regió
+              </label>
+              <input
+                type="text"
+                name="pluralName"
+                placeholder="Entra el nom en plural de la regió"
+                className="form__control"
+                value={region.pluralName}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form__group ">
+              <label htmlFor="title" className="form__label">
+                Títol de la regió
+              </label>
+              <input
+                type="text"
+                name="title"
+                placeholder="Entra el títol de la regió"
+                className="form__control"
+                value={region.title}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form__group ">
+              <label htmlFor="richTitle" className="form__label">
+                Títol enriquit de la regió
+              </label>
+              <input
+                type="text"
+                name="richTitle"
+                placeholder="Entra el títol de la regió"
+                className="form__control"
+                value={region.richTitle}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form__group">
+              <label htmlFor="subtitle" className="form__label">
+                Subtítol de la regió
+              </label>
+              <input
+                type="text"
+                name="subtitle"
+                placeholder="Entra el subtítol de la regió"
+                className="form__control"
+                value={region.subtitle}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form__group">
+              <label htmlFor="textSeo" className="form__label">
+                Text SEO header de la regió
+              </label>
+              <EditorNavbar editor={editorHeader} />
+              <EditorContent
+                editor={editorHeader}
+                className="form-composer__editor"
+              />
+            </div>
+            <div className="form__group">
+              <span className="form__label">Il·lustració de la catagoria</span>
+              <div className="flex items-center flex-col max-w-full mb-4">
+                <div className="bg-white border border-primary-100 rounded-tl-md rounded-tr-md w-full">
+                  <div className="bg-white border-none h-auto p-4 justify-start">
+                    <label className="form__label m-0 bg-white rounded-md shadow py-3 px-5 inline-flex items-center cursor-pointer">
+                      <input
+                        type="file"
+                        className="hidden"
+                        name="illustration"
+                        onChange={saveFileToStatus}
+                      />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="mr-2"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="#0d1f44"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <circle cx="12" cy="13" r="3" />
+                        <path d="M5 7h2a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h2m9 7v7a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />
+                        <line x1="15" y1="6" x2="21" y2="6" />
+                        <line x1="18" y1="3" x2="18" y2="9" />
+                      </svg>
+                      {region.illustration
+                        ? "Canviar imatge"
+                        : "Seleccionar imatge"}
+                    </label>
+                  </div>
+                </div>
+                <div className="w-full border border-primary-100 rounded-br-md rounded-bl-md -mt-px p-4 flex">
+                  <div className="-m-2.5 flex flex-wrap items-center">
+                    {illustrationPreview}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="form__group">
+              <span className="form__label">Imatge de la catagoria</span>
+              <div className="flex items-center flex-col max-w-full mb-4">
+                <div className="bg-white border border-primary-100 rounded-tl-md rounded-tr-md w-full">
+                  <div className="bg-white border-none h-auto p-4 justify-start">
+                    <label className="form__label m-0 bg-white rounded-md shadow py-3 px-5 inline-flex items-center cursor-pointer">
+                      <input
+                        type="file"
+                        className="hidden"
+                        name="image"
+                        onChange={saveFileToStatus}
+                      />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="mr-2"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="#0d1f44"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <circle cx="12" cy="13" r="3" />
+                        <path d="M5 7h2a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h2m9 7v7a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />
+                        <line x1="15" y1="6" x2="21" y2="6" />
+                        <line x1="18" y1="3" x2="18" y2="9" />
+                      </svg>
+                      {region.image ? "Canviar imatge" : "Seleccionar imatge"}
+                    </label>
+                  </div>
+                </div>
+                <div className="w-full border border-primary-100 rounded-br-md rounded-bl-md -mt-px p-4 flex">
+                  <div className="-m-2.5 flex flex-wrap items-center">
+                    {imagePreview}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="form__group">
+              <label htmlFor="subtitle" className="form__label">
+                Image caption de la regió
+              </label>
+              <input
+                type="text"
+                name="imageCaption"
+                placeholder="Entra la image caption de la regió"
+                className="form__control"
+                value={region.imageCaption}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form__group">
+              <label htmlFor="title" className="form__label">
+                Icona de la regió
+              </label>
+              <textarea
+                rows="3"
+                cols="3"
+                placeholder="Entra text svg de l'icona de la regió"
+                className="form__control"
+                name="icon"
+                onChange={handleChange}
+                value={region.icon}
+              ></textarea>
+            </div>
+            <div className="form__group">
+              <label htmlFor="textSeo" className="form__label">
+                Text SEO de la regió
+              </label>
+              <EditorNavbar editor={editor} />
+              <EditorContent
+                editor={editor}
+                className="form-composer__editor"
+              />
+            </div>
+            <div className="form__group">
+              <label htmlFor="slug" className="form__label">
+                URL de la regió
+              </label>
+              <input
+                type="text"
+                name="slug"
+                placeholder="Entra l'slug de la regió"
+                className="form__control"
+                value={region.slug}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="form__group">
+              <label
+                htmlFor="isFeatured"
+                className="form__label flex items-center"
+              >
+                <input
+                  type="checkbox"
+                  name="isFeatured"
+                  id="isFeatured"
+                  className="mr-2"
+                  checked={isFeatured}
+                  onChange={handleCheck}
+                />
+                Regió destacada?
+              </label>
+            </div>
+            <div className="form__group">
+              <label
+                htmlFor="isSponsored"
+                className="form__label flex items-center"
+              >
+                <input
+                  type="checkbox"
+                  name="isSponsored"
+                  id="isSponsored"
+                  className="mr-2"
+                  checked={isChecked}
+                  onChange={handleCheck}
+                />
+                Regió patrocinada?
+              </label>
+            </div>
+            <div className="form__group">
+              <label htmlFor="sponsorURL" className="form__label">
+                URL del patrocinador
+              </label>
+              <input
+                type="text"
+                name="sponsorURL"
+                placeholder="Entra la URL del patrocinador"
+                className="form__control"
+                value={region.sponsorURL}
+                onChange={handleChange}
+              />
+            </div>
+            <div className="image">
+              <span className="form__label">Logo del patrocinador</span>
+              <div className="flex items-center flex-col max-w-full mb-4">
+                <div className="bg-white border border-primary-100 rounded-tl-md rounded-tr-md w-full">
+                  <div className="bg-white border-none h-auto p-4 justify-start">
+                    <label className="form__label m-0 bg-white rounded-md shadow py-3 px-5 inline-flex items-center cursor-pointer">
+                      <input
+                        type="file"
+                        className="hidden"
+                        name="sponsorLogo"
+                        onChange={saveFileToStatus}
+                      />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="mr-2"
+                        width="22"
+                        height="22"
+                        viewBox="0 0 24 24"
+                        strokeWidth="1.5"
+                        stroke="#0d1f44"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                        <circle cx="12" cy="13" r="3" />
+                        <path d="M5 7h2a2 2 0 0 0 2 -2a1 1 0 0 1 1 -1h2m9 7v7a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" />
+                        <line x1="15" y1="6" x2="21" y2="6" />
+                        <line x1="18" y1="3" x2="18" y2="9" />
+                      </svg>
+                      {region.sponsorLogo
+                        ? "Canviar imatge"
+                        : "Seleccionar imatge"}
+                    </label>
+                  </div>
+                </div>
+                <div className="w-full border border-primary-100 rounded-br-md rounded-bl-md -mt-px p-4 flex">
+                  <div className="-m-2.5 flex flex-wrap items-center">
+                    {sponsorLogoPreview}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="form__group">
+              <label htmlFor="sponsorClaim" className="form__label">
+                Claim del patrocinador
+              </label>
+              <input
+                type="text"
+                name="sponsorClaim"
+                placeholder="Entra el claim del patrocinador"
+                className="form__control"
+                value={region.sponsorClaim}
+                onChange={handleChange}
+              />
+            </div>
+          </form>
+        </div>
+        <div className="modal__footer">
+          <button
+            className="button button__primary button__med"
+            onClick={handleSubmit}
+          >
+            Modificar
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 

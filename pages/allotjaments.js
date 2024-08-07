@@ -115,13 +115,13 @@ const PlaceList = ({
 	const handleCheckDropdownClick = (e) => {
 		e.preventDefault();
 
-		if ([...e.target.classList].includes('active')) {
+		if ([...e.target.classList].includes("active")) {
 			setDropdownVisible(null);
 			return;
 		}
 
 		setDropdownVisible(e.target.id);
-	}
+	};
 
 	const center = {
 		lat: 41.3948976,
@@ -234,7 +234,6 @@ const PlaceList = ({
 					}
 				/>
 				<main>
-
 					{/* Main column - Listings */}
 					<section className="lg:mt-6">
 						<div className="px-5">
@@ -264,10 +263,11 @@ const PlaceList = ({
 					{/* Left column - Filters  */}
 					<nav className="px-5 pt-5 pb-6 sticky top-[70px] bg-white z-50">
 						<div
-							className={`fixed lg:relative w-full z-50 inset-0 h-screen lg:h-auto overflow-y-auto lg:overflow-visible bg-white lg:bg-transparent transition-all duration-300 ease-in-out ${state.isMobileFilterPanelDisplated
-								? "translate-x-0"
-								: "-translate-x-full lg:translate-x-0"
-								}`}
+							className={`fixed lg:relative w-full z-50 inset-0 h-screen lg:h-auto overflow-y-auto lg:overflow-visible bg-white lg:bg-transparent transition-all duration-300 ease-in-out ${
+								state.isMobileFilterPanelDisplated
+									? "translate-x-0"
+									: "-translate-x-full lg:translate-x-0"
+							}`}
 						>
 							<button
 								className="absolute z-50 right-3 top-3 lg:hidden"
@@ -301,10 +301,26 @@ const PlaceList = ({
 							</button>
 							<div className="flex flex-col lg:flex-row lg:items-center space-x-3 lg:sticky lg:top-[210px]">
 								<div className="relative">
-									<button className={`button button__ghost button__med ${dropdownVisible === 'type' ? 'active' : ''}`} onClick={(e) => handleCheckDropdownClick(e)} id="type">
+									<button
+										className={`button button__ghost button__med ${
+											dropdownVisible === "type"
+												? "active"
+												: ""
+										}`}
+										onClick={(e) =>
+											handleCheckDropdownClick(e)
+										}
+										id="type"
+									>
 										Tipologia
 									</button>
-									<div className={`bg-white absolute left-0 top-full w-auto shadow-lg rounded-xl p-5 ${dropdownVisible === 'type' ? 'block' : 'hidden'}`}>
+									<div
+										className={`bg-white absolute left-0 top-full w-auto shadow-lg rounded-xl p-5 ${
+											dropdownVisible === "type"
+												? "block"
+												: "hidden"
+										}`}
+									>
 										<fieldset>
 											<label className="cursor-pointer text-sm inline-flex items-center whitespace-nowrap">
 												<input
@@ -380,10 +396,26 @@ const PlaceList = ({
 									</div>
 								</div>
 								<div className="relative">
-									<button className={`button button__ghost button__med ${dropdownVisible === 'region' ? 'active' : ''}`} onClick={(e) => handleCheckDropdownClick(e)} id="region">
+									<button
+										className={`button button__ghost button__med ${
+											dropdownVisible === "region"
+												? "active"
+												: ""
+										}`}
+										onClick={(e) =>
+											handleCheckDropdownClick(e)
+										}
+										id="region"
+									>
 										Regió
 									</button>
-									<div className={`bg-white absolute left-0 top-full w-auto shadow-lg rounded-xl p-5 ${dropdownVisible === 'region' ? 'block' : 'hidden'}`}>
+									<div
+										className={`bg-white absolute left-0 top-full w-auto shadow-lg rounded-xl p-5 ${
+											dropdownVisible === "region"
+												? "block"
+												: "hidden"
+										}`}
+									>
 										<fieldset>
 											<label className="cursor-pointer text-sm inline-flex items-center whitespace-nowrap">
 												<input
@@ -471,10 +503,26 @@ const PlaceList = ({
 									</div>
 								</div>
 								<div className="relative">
-									<button className={`button button__ghost button__med ${dropdownVisible === 'category' ? 'active' : ''}`} onClick={(e) => handleCheckDropdownClick(e)} id="category">
+									<button
+										className={`button button__ghost button__med ${
+											dropdownVisible === "category"
+												? "active"
+												: ""
+										}`}
+										onClick={(e) =>
+											handleCheckDropdownClick(e)
+										}
+										id="category"
+									>
 										Categoria
 									</button>
-									<div class={`bg-white absolute left-0 top-full w-auto shadow-lg rounded-xl p-5 ${dropdownVisible === 'category' ? 'block' : 'hidden'}`}>
+									<div
+										class={`bg-white absolute left-0 top-full w-auto shadow-lg rounded-xl p-5 ${
+											dropdownVisible === "category"
+												? "block"
+												: "hidden"
+										}`}
+									>
 										<fieldset>
 											<label className="cursor-pointer text-sm inline-flex items-center whitespace-nowrap">
 												<input
@@ -548,10 +596,26 @@ const PlaceList = ({
 									</div>
 								</div>
 								<div className="relative">
-									<button className={`button button__ghost button__med ${dropdownVisible === 'season' ? 'active' : ''}`} onClick={(e) => handleCheckDropdownClick(e)} id="season">
+									<button
+										className={`button button__ghost button__med ${
+											dropdownVisible === "season"
+												? "active"
+												: ""
+										}`}
+										onClick={(e) =>
+											handleCheckDropdownClick(e)
+										}
+										id="season"
+									>
 										Temporada
 									</button>
-									<div className={`bg-white absolute left-0 top-full w-auto shadow-lg rounded-xl p-5 ${dropdownVisible === 'season' ? 'block' : 'hidden'}`}>
+									<div
+										className={`bg-white absolute left-0 top-full w-auto shadow-lg rounded-xl p-5 ${
+											dropdownVisible === "season"
+												? "block"
+												: "hidden"
+										}`}
+									>
 										<fieldset>
 											<label className="cursor-pointer text-sm inline-flex items-center whitespace-nowrap">
 												<input
@@ -602,7 +666,9 @@ const PlaceList = ({
 										</fieldset>
 									</div>
 								</div>
-								<span className="inline-block text-sm text-grey-500">{state.places.length} resultats disponibles</span>
+								<span className="inline-block text-sm text-grey-500">
+									{state.places.length} resultats disponibles
+								</span>
 							</div>
 						</div>
 					</nav>
@@ -610,66 +676,66 @@ const PlaceList = ({
 					{/* Section places */}
 					<section>
 						<div className="px-5">
-
-							<div className="grid grid-cols-1 md:grid-cols-3 2xl:grid-cols-4 gap-5">
+							<div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-5">
 								{state.hasPlaces
 									? state.places.map((el, idx) => {
-										const priority = idx === 0 || idx === 1 ? 'eager' : 'lazy';
-										return <PublicSquareBox
-											key={el._id}
-											type={el.type}
-											slug={el.slug}
-											id={el._id}
-											cover={el.cover}
-											title={el.title}
-											subtitle={el.subtitle}
-											rating={el.place_rating}
-											placeType={el.placeType}
-											categoria={
-												el.categories
-											}
-											duration={el.duration}
-											website={el.website}
-											phone={el.phone}
-											isVerified={
-												el.isVerified
-											}
-											location={`${el.place_locality ===
-												undefined
-												? el.place_country
-												: el.place_locality
-												}`}
-											priority={priority}
-										/>
-									}
-									)
+											const priority =
+												idx === 0 || idx === 1
+													? "eager"
+													: "lazy";
+											return (
+												<PublicSquareBox
+													key={el._id}
+													type={el.type}
+													slug={el.slug}
+													id={el._id}
+													cover={el.cover}
+													title={el.title}
+													subtitle={el.subtitle}
+													rating={el.place_rating}
+													placeType={el.placeType}
+													categoria={el.categories}
+													duration={el.duration}
+													website={el.website}
+													phone={el.phone}
+													isVerified={el.isVerified}
+													location={`${
+														el.place_locality ===
+														undefined
+															? el.place_country
+															: el.place_locality
+													}`}
+													priority={priority}
+												/>
+											);
+									  })
 									: state.emptyBlocksPerRow.map((el, idx) => (
-										<div
-											key={idx}
-											className="w-full"
-											role="status"
-										>
-											<div className="flex justify-center items-center w-full aspect-[4/3] bg-gray-300 rounded-2xl animate-pulse dark:bg-gray-700">
-												<div className="flex justify-center items-center w-full h-48 bg-gray-300 rounded-md sm:w-96 dark:bg-gray-700">
-													<svg
-														className="w-12 h-12 text-gray-200"
-														xmlns="http://www.w3.org/2000/svg"
-														aria-hidden="true"
-														fill="currentColor"
-														viewBox="0 0 640 512"
-													>
-														<path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" />
-													</svg>
+											<div
+												key={idx}
+												className="w-full"
+												role="status"
+											>
+												<div className="flex justify-center items-center w-full aspect-[4/3] bg-gray-300 rounded-2xl animate-pulse dark:bg-gray-700">
+													<div className="flex justify-center items-center w-full h-48 bg-gray-300 rounded-md sm:w-96 dark:bg-gray-700">
+														<svg
+															className="w-12 h-12 text-gray-200"
+															xmlns="http://www.w3.org/2000/svg"
+															aria-hidden="true"
+															fill="currentColor"
+															viewBox="0 0 640 512"
+														>
+															<path d="M480 80C480 35.82 515.8 0 560 0C604.2 0 640 35.82 640 80C640 124.2 604.2 160 560 160C515.8 160 480 124.2 480 80zM0 456.1C0 445.6 2.964 435.3 8.551 426.4L225.3 81.01C231.9 70.42 243.5 64 256 64C268.5 64 280.1 70.42 286.8 81.01L412.7 281.7L460.9 202.7C464.1 196.1 472.2 192 480 192C487.8 192 495 196.1 499.1 202.7L631.1 419.1C636.9 428.6 640 439.7 640 450.9C640 484.6 612.6 512 578.9 512H55.91C25.03 512 .0006 486.1 .0006 456.1L0 456.1z" />
+														</svg>
+													</div>
+													<span className="sr-only">
+														Loading...
+													</span>
 												</div>
-												<span className="sr-only">
-													Loading...
-												</span>
 											</div>
-										</div>
-									))}
+									  ))}
 							</div>
 							{state.currentPage !== state.numPages &&
-								checkAreFiltersActive() ? (
+							checkAreFiltersActive() ? (
 								<div className="col-span-1 md:col-span-3 2xl:col-span-4 w-full mt-10 flex justify-center">
 									{!state.isFetching ? (
 										<button
@@ -737,7 +803,6 @@ const PlaceList = ({
 							) : (
 								""
 							)}
-
 						</div>
 					</section>
 
@@ -755,7 +820,6 @@ const PlaceList = ({
 							</div>
 						</section>
 					) : null}
-
 				</main>
 			</div>
 
@@ -775,7 +839,8 @@ const PlaceList = ({
 
 export async function getServerSideProps({ params }) {
 	const service = new ContentService();
-	const { totalItems, places, allPlaces, numPages } = await service.getAllPlaces();
+	const { totalItems, places, allPlaces, numPages } =
+		await service.getAllPlaces();
 	return {
 		props: {
 			totalItems,
