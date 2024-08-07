@@ -24,21 +24,29 @@ const RegularTripEntryBox = ({
 	const avatarId = avatar.substring(63);
 	const avatarImg = `${avatarPath}w_32,h_32,c_fill/${avatarId}`;
 	return (
-		<article className="lists__item">
+		<article className="w-full group">
 			<Link href={`/viatges/${trip}/${slug}`}>
-				<a
-					title={title}
-					className="flex flex-wrap md:flex-nowrap items-stretch"
-				>
-					<div className="w-full md:w-2/3 p-6 md:py-6 md:px-8">
-						<div className="mb-4">
-							<h3 className="text-xl">{title}</h3>
-							<div className="mt-2 text-primary-400 font-light line-clamp-2">
-								{subtitle}
-							</div>
-						</div>
-						<div className="flex items-center border-t border-primary-200 pt-4">
-							<div className="w-8 h-8 mr-2 rounded-full overflow-hidden">
+				<a title={title} className="relative">
+					<picture className="block aspect-w-4 aspect-h-3 rounded-2xl overflow-hidden">
+						<img
+							src={coverImg}
+							alt={title}
+							width="240"
+							height="240"
+							className="w-full h-full object-cover scale-100 group-hover:scale-105 transition-all duration-500 ease-in-out"
+							loading="lazy"
+						/>
+					</picture>
+					<div className="w-full pt-3 pb-4">
+						<h3 className="text-block font-normal my-0 pr-10">
+							{title}
+						</h3>
+						<p className="text-block text-block--sm line-clamp-2 mt-1.5">
+							{subtitle}
+						</p>
+
+						<div className="flex items-center mt-2 md:mt-3">
+							<div className="w-6 h-6 mr-2 rounded-full overflow-hidden">
 								<picture>
 									<img
 										src={avatarImg}
@@ -50,30 +58,18 @@ const RegularTripEntryBox = ({
 									/>
 								</picture>
 							</div>
-							<div className="flex items-center">
-								<span className="text-sm inline-block">
+							<div className="flex items-center justify-center">
+								<span className="text-15 font-light inline-block text-grey-700">
 									{owner}
 								</span>
-								<span className="mx-2 opacity-40 inline-block">
+								<span className="mx-1.5 font-light inline-block text-grey-700">
 									–
 								</span>
-								<span className="text-sm inline-block opacity-40">
+								<span className="text-15 font-light inline-block text-grey-700">
 									{publicationDate}
 								</span>
 							</div>
 						</div>
-					</div>
-					<div className="w-full md:w-1/3 overflow-hidden order-first md:order-none md:mb-0 rounded-md">
-						<picture>
-							<img
-								src={coverImg}
-								alt={title}
-								width="240"
-								height="240"
-								className="w-full h-full object-cover"
-								loading="lazy"
-							/>
-						</picture>
 					</div>
 				</a>
 			</Link>

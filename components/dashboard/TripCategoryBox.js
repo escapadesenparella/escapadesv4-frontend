@@ -8,9 +8,15 @@ const TripCategoryBox = ({
 	id,
 	slug,
 	title,
+	richTitle,
 	image,
+	carouselImages,
 	country,
 	mapLocation,
+	reviewText,
+	mostLikedText,
+	pointsOfInterestText,
+	mustSeeText,
 	seoTextHeader,
 	seoText,
 	isSponsored,
@@ -23,7 +29,8 @@ const TripCategoryBox = ({
 
 	let shortenedSubtitle = seoTextHeader.slice(0, 70);
 	const service = new ContentService();
-	const removeItem = () => service.removeCategory(id).then(() => fetchData());
+	const removeItem = () =>
+		service.removeTripCategory(id).then(() => fetchData());
 
 	const urlToShare = `https://escapadesenparella.cat/viatges/${slug}`;
 
@@ -178,9 +185,15 @@ const TripCategoryBox = ({
 				id={id}
 				slug={slug}
 				title={title}
+				richTitle={richTitle}
 				country={country}
 				mapLocation={mapLocation}
 				image={image}
+				carouselImages={carouselImages}
+				reviewText={reviewText}
+				mostLikedText={mostLikedText}
+				pointsOfInterestText={pointsOfInterestText}
+				mustSeeText={mustSeeText}
 				seoTextHeader={seoTextHeader}
 				seoText={seoText}
 				isSponsored={isSponsored}

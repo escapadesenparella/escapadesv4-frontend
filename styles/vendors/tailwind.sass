@@ -18,7 +18,7 @@
     h3, h4, h5
         @apply font-medium font-headings text-balance
 
-    h1
+    h1, .h1
         font-size: clamp(28px, 3vw, 40px)
         line-height: clamp(34px, 3.5vw, 44px)
 
@@ -26,12 +26,12 @@
             font-size: clamp(28px, 3vw, 44px)
             line-height: clamp(34px, 3.5vw, 48px)
 
-    h2
+    h2, .h2
         font-size: clamp(28px, 3vw, 40px)
         line-height: clamp(34px, 3.5vw, 44px)
         @apply mb-2
 
-    h3
+    h3, .h3
         @apply text-base leading-normal
         @screen md
             @apply text-lg font-medium leading-snug
@@ -79,10 +79,10 @@
 
     .text-block--xl
         @extend .text-block
-        @apply text-base md:text-lg
+        @apply text-base md:text-xl
 
         *:not(h1, h2, h3, h4)
-            @apply text-base md:text-lg
+            @apply text-base md:text-xl
 
             &:last-child
                 @apply mb-0

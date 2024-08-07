@@ -1,0 +1,20 @@
+.tripCategory
+    @apply relative
+
+    &__intro
+        h2
+            font-size: clamp(22px, 3vw, 28px)
+            @apply font-light mt-0 mb-7 leading-tight
+
+        p:last-child
+            @apply mb-0
+
+    &__info-text
+        h2
+            @apply mb-10
+
+    &__iframe
+        @apply aspect-[2/3] w-full h-full rounded-2xl overflow-hidden
+
+        iframe
+            @apply w-full h-full
