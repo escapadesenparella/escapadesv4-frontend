@@ -179,11 +179,19 @@ const ActivityList = ({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [state.updateSearch]);
 
-	const textareaFooter = `<p>Calceu-vos les botes, poseu-vos el banyador, prepareu-vos la motxilla o despengeu l'anorac; aquí trobareu les millors <strong>activitats a Catalunya</strong> per a una escapada en parella que no oblidareu.</p>
-	<p>Catalunya és un destí ideal per a realitzar activitats originals en parella. Amb la seva meravellosa costa mediterrània, pobles encantadors i rica història cultural, ens ofereix un vetall de possibilitats infinit per viure <strong>experiències en parella</strong> de tot tipus.</p>
-	<p>Un dels llocs imperdibles per a fer <strong>activitats en parella</strong> és Barcelona. Amb la seva arquitectura icònica, museus de classe mundial i vida nocturna vibrant; sempre hi trobareu alguna cosa a fer a la ciutat.</p>
-	<p>Per a <strong>activitats d'aventura</strong>, als Pirineus hi trobareu mil i una opcions, ja sigui realitzant sortides de senderisme o esquí, entre d'altres activitats. Sabíes que la regió és seu d'alguns dels millors resorts d'esquí d'Espanya? El paisatge és espectacular!</p>
-	<p>Per últim, per a activitats de relax, activitats en parella culturals, o activitats en parella gastronòmiques, no dubtis en visitar la Costa Brava, la Costa Daurada, el Camp de Tarragona o el Delta de l'Ebre. Aquestes regions ofereixen propostes que s'adapten a cada parella.</p>`;
+	const textareaFooter = `<h2>Activitats originals en parella a Catalunya</h2>
+<p>Busques idees per sorprendre la teva parella amb plans diferents i emocionants? Catalunya és un lloc ple d'opcions per gaudir d'<strong>activitats originals en parella</strong>, des de rutes d'aventura fins a experiències úniques que no oblidareu mai. Si voleu trencar amb la rutina i crear moments especials junts, aquí trobaràs inspiració per al vostre pròxim cap de setmana.</p>
+
+<h3>Experiències en parella per gaudir al màxim</h3>
+<p>Si el que desitgeu són experiències memorables, Catalunya ofereix infinitat de possibilitats per a les millors <strong>experiències en parella</strong>. Des de volar en globus sobre paisatges espectaculars fins a fer una degustació de vins en una masia amb encant, cada proposta està pensada per sorprendre i enamorar. Descobreix activitats per fer en parella que us permetran connectar i viure emocions noves junts.</p>
+
+<h3>Activitats en parella a Barcelona i més enllà</h3>
+<p>Barcelona, amb la seva rica oferta cultural i d'oci, és l'escenari perfecte per a <strong>activitats en parella</strong>. Pugeu al Tibidabo per gaudir de vistes panoràmiques, exploreu museus interactius o feu un tour gastronòmic pel barri Gòtic. A més de Barcelona, Catalunya té molts altres indrets on viure aventures en parella, com rutes de senderisme per la Garrotxa o visites a coves i espais naturals.</p>
+
+<h2>Activitats originals per a un cap de setmana únic</h2>
+<p>Planificar <strong>caps de setmana originals</strong> a Catalunya és fàcil gràcies a la varietat d'opcions que aquesta regió ofereix. Des d'activitats aquàtiques com caiac o paddle surf fins a experiències culturals com visites a monestirs o espectacles de música en viu, podreu personalitzar el vostre cap de setmana segons els vostres interessos. Aquestes activitats a Catalunya faran que cada escapada sigui única i especial.</p>
+
+<h3>Plans en parella per descobrir Catalunya</h3><p>Quan es tracta de <strong>plans en parella a Catalunya</strong>, les opcions són infinites. Gaudiu de passejades romàntiques per pobles amb encant com Besalú o Peratallada, passegeu pels camps de lavanda al Delta de l'Ebre o feu excursions per parcs naturals. Cada regió té llocs increïbles per visitar amb la teva parella, fent de cada escapada una aventura plena de descobriments.</p><p>Explorar <strong>llocs de Catalunya per anar amb la teva parella</strong> no només enfortirà el vostre vincle, sinó que també us permetrà viure moments plens de màgia i sorpresa. Així que prepareu-vos per descobrir junts el millor de Catalunya amb activitats inoblidables que us deixaran amb ganes de repetir.</p>`;
 
 	const loadMoreResults = async (page) => {
 		setState({ ...state, isFetching: true });
