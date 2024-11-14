@@ -92,6 +92,8 @@ const StoryEditionForm = () => {
 			}),
 			Link.configure({
 				openOnClick: false,
+				autolink: false,
+				defaultProtocol: "https",
 			}),
 		],
 		content: editorData,

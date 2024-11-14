@@ -13,6 +13,7 @@ import StarterKit from "@tiptap/starter-kit";
 import Image from "@tiptap/extension-image";
 import Placeholder from "@tiptap/extension-placeholder";
 import { handleFilesUpload, removeImage } from "../utils/helpers";
+import Link from "@tiptap/extension-link";
 
 const PlaceForm = () => {
 	// Validate if user is allowed to access this view
@@ -140,6 +141,11 @@ const PlaceForm = () => {
 			}),
 			Placeholder.configure({
 				placeholder: "Comença a descriure l'allotjament...",
+			}),
+			Link.configure({
+				openOnClick: false,
+				autolink: false,
+				defaultProtocol: "https",
 			}),
 		],
 		content: "",

@@ -101,6 +101,8 @@ const TripEntryForm = () => {
 			}),
 			Link.configure({
 				openOnClick: false,
+				autolink: false,
+				defaultProtocol: "https",
 			}),
 		],
 		content: "",

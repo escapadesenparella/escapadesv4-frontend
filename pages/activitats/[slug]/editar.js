@@ -11,6 +11,7 @@ import Autocomplete from "react-google-autocomplete";
 import EditorNavbar from "../../../components/editor/EditorNavbar";
 import { EditorView } from "prosemirror-view";
 import { removeImage } from "../../../utils/helpers";
+import Link from "@tiptap/extension-link";
 
 EditorView.prototype.updateState = function updateState(state) {
 	if (!this.docView) return; // This prevents the matchesNode error on hot reloads
@@ -117,7 +118,14 @@ const ActivityEditionForm = () => {
 	});
 
 	const editorReasons = useEditor({
-		extensions: [StarterKit],
+		extensions: [
+			StarterKit,
+			Link.configure({
+				openOnClick: false,
+				autolink: false,
+				defaultProtocol: "https",
+			}),
+		],
 		content: reasons,
 		onUpdate: (props) => {
 			const data = {
@@ -554,13 +562,13 @@ const ActivityEditionForm = () => {
 		if (e.target.name === "isVerified") {
 			e.target.checked
 				? setState({
-					...state,
-					formData: { ...state.formData, isVerified: true },
-				})
+						...state,
+						formData: { ...state.formData, isVerified: true },
+				  })
 				: setState({
-					...state,
-					formData: { ...state.formData, isVerified: false },
-				});
+						...state,
+						formData: { ...state.formData, isVerified: false },
+				  });
 		}
 	};
 
@@ -599,19 +607,21 @@ const ActivityEditionForm = () => {
 							<div className="form-composer__body">
 								<div className="flex items-center justify-between overflow-hidden border border-primary-100 mb-4 bg-white shadow rounded-md">
 									<button
-										className={`flex-1 bg-none px-4 py-4 text-primary-500 !rounded-md-none focus:border-t-4 focus:border-primary-500 text-sm ${activeTab === "main"
-											? "border-t-4 border-primary-500"
-											: ""
-											}`}
+										className={`flex-1 bg-none px-4 py-4 text-primary-500 !rounded-md-none focus:border-t-4 focus:border-primary-500 text-sm ${
+											activeTab === "main"
+												? "border-t-4 border-primary-500"
+												: ""
+										}`}
 										onClick={() => setActiveTab("main")}
 									>
 										Contingut principal
 									</button>
 									<button
-										className={`flex-1 bg-none px-4 py-4 text-primary-500 !rounded-md-none focus:border-t-4 focus:border-primary-500 text-sm ${activeTab === "seo"
-											? "border-t-4 border-primary-500"
-											: ""
-											}`}
+										className={`flex-1 bg-none px-4 py-4 text-primary-500 !rounded-md-none focus:border-t-4 focus:border-primary-500 text-sm ${
+											activeTab === "seo"
+												? "border-t-4 border-primary-500"
+												: ""
+										}`}
 										onClick={() => setActiveTab("seo")}
 									>
 										SEO
@@ -1209,7 +1219,8 @@ const ActivityEditionForm = () => {
 														placeholder="Eg. 15ESCAPADES24"
 														className="form__control"
 														value={
-															state.formData.discountCode
+															state.formData
+																.discountCode
 														}
 														onChange={handleChange}
 													/>
@@ -1227,7 +1238,8 @@ const ActivityEditionForm = () => {
 														placeholder="Eg. 15% descompte"
 														className="form__control"
 														value={
-															state.formData.discountInfo
+															state.formData
+																.discountInfo
 														}
 														onChange={handleChange}
 													/>
@@ -1447,31 +1459,42 @@ const ActivityEditionForm = () => {
 																		història
 																	</option>
 																	{state.stories &&
-																		state
-																			.stories
-																			.length >
+																	state
+																		.stories
+																		.length >
 																		0
 																		? state.stories.map(
-																			(
-																				el
-																			) => {
-																				return (
-																					<option
-																						value={
-																							el._id
-																						}
-																						key={
-																							el._id
-																						}
-																						selected={state.activity?.relatedStory && state.activity?.relatedStory?._id === el._id ? "true" : null}
-																					>
-																						{
-																							el.title
-																						}
-																					</option>
-																				);
-																			}
-																		)
+																				(
+																					el
+																				) => {
+																					return (
+																						<option
+																							value={
+																								el._id
+																							}
+																							key={
+																								el._id
+																							}
+																							selected={
+																								state
+																									.activity
+																									?.relatedStory &&
+																								state
+																									.activity
+																									?.relatedStory
+																									?._id ===
+																									el._id
+																									? "true"
+																									: null
+																							}
+																						>
+																							{
+																								el.title
+																							}
+																						</option>
+																					);
+																				}
+																		  )
 																		: null}
 																</select>
 															</div>
@@ -1500,7 +1523,9 @@ const ActivityEditionForm = () => {
 											>
 												Raons
 											</label>
-											<EditorNavbar editor={editorReasons} />
+											<EditorNavbar
+												editor={editorReasons}
+											/>
 											<EditorContent
 												editor={editorReasons}
 												className="form-composer__editor"

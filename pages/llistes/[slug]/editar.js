@@ -9,6 +9,7 @@ import NavigationBar from "../../../components/global/NavigationBar";
 import Image from "@tiptap/extension-image";
 import ContentService from "../../../services/contentService";
 import FetchingSpinner from "../../../components/global/FetchingSpinner";
+import Link from "@tiptap/extension-link";
 
 const ListEditionForm = () => {
 	// Validate if user is allowed to access this view
@@ -83,7 +84,15 @@ const ListEditionForm = () => {
 	const service = new ContentService();
 
 	const editor = useEditor({
-		extensions: [StarterKit, Image],
+		extensions: [
+			StarterKit,
+			Image,
+			Link.configure({
+				openOnClick: false,
+				autolink: false,
+				defaultProtocol: "https",
+			}),
+		],
 		content: "",
 		onUpdate: (props) => {
 			const data = {

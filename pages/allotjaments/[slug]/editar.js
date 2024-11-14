@@ -10,6 +10,7 @@ import NavigationBar from "../../../components/global/NavigationBar";
 import Autocomplete from "react-google-autocomplete";
 import EditorNavbar from "../../../components/editor/EditorNavbar";
 import { EditorView } from "prosemirror-view";
+import Link from "@tiptap/extension-link";
 
 EditorView.prototype.updateState = function updateState(state) {
 	if (!this.docView) return; // This prevents the matchesNode error on hot reloads
@@ -104,7 +105,14 @@ const EditionForm = () => {
 	const service = new ContentService();
 
 	const editor = useEditor({
-		extensions: [StarterKit],
+		extensions: [
+			StarterKit,
+			Link.configure({
+				openOnClick: false,
+				autolink: false,
+				defaultProtocol: "https",
+			}),
+		],
 		content: description,
 		onUpdate: (props) => {
 			const data = {
@@ -575,13 +583,13 @@ const EditionForm = () => {
 		if (e.target.name === "isVerified") {
 			e.target.checked
 				? setState({
-					...state,
-					formData: { ...state.formData, isVerified: true },
-				})
+						...state,
+						formData: { ...state.formData, isVerified: true },
+				  })
 				: setState({
-					...state,
-					formData: { ...state.formData, isVerified: false },
-				});
+						...state,
+						formData: { ...state.formData, isVerified: false },
+				  });
 		}
 	};
 
@@ -620,19 +628,21 @@ const EditionForm = () => {
 							<div className="form-composer__body">
 								<div className="flex items-center justify-between overflow-hidden border border-primary-100 mb-4 bg-white shadow rounded-md">
 									<button
-										className={`flex-1 bg-none px-4 py-4 text-primary-500 !rounded-md-none focus:border-t-4 focus:border-primary-500 text-sm ${activeTab === "main"
-											? "border-t-4 border-primary-500"
-											: ""
-											}`}
+										className={`flex-1 bg-none px-4 py-4 text-primary-500 !rounded-md-none focus:border-t-4 focus:border-primary-500 text-sm ${
+											activeTab === "main"
+												? "border-t-4 border-primary-500"
+												: ""
+										}`}
 										onClick={() => setActiveTab("main")}
 									>
 										Contingut principal
 									</button>
 									<button
-										className={`flex-1 bg-none px-4 py-4 text-primary-500 !rounded-md-none focus:border-t-4 focus:border-primary-500 text-sm ${activeTab === "seo"
-											? "border-t-4 border-primary-500"
-											: ""
-											}`}
+										className={`flex-1 bg-none px-4 py-4 text-primary-500 !rounded-md-none focus:border-t-4 focus:border-primary-500 text-sm ${
+											activeTab === "seo"
+												? "border-t-4 border-primary-500"
+												: ""
+										}`}
 										onClick={() => setActiveTab("seo")}
 									>
 										SEO
@@ -1136,49 +1146,49 @@ const EditionForm = () => {
 													<ul className="list-none flex flex-wrap items-start m-0 p-0">
 														{state.characteristics
 															? state.characteristics.map(
-																(el) => (
-																	<li
-																		key={
-																			el.id
-																		}
-																		className="pr-5 pb-5 w-1/2 md:w-1/3 lg:w-1/5"
-																	>
-																		<label
-																			htmlFor={
-																				el.name
+																	(el) => (
+																		<li
+																			key={
+																				el.id
 																			}
-																			className="form__label flex items-center"
+																			className="pr-5 pb-5 w-1/2 md:w-1/3 lg:w-1/5"
 																		>
-																			<input
-																				type="checkbox"
-																				name={
+																			<label
+																				htmlFor={
 																					el.name
 																				}
-																				id={
-																					el.name
-																				}
-																				className="mr-2"
-																				onChange={
-																					handleCheckCharacteristic
-																				}
-																				checked={checkIfCharacteristicChecked(
-																					el.name
-																				)}
-																			/>
-																			<span
-																				dangerouslySetInnerHTML={{
-																					__html: el.icon,
-																				}}
-																				className="w-8 h-8 mr-1.5"
-																			></span>
+																				className="form__label flex items-center"
+																			>
+																				<input
+																					type="checkbox"
+																					name={
+																						el.name
+																					}
+																					id={
+																						el.name
+																					}
+																					className="mr-2"
+																					onChange={
+																						handleCheckCharacteristic
+																					}
+																					checked={checkIfCharacteristicChecked(
+																						el.name
+																					)}
+																				/>
+																				<span
+																					dangerouslySetInnerHTML={{
+																						__html: el.icon,
+																					}}
+																					className="w-8 h-8 mr-1.5"
+																				></span>
 
-																			{
-																				el.name
-																			}
-																		</label>
-																	</li>
-																)
-															)
+																				{
+																					el.name
+																				}
+																			</label>
+																		</li>
+																	)
+															  )
 															: null}
 													</ul>
 												</div>
@@ -1394,7 +1404,8 @@ const EditionForm = () => {
 														placeholder="Eg. 15ESCAPADES24"
 														className="form__control"
 														value={
-															state.formData.discountCode
+															state.formData
+																.discountCode
 														}
 														onChange={handleChange}
 													/>
@@ -1412,7 +1423,8 @@ const EditionForm = () => {
 														placeholder="Eg. 15% descompte"
 														className="form__control"
 														value={
-															state.formData.discountInfo
+															state.formData
+																.discountInfo
 														}
 														onChange={handleChange}
 													/>
@@ -1630,31 +1642,42 @@ const EditionForm = () => {
 																		història
 																	</option>
 																	{state.stories &&
-																		state
-																			.stories
-																			.length >
+																	state
+																		.stories
+																		.length >
 																		0
 																		? state.stories.map(
-																			(
-																				el
-																			) => {
-																				return (
-																					<option
-																						value={
-																							el._id
-																						}
-																						key={
-																							el._id
-																						}
-																						selected={state.place?.relatedStory && state.place?.relatedStory?._id === el._id ? "true" : null}
-																					>
-																						{
-																							el.title
-																						}
-																					</option>
-																				);
-																			}
-																		)
+																				(
+																					el
+																				) => {
+																					return (
+																						<option
+																							value={
+																								el._id
+																							}
+																							key={
+																								el._id
+																							}
+																							selected={
+																								state
+																									.place
+																									?.relatedStory &&
+																								state
+																									.place
+																									?.relatedStory
+																									?._id ===
+																									el._id
+																									? "true"
+																									: null
+																							}
+																						>
+																							{
+																								el.title
+																							}
+																						</option>
+																					);
+																				}
+																		  )
 																		: null}
 																</select>
 															</div>
@@ -1683,7 +1706,9 @@ const EditionForm = () => {
 											>
 												Raons
 											</label>
-											<EditorNavbar editor={reasonsEditor} />
+											<EditorNavbar
+												editor={reasonsEditor}
+											/>
 											<EditorContent
 												editor={reasonsEditor}
 												className="form-composer__editor"
