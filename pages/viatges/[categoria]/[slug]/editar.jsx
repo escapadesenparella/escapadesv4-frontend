@@ -304,28 +304,28 @@ const TripEntryEditionForm = () => {
 		e.preventDefault();
 
 		if (state.formData.updatedImages || state.formData.updatedCover) {
-			console.log("submit");
-			const { uploadedCover, uploadedImages } = await handleFilesUpload(
-				state.formData.cover,
-				state.formData.images
-			);
+			const cover = state.formData.updatedCover
+				? state.formData.cover
+				: false;
+			const bodyImages = state.formData.updatedImages
+				? state.formData.images
+				: false;
 
-			console.log(uploadedCover, uploadedImages);
+			const { uploadedCover, uploadedImages, success } =
+				await handleFilesUpload(cover, bodyImages);
 
-			setState({
-				...state,
-				formData: {
-					...state.formData,
-					cloudImages: uploadedImages
-						? uploadedImages
-						: state.tripEntry.images,
-					coverCloudImage: uploadedCover
-						? uploadedCover
-						: state.tripEntry.cover,
-					cloudImagesUploaded: uploadedImages ? true : false,
-					coverCloudImageUploaded: uploadedCover ? true : false,
-				},
-			});
+			if (success.status === 200) {
+				setState({
+					...state,
+					formData: {
+						...state.formData,
+						cloudImages: uploadedImages,
+						coverCloudImage: uploadedCover,
+						cloudImagesUploaded: true,
+						coverCloudImageUploaded: true,
+					},
+				});
+			}
 		} else {
 			submitTripEntry();
 		}

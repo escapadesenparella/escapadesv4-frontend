@@ -52,6 +52,7 @@ const handleFilesUpload = async (coverImage, bodyImages) => {
 	return {
 		uploadedCover,
 		uploadedImages,
+		success: { status: 200 },
 	};
 };
 

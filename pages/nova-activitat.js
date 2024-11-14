@@ -158,7 +158,8 @@ const ActivityForm = () => {
 				},
 			}),
 			Placeholder.configure({
-				placeholder: "Comença a escriure raons per realitzar l'activitat...",
+				placeholder:
+					"Comença a escriure raons per realitzar l'activitat...",
 			}),
 		],
 		content: "",
@@ -419,12 +420,14 @@ const ActivityForm = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const { uploadedCover, uploadedImages } = await handleFilesUpload(
-			state.formData.cover,
-			state.formData.images
-		);
 
-		if (uploadedCover && uploadedImages) {
+		const { uploadedCover, uploadedImages, success } =
+			await handleFilesUpload(
+				state.formData.cover,
+				state.formData.images
+			);
+
+		if (success.status === 200) {
 			setState({
 				...state,
 				formData: {
@@ -470,7 +473,7 @@ const ActivityForm = () => {
 
 		if (
 			(isVerified,
-				title &&
+			title &&
 				subtitle &&
 				slug &&
 				categories &&
@@ -530,13 +533,13 @@ const ActivityForm = () => {
 		if (e.target.name === "isVerified") {
 			e.target.checked
 				? setState({
-					...state,
-					formData: { ...state.formData, isVerified: true },
-				})
+						...state,
+						formData: { ...state.formData, isVerified: true },
+				  })
 				: setState({
-					...state,
-					formData: { ...state.formData, isVerified: false },
-				});
+						...state,
+						formData: { ...state.formData, isVerified: false },
+				  });
 		}
 	};
 
@@ -575,19 +578,21 @@ const ActivityForm = () => {
 							<div className="form-composer__body">
 								<div className="flex items-center justify-between overflow-hidden border border-primary-100 mb-4 bg-white shadow rounded-md">
 									<button
-										className={`flex-1 bg-none px-4 py-4 text-primary-500 !rounded-md-none focus:border-t-4 focus:border-primary-500 text-sm ${activeTab === "main"
-											? "border-t-4 border-primary-500"
-											: ""
-											}`}
+										className={`flex-1 bg-none px-4 py-4 text-primary-500 !rounded-md-none focus:border-t-4 focus:border-primary-500 text-sm ${
+											activeTab === "main"
+												? "border-t-4 border-primary-500"
+												: ""
+										}`}
 										onClick={() => setActiveTab("main")}
 									>
 										Contingut principal
 									</button>
 									<button
-										className={`flex-1 bg-none px-4 py-4 text-primary-500 !rounded-md-none focus:border-t-4 focus:border-primary-500 text-sm ${activeTab === "seo"
-											? "border-t-4 border-primary-500"
-											: ""
-											}`}
+										className={`flex-1 bg-none px-4 py-4 text-primary-500 !rounded-md-none focus:border-t-4 focus:border-primary-500 text-sm ${
+											activeTab === "seo"
+												? "border-t-4 border-primary-500"
+												: ""
+										}`}
 										onClick={() => setActiveTab("seo")}
 									>
 										SEO
@@ -1180,7 +1185,8 @@ const ActivityForm = () => {
 														placeholder="Eg. 15ESCAPADES24"
 														className="form__control"
 														value={
-															state.formData.discountCode
+															state.formData
+																.discountCode
 														}
 														onChange={handleChange}
 													/>
@@ -1198,7 +1204,8 @@ const ActivityForm = () => {
 														placeholder="Eg. 15% descompte"
 														className="form__control"
 														value={
-															state.formData.discountInfo
+															state.formData
+																.discountInfo
 														}
 														onChange={handleChange}
 													/>
@@ -1419,30 +1426,30 @@ const ActivityForm = () => {
 																		història
 																	</option>
 																	{state.stories &&
-																		state
-																			.stories
-																			.length >
+																	state
+																		.stories
+																		.length >
 																		0
 																		? state.stories.map(
-																			(
-																				el
-																			) => {
-																				return (
-																					<option
-																						value={
-																							el._id
-																						}
-																						key={
-																							el._id
-																						}
-																					>
-																						{
-																							el.title
-																						}
-																					</option>
-																				);
-																			}
-																		)
+																				(
+																					el
+																				) => {
+																					return (
+																						<option
+																							value={
+																								el._id
+																							}
+																							key={
+																								el._id
+																							}
+																						>
+																							{
+																								el.title
+																							}
+																						</option>
+																					);
+																				}
+																		  )
 																		: null}
 																</select>
 															</div>
@@ -1471,7 +1478,9 @@ const ActivityForm = () => {
 											>
 												Raons per realitzar l'escapada
 											</label>
-											<EditorNavbar editor={reasonsEditor} />
+											<EditorNavbar
+												editor={reasonsEditor}
+											/>
 											<EditorContent
 												editor={reasonsEditor}
 												className="form-composer__editor"

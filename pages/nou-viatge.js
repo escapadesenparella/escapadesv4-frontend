@@ -254,12 +254,13 @@ const TripEntryForm = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		const { uploadedCover, uploadedImages } = await handleFilesUpload(
-			state.formData.cover,
-			state.formData.images
-		);
+		const { uploadedCover, uploadedImages, success } =
+			await handleFilesUpload(
+				state.formData.cover,
+				state.formData.images
+			);
 
-		if (uploadedCover && uploadedImages) {
+		if (success.status === 200) {
 			setState({
 				...state,
 				formData: {
